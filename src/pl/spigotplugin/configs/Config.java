@@ -1,0 +1,62 @@
+package pl.spigotplugin.configs;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import pl.spigotplugin.SpigotPlugin;
+
+import java.io.File;
+import java.lang.reflect.Field;
+
+public class Config
+{
+    private static File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "config.yml");
+    private static FileConfiguration c = null;
+    public static String host = "mysql.titanaxe.com";
+    public static String dataBase = "srv139831";
+    public static String user = "srv139831";
+    public static String password = "QiQu8hfP";
+    public static int BORDER_WORLD = 800;
+    public static int BORDER_NETHER = 800;
+    public static int CUBOID_TNT_OD = 14;
+    public static int CUBOID_TNT_DO = 22;
+    public static long EVENTS_BEACON = 0L;
+    public static long EVENTS_KILL = 0L;
+    public static long EVENTS_CASE = 0L;
+    public static long EVENTS_TURBO = 0L;
+    public static boolean MANAGE_TPA = false;
+    public static boolean MANAGE_SPAWN = false;
+    public static String IP = "easyage.pl";
+
+    public static void loadConfig() {
+        try {
+            final FileConfiguration c = SpigotPlugin.getPlugin().getConfig();
+            for (final Field f : Config.class.getFields()) {
+                if (c.isSet("config." + f.getName().toLowerCase().replace("_", "."))) {
+                    f.set(null, c.get("config." + f.getName().toLowerCase().replace("_", ".")));
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveConfig() {
+        try {
+            final FileConfiguration c = SpigotPlugin.getPlugin().getConfig();
+            for (final Field f : Config.class.getFields()) {
+                c.set("config." + f.getName().toLowerCase().replace("_", "."), f.get(null));
+            }
+            SpigotPlugin.getPlugin().saveConfig();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void reloadConfig() {
+        SpigotPlugin.getPlugin().reloadConfig();
+        loadConfig();
+        saveConfig();
+    }
+}
+
