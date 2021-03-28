@@ -122,6 +122,10 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new KitCommand());
         registerCommand(new CraftingiCommand());
         registerCommand(new HelpOpCommand());
+        registerCommand(new WyjebaneCommand());
+        registerCommand(new ItemShopCommand());
+        registerCommand(new DajCommand());
+        registerCommand(new StoneCommand());
     }
 
     private void registerCommand(Command command){

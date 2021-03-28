@@ -23,6 +23,15 @@ public class ChatUtil {
         }
         return ChatColor.translateAlternateColorCodes('&', s);
     }
+    public static ItemStack getItemStackFromString(String itemstack) {
+        String[] splits = itemstack.split("@");
+        String type = splits[0];
+        String data = (splits.length == 2) ? splits[1] : null;
+        if (data == null) {
+            return new ItemStack(Material.getMaterial(type), 1);
+        }
+        return new ItemStack(Material.getMaterial(type), 1, (short) Integer.parseInt(data));
+    }
     public static void sendHoverMessageCommand(Player p, String s1, String s2, String cmd) {
         IChatBaseComponent msg = IChatBaseComponent.ChatSerializer.a(color("{\"text\":\"" + s1 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + s2 + "\"}]}},\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + cmd + "\"}}"));
         PacketPlayOutChat hover = new PacketPlayOutChat(msg);
@@ -93,5 +102,9 @@ public class ChatUtil {
             returnMaterial = Material.matchMaterial(materialName);
         }
         return returnMaterial;
+    }
+    public static double round(double value, int decimals) {
+        double p = Math.pow(10, decimals);
+        return Math.round(value * p) / p;
     }
 }

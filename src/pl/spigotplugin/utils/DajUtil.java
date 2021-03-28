@@ -1,0 +1,76 @@
+package pl.spigotplugin.utils;
+
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import pl.spigotplugin.configs.Config;
+
+public class DajUtil {
+    public static ItemStack boyfarmer = new ItemBuilder(
+            Material.ENDER_PORTAL_FRAME)
+            .addEnchantment(Enchantment.DURABILITY,10)
+            .setTitle("&a&lBoyFarmer")
+            .addEnchantment(Enchantment.THORNS, 10)
+            .build();
+    public static ItemStack antynogi = new ItemBuilder(
+            Material.NAME_TAG)
+            .addEnchantment(Enchantment.DURABILITY,10)
+            .setTitle("&6&lAnty Nogi")
+            .addLore(ChatUtil.color("&7\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!"))
+            .addEnchantment(Enchantment.DURABILITY, 2)
+            .build();
+    public static ItemStack stoniarka = new ItemBuilder(
+            Material.ENDER_STONE)
+            .addEnchantment(Enchantment.DURABILITY,10)
+            .setTitle("&a&lStoniarka")
+            .addEnchantment(Enchantment.THORNS, 10)
+            .build();
+    public static ItemStack casenormal = new ItemBuilder(
+            Material.CHEST)
+            .addEnchantment(Enchantment.DURABILITY,10)
+            .setTitle("&c&lSkrzynia "+ Config.IP)
+            .build();
+    public static ItemStack case633 = new ItemBuilder(
+            Material.CHEST)
+            .addEnchantment(Enchantment.DURABILITY,10)
+            .setTitle("&c&lSkrzynia Ez6/3/3")
+            .build();
+
+    public static void giveWithAmount(String type, int amount, Player sender) {
+        ItemStack toGive = null;
+        switch (type) {
+            case "boyfarmer":{
+                toGive = boyfarmer.clone();
+                toGive.setAmount(amount);
+                break;
+            }
+            case "antynogi":{
+                toGive = antynogi.clone();
+                toGive.setAmount(amount);
+                break;
+            }
+            case "stoniarka":{
+                toGive = stoniarka.clone();
+                toGive.setAmount(amount);
+                break;
+            }
+            case "casenormal":{
+                toGive = casenormal.clone();
+                toGive.setAmount(amount);
+                break;
+            }
+            case "case633":{
+                toGive = case633.clone();
+                toGive.setAmount(amount);
+                break;
+            }
+            default:{
+                sender.sendMessage("Nie ma takiego itemu: " + type);
+                break;
+            }
+        }
+        if (toGive != null)
+            ChatUtil.giveItems(sender, toGive);
+    }
+}

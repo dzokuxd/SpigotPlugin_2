@@ -21,7 +21,7 @@ public class MySQL {
 
         connect();
 
-        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT)");
+        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, WykStone BIGINT,statystykikopania TEXT NOT NULL)");
 
 
         update("CREATE TABLE IF NOT EXISTS backups (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +

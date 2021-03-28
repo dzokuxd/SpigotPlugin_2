@@ -63,7 +63,7 @@ public class EventsCommand extends PlayerCommand {
                     Config.saveConfig();
                     Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany &c&lTurboDrop &6do &c" + DataUtil.getDate(time));
                     return;
-                }
+                }//TODO napraw bo zamiast minut sa sekundy
                 User u = UserManager.getUser(args[1]);
                 if (u == null) {
                     p.sendMessage("&cGracz nie istnieje!");

@@ -16,7 +16,7 @@ public class KitMenu {
         Inventory inv = Bukkit.createInventory(p, 9, ChatUtil.color("&7&lKity"));
         User u = UserManager.getUser(p);
         ItemBuilder air = new ItemBuilder(Material.getMaterial(160), 1, (short) 15).setTitle("&8\u2022");
-        for (int j = 0; j < 27; j++) {
+        for (int j = 0; j < 9; j++) {
             inv.setItem(j, air.build());
         }
         ItemStack kitvip = new ItemBuilder(
@@ -27,7 +27,7 @@ public class KitMenu {
                         + DataUtil.secondsToString(u.getKit_vip()) + "&7)" : "&aDostepny"))
                 .addLore("")
                 .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
-                .setGlow(u.isKitVip())
+                .setGlow(!u.isKitVip())
                 .build();
         ItemStack kitsvip = new ItemBuilder(
                 Material.DIAMOND_PICKAXE)
@@ -37,7 +37,7 @@ public class KitMenu {
                         + DataUtil.secondsToString(u.getKit_svip()) + "&7)" : "&aDostepny"))
                 .addLore("")
                 .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
-                .setGlow(u.isKitSvip())
+                .setGlow(!u.isKitSvip())
                 .build();
         ItemStack kitstart = new ItemBuilder(
                 Material.WOOD_PICKAXE)
@@ -47,7 +47,7 @@ public class KitMenu {
                         + DataUtil.secondsToString(u.getKit_start()) + "&7)" : "&aDostepny"))
                 .addLore("")
                 .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
-                .setGlow(u.isKitStart())
+                .setGlow(!u.isKitStart())
                 .build();
         ItemStack kitmieso = new ItemBuilder(
                 Material.WOOD_PICKAXE)
@@ -57,7 +57,7 @@ public class KitMenu {
                         + DataUtil.secondsToString(u.getKit_mieso()) + "&7)" : "&aDostepny"))
                 .addLore("")
                 .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
-                .setGlow(u.isKitMieso())
+                .setGlow(!u.isKitMieso())
                 .build();
         inv.setItem(2, kitvip);
         inv.setItem(1, kitstart);

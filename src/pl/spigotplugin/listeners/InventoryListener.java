@@ -15,12 +15,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.ChatMenu;
+import pl.spigotplugin.menu.KitMenu;
 import pl.spigotplugin.objects.user.Backup;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.DataUtil;
-import pl.spigotplugin.utils.ItemBuilder;
-import pl.spigotplugin.utils.TimeUtil;
+import pl.spigotplugin.utils.*;
 
 import java.sql.SQLException;
 
@@ -75,6 +73,116 @@ public class InventoryListener implements Listener {
                 }
             }
         }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCraftingi"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                CraftingUtil.openEndStone(p);
+                return;
+            }
+            if (slot == 1) {
+                CraftingUtil.openBoy(p);
+                return;
+            }
+            if (slot == 2) {
+                CraftingUtil.openEnderchest(p);
+                return;
+            }
+            if (slot == 3) {
+                CraftingUtil.openAntyNogi(p);
+                return;
+            }
+            if (slot == 4) {
+                CraftingUtil.openPotka(p);
+                return;
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 1/5"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                String cost = "4:0-6:Cobblestone;152:0-2:Redstone";
+                if (!ItemUtil.checkItems(p, cost, 1)) {
+                    ItemUtil.getItem(p, cost, 1);
+                    return;
+                }
+                ItemUtil.removeItems(p, cost, 1);
+                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_STONE, 1).setTitle(ChatUtil.color("&c&lStoniarka")).addEnchantment(Enchantment.THORNS, 10).build());
+                p.sendMessage("&c&lGratulacje! &7Utworzyles stoniarke!");
+            } else {
+                CraftingUtil.openMenu(p);
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 2/5"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                String cost = "49:0-6:Obsidian;41:0-2:Gold Block;152:0-1:redstone block;";
+                if (!ItemUtil.checkItems(p, cost, 1)) {
+                    ItemUtil.getItem(p, cost, 1);
+                    return;
+                }
+                ItemUtil.removeItems(p, cost, 1);
+                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PORTAL_FRAME, 4).setTitle(ChatUtil.color("&a&lBoyFarmer")).addEnchantment(Enchantment.THORNS, 10).build());
+                p.sendMessage("&c&lGratulacje! &7Utworzyles boyfarmer!");
+            } else {
+                CraftingUtil.openMenu(p);
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 3/5"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                String cost = "49:0-8:Obsidian;368:0-1:Ender Pearl;";
+                if (!ItemUtil.checkItems(p, cost, 1)) {
+                    ItemUtil.getItem(p, cost, 1);
+                    return;
+                }
+                ItemUtil.removeItems(p, cost, 1);
+                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_CHEST, 1).build());
+                p.sendMessage("&c&lGratulacje! &7Utworzyles enderchest!");
+            } else {
+                CraftingUtil.openMenu(p);
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 4/5"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                String cost = "41:0-8:Gold Block;397:3-1:Glwoa Gracz;";
+                if (!ItemUtil.checkItems(p, cost, 1)) {
+                    ItemUtil.getItem(p, cost, 1);
+                    return;
+                }
+                ItemUtil.removeItems(p, cost, 1);
+                ChatUtil.giveItems(p, new ItemBuilder(Material.NAME_TAG, 1).setTitle(ChatUtil.color("&6&lAnty Nogi")).addLore(ChatUtil.color("")).addLore(ChatUtil.color("&8\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!")).addEnchantment(Enchantment.DURABILITY, 2).build());
+                p.sendMessage("&c&lGratulacje! &7Utworzyles Anty Nogi");
+            } else {
+                CraftingUtil.openMenu(p);
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 5/5"))) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+            int slot = e.getSlot();
+            if (slot == 0) {
+                String cost = "20:0-8:Szklo;397:3-1:Glwoa Gracz;";
+                if (!ItemUtil.checkItems(p, cost, 1)) {
+                    ItemUtil.getItem(p, cost, 1);
+                    return;
+                }
+                ItemUtil.removeItems(p, cost, 1);
+                ChatUtil.giveItems(p, new ItemBuilder(Material.POTION, 1, (short) 8227).setTitle(ChatUtil.color("&c&lPotka Fire")).addLore(ChatUtil.color("")).build());
+                p.sendMessage("&c&lGratulacje! &7Utworzyles Potke Fire");
+            } else {
+                CraftingUtil.openMenu(p);
+            }
+        }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lKity"))) {
             e.setCancelled(true);
             e.setResult(Event.Result.DENY);
@@ -106,6 +214,7 @@ public class InventoryListener implements Listener {
                 ChatUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ChatUtil.giveItems(p, new ItemStack(Material.ARROW, 30));
                 p.sendMessage("&8\u00bb &cOtrzymales kit vip!");
+                KitMenu.show(p);
                 return;
             }
             if (slot == 3) {
@@ -139,6 +248,7 @@ public class InventoryListener implements Listener {
                 ChatUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ChatUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
                 p.sendMessage("&8\u00bb &cOtrzymales kit svip!");
+                KitMenu.show(p);
                 return;
             }
             if (slot == 1) {
@@ -152,6 +262,7 @@ public class InventoryListener implements Listener {
                 ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
                 ChatUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
                 p.sendMessage("&8\u00bb &cOtrzymales kit start!");
+                KitMenu.show(p);
                 return;
             }
             if (slot == 0) {
@@ -162,6 +273,7 @@ public class InventoryListener implements Listener {
                 u.setKit_mieso(System.currentTimeMillis() + TimeUtil.SECOND.getTime(60));
                 ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
                 p.sendMessage("&8\u00bb &cOtrzymales kit mieso!");
+                KitMenu.show(p);
             }
         }
     }
