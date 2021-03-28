@@ -30,11 +30,7 @@ public class Ban {
     }
 
     private void insert() {
-        try {
-            SpigotPlugin.getMySQL().update("INSERT INTO `{P}bans`(`id`, `name`, `admin`, `reason`, `time`, `start`) VALUES (NULL, '" + this.getName() + "','" + this.getAdmin() + "','" + this.getReason() + "','" + this.getTime() + "','" + this.getStart() + "');");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("INSERT INTO bans(name, admin, reason, time, start) VALUES (NULL, '" + this.getName() + "','" + this.getAdmin() + "','" + this.getReason() + "','" + this.getTime() + "','" + this.getStart() + "');");
     }
 
     public long getStart() {

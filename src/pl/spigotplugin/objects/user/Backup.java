@@ -34,7 +34,7 @@ public class Backup {
     }
 
     public static void getList(Player p, Player o) throws SQLException {
-        ResultSet rs = SpigotPlugin.getMySQL().query("SELECT * FROM `{P}backups` WHERE name ='" + p.getName() + "' ORDER BY `id` DESC LIMIT 27;");
+        ResultSet rs = SpigotPlugin.getMySQL().query("SELECT * FROM backups WHERE name ='" + p.getName() + "' ORDER BY id DESC LIMIT 27;");
         Inventory inventory = Bukkit.createInventory(p, 27, ChatUtil.color("&7&lBackup'y gracza"));
         while (rs.next()) {
             String player = rs.getString("name");
@@ -53,7 +53,7 @@ public class Backup {
     }
 
     public static void restore(Player p, long time, int mode, Player o) throws SQLException {
-        ResultSet rs = SpigotPlugin.getMySQL().query("SELECT *, abs(" + time + " - time) as delta FROM `{P}backups` WHERE `name` = '" + p.getName() + "' ORDER BY delta LIMIT 1");
+        ResultSet rs = SpigotPlugin.getMySQL().query("SELECT *, abs(" + time + " - time) as delta FROM backups WHERE name = '" + p.getName() + "' ORDER BY delta LIMIT 1");
         while (rs.next()) {
             switch (mode) {
                 case 0: {
@@ -83,11 +83,7 @@ public class Backup {
     }
 
     private void insert() {
-        try {
-            SpigotPlugin.getMySQL().update("INSERT INTO `{P}backups`(`id`, `name`, `time`, `killer`, `ping`, `inventory`, `armor`, `enderchest`) VALUES (NULL, '" + this.getName() + "','" + this.getTime() + "','" + this.getKiller() + "','" + this.getPing() + "','" + ItemSerializer.itemsToString(this.getInventory()) + "','" + ItemSerializer.itemsToString(this.getArmor()) + "','" + ItemSerializer.itemsToString(this.getEnderchest()) + "');");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("INSERT INTO backups(name, time, killer, ping, inventory, armor, enderchest) VALUES ('" + name + "','" + time + "','" + killer + "','" + ping + "','" + ItemSerializer.itemsToString(this.getInventory()) + "','" + ItemSerializer.itemsToString(this.getArmor()) + "','" + ItemSerializer.itemsToString(this.getEnderchest()) + "');");
     }
 
     public String getName() {

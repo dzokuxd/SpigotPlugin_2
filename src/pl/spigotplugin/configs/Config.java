@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 
 public class Config
 {
-    private static File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "config.yml");
-    private static FileConfiguration c = null;
     public static String host = "mysql.titanaxe.com";
     public static String dataBase = "srv139831";
     public static String user = "srv139831";
@@ -24,6 +22,7 @@ public class Config
     public static long EVENTS_TURBO = 0L;
     public static boolean MANAGE_TPA = false;
     public static boolean MANAGE_SPAWN = false;
+    public static boolean MANAGE_KIT = false;
     public static String IP = "easyage.pl";
 
     public static void loadConfig() {

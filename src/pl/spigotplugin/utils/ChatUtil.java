@@ -10,6 +10,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,14 @@ public class ChatUtil {
     }
     public static boolean isInteger(String string) {
         return Pattern.matches("-?[0-9]+", string.subSequence(0, string.length()));
+    }
+    public static ItemStack getPlayerHead(String name) {
+        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        meta.setOwner(name);
+        meta.setDisplayName(name);
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         if (title == null) {

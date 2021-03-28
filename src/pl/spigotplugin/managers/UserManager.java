@@ -8,37 +8,23 @@ import pl.spigotplugin.objects.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 public class UserManager {
-    private static ConcurrentHashMap<String, User> users;
-
-    static {
-        users = new ConcurrentHashMap<String, User>();
-    }
+    private static final Map<String, User> users = new ConcurrentHashMap<>();
 
     public static User getUser(String name) {
-        for (User u : UserManager.users.values()) {
-            if (u.getName().equalsIgnoreCase(name)) {
-                return u;
-            }
-        }
-        return null;
+        return users.get(name.toLowerCase());
     }
 
     public static User getUser(Player p) {
-        for (User u : UserManager.users.values()) {
-            if (u.getName().equalsIgnoreCase(p.getName())) {
-                return u;
-            }
-        }
-        return null;
+        return users.get(p.getName().toLowerCase());
     }
 
     public static User createrUser(Player p) {
         User u = new User(p);
-        UserManager.users.put(p.getName(), u);
+        users.put(p.getName().toLowerCase(), u);
         return u;
     }
 
@@ -48,19 +34,15 @@ public class UserManager {
 
     public static void loadUsers() {
         try {
-            ResultSet rs = SpigotPlugin.getMySQL().query("SELECT * FROM `{P}users`");
+            ResultSet rs = SpigotPlugin.getMySQL().select("users");
             while (rs.next()) {
                 User u = new User(rs);
-                UserManager.users.put(u.getName(), u);
+                users.put(u.getName().toLowerCase(), u);
             }
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public static ConcurrentHashMap<String, User> getUsers() {
-        return UserManager.users;
     }
 }
 

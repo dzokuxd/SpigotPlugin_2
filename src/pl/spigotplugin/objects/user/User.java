@@ -1,7 +1,6 @@
 package pl.spigotplugin.objects.user;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import pl.spigotplugin.SpigotPlugin;
@@ -13,35 +12,31 @@ import java.util.List;
 
 public class User {
     private String name;
-    private long turboDrop;
-    private boolean autoMessages;
-    private boolean privateMessages;
-    private final List<Player> ignoreTell;
-    private final List<Player> ignoreTpa;
-    private final List<Player> tpa;
-    private String home;
-
+    private long turboDrop = 0;
+    private boolean autoMessages = true;
+    private boolean privateMessages = true;
+    private final List<Player> ignoreTell = new ArrayList<>();
+    private final List<Player> ignoreTpa = new ArrayList<>();
+    private final List<Player> tpa = new ArrayList<>();
     private BukkitTask currentTeleport;
+
+    //KIT SYSTEM
+    private long kit_mieso = 0;
+    private long kit_start = 0;
+    private long kit_vip = 0;
+    private long kit_svip = 0;
 
     public User(Player p) {
         this.name = p.getName();
-        this.turboDrop = 0L;
-        this.autoMessages = true;
-        this.privateMessages = true;
-        this.ignoreTell = new ArrayList<>();
-        this.ignoreTpa = new ArrayList<>();
-        this.tpa = new ArrayList<>();
-        this.insert();
+        insert();
     }
 
     public User(ResultSet rs) throws SQLException {
         this.name = rs.getString("name");
         this.turboDrop = rs.getLong("turboDrop");
-        this.autoMessages = true;
-        this.privateMessages = true;
-        this.ignoreTell = new ArrayList<>();
-        this.ignoreTpa = new ArrayList<>();
-        this.tpa = new ArrayList<>();
+        this.kit_start = rs.getLong("kit_start");
+        this.kit_vip = rs.getLong("kit_vip");
+        this.kit_svip = rs.getLong("kit_svip");
     }
 
     public String getName() {
@@ -53,7 +48,7 @@ public class User {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(this.getName());
+        return Bukkit.getPlayer(name);
     }
 
     public long getTurboDrop() { return turboDrop; }
@@ -66,36 +61,51 @@ public class User {
 
     public void setAutoMessages(boolean autoMessages) { this.autoMessages = autoMessages; }
 
-    public void setPrivateMessages(boolean privateMessages) { this.privateMessages = privateMessages; }
-
     public boolean isIgnoreTell(Player p) { return this.ignoreTell.contains(p); }
-
-    public void addIgnoreTell(Player p) { this.ignoreTell.add(p); }
-
-    public void removeIgnoreTell(Player p) { this.ignoreTell.remove(p); }
 
     public boolean isIgnoreTpa(Player p) { return this.ignoreTpa.contains(p); }
 
-    public void addIgnoreTpa(Player p) { this.ignoreTpa.add(p); }
-
-    public void removeIgnoreTpa(Player p) { this.ignoreTpa.remove(p); }
-
     public List<Player> getTpa() { return tpa; }
 
+    public long getKit_mieso() { return kit_mieso; }
+
+    public void setKit_mieso(long kit_mieso) { this.kit_mieso = kit_mieso; }
+
+    public long getKit_start() { return kit_start; }
+
+    public long getKit_vip() { return kit_vip; }
+
+    public long getKit_svip() { return kit_svip;}
+
+    public boolean isKitMieso() { return this.getKit_mieso() > System.currentTimeMillis(); }
+
+    public boolean isKitStart() { return kit_start > System.currentTimeMillis(); }
+
+    public boolean isKitVip() { return kit_vip > System.currentTimeMillis(); }
+
+    public boolean isKitSvip() { return kit_svip > System.currentTimeMillis();}
+
+    public void setKit_vip(long kit_vip) {
+        this.kit_vip = kit_vip;
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_vip='" + kit_vip + "' WHERE name='" + name + "'");
+    }
+
+    public void setKit_svip(long kit_svip) {
+        this.kit_svip = kit_svip;
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_svip='" + kit_svip + "' WHERE name='" + name + "'");
+    }
+
+    public void setKit_start(long kit_start) {
+        this.kit_start = kit_start;
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_start='" + kit_start + "' WHERE name='" + name + "'");
+    }
+
     private void insert() {
-        try {
-            SpigotPlugin.getMySQL().update("INSERT INTO `{P}users`(`name`, `turboDrop`) VALUES ('" + this.getName() + "', '" + this.getTurboDrop() +"')");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("INSERT INTO users (name, turboDrop, kit_start, kit_vip, kit_svip) VALUES ('" + name + "', "+turboDrop+", '" + kit_start + "','" + kit_vip + "','" + kit_svip + "')");
     }
 
     public void save() {
-        try {
-            SpigotPlugin.getMySQL().update("UPDATE `{P}users` SET  `turboDrop` = '" + this.getTurboDrop() + "' WHERE `name` = '"+name+"';");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("UPDATE users SET turboDrop = '" + turboDrop + "', kit_start =' " + kit_start + "',kit_svip = '" + kit_svip + "' WHERE name = '"+name+"'");
     }
 
     public BukkitTask getCurrentTeleport() {

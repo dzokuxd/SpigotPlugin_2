@@ -115,6 +115,13 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new EnchantCommand());
         registerCommand(new ConfigCommand());
         registerCommand(new GiveCommand());
+        registerCommand(new KickCommand());
+        registerCommand(new KickAllCommand());
+        registerCommand(new HeadCommand());
+        registerCommand(new HealCommand());
+        registerCommand(new KitCommand());
+        registerCommand(new CraftingiCommand());
+        registerCommand(new HelpOpCommand());
     }
 
     private void registerCommand(Command command){

@@ -35,8 +35,8 @@ public class GamemodeCommand extends PlayerCommand {
                     return;
                 }
                 x.setGameMode(mode);
-                x.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER1.replace("{GAMEMODESTATUS}",mode.name().replace("{GAMEMODEPLAYER1}",p.getName())));
-                p.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER2.replace("{GAMEMODESTATUS}",mode.name().replace("{GAMEMODEPLAYER2}",x.getName())));
+                x.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER1.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER1}",p.getName()));
+                p.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER2.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER2}",x.getName()));
                 break;
             }
             default: {
@@ -44,7 +44,7 @@ public class GamemodeCommand extends PlayerCommand {
                 break;
             }
         }
-    }//TODO naprawa gmplayer
+    }
 
     private GameMode getMode(String args) {
         if (args.equalsIgnoreCase("1") || args.equalsIgnoreCase("creative") || args.equalsIgnoreCase("true")) {

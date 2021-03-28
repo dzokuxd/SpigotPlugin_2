@@ -24,8 +24,8 @@ public class RepairCommand extends PlayerCommand {
            p.sendMessage("&cTego przedmiotu nie mozesz naprawic!");
             return;
         }
-//TODO naprawia naprawiony miecz
-        if (is.getDurability() == 1) {
+        p.sendMessage(is.getDurability()+"");
+        if (is.getDurability() == 0) {
             p.sendMessage("&cTen przedmiot jest naprawiony!");
             return;
         }

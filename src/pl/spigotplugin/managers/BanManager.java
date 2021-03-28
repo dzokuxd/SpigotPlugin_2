@@ -55,11 +55,7 @@ public class BanManager {
 
     public static void unban(Ban ban) {
         BanManager.getBans().remove(ban.getName());
-        try {
-            SpigotPlugin.getMySQL().update("DELETE FROM `{P}bans` WHERE `name` ='" + ban.getName() + "'");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("DELETE FROM bans WHERE name ='" + ban.getName() + "'");
     }
     public static void unbanAll() {
         for (Ban ban : BanManager.getBans().values()) {
@@ -69,11 +65,11 @@ public class BanManager {
 
     public static void loadBans() {
         try {
-            ResultSet rs = SpigotPlugin.getMySQL().query("SELECT * FROM `{P}bans`");
+            ResultSet rs = SpigotPlugin.getMySQL().select("bans");
             while (rs.next()) {
                 Ban b = new Ban(rs);
                 if (b.getTime() != 0L && b.getTime() < System.currentTimeMillis()) {
-                    SpigotPlugin.getMySQL().update("DELETE FROM `{P}bans` WHERE `name` ='" + b.getName() + "'");
+                    SpigotPlugin.getMySQL().update("DELETE FROM bans WHERE name ='" + b.getName() + "'");
                     continue;
                 }
                 BanManager.bans.put(b.getName(), b);

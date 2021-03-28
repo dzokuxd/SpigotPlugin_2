@@ -45,11 +45,7 @@ public class MuteManager {
 
     public static void unmute(Mute mute) {
         getMutes().remove(mute.getName());
-        try {
-            SpigotPlugin.getMySQL().update("DELETE FROM `{P}mutes` WHERE `name` ='" + mute.getName() + "'");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("DELETE FROM mutes WHERE name ='" + mute.getName() + "'");
     }
 
     public static void unmuteAll() {
@@ -60,11 +56,11 @@ public class MuteManager {
 
     public static void loadMutes() {
         try {
-            ResultSet rs = SpigotPlugin.getMySQL().query("SELECT * FROM `{P}mutes`");
+            ResultSet rs = SpigotPlugin.getMySQL().select("mutes");
             while (rs.next()) {
                 Mute m = new Mute(rs);
                 if (m.getTime() != 0L && m.getTime() < System.currentTimeMillis()) {
-                    SpigotPlugin.getMySQL().update("DELETE FROM `{P}mutes` WHERE `name` ='" + m.getName() + "'");
+                    SpigotPlugin.getMySQL().update("DELETE FROM mutes WHERE name ='" + m.getName() + "'");
                 } else {
                     MuteManager.mutes.put(m.getName(), m);
                 }

@@ -30,11 +30,7 @@ public class Mute {
     }
 
     private void insert() {
-        try {
-            SpigotPlugin.getMySQL().update("INSERT INTO `{P}mutes`(`id`, `name`, `admin`, `reason`, `time`, `start`) VALUES (NULL, '" + this.getName() + "','" + this.getAdmin() + "','" + this.getReason() + "','" + this.getTime() + "','" + this.getStart() + "');");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        SpigotPlugin.getMySQL().update("INSERT INTO mutes (name, admin, reason, time, start) VALUES ('" + name + "','" + admin + "','" + reason + "','" + time + "','" + start + "');");
     }
 
     public long getStart() {

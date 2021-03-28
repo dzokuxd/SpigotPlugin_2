@@ -11,8 +11,8 @@ public class ConfigCommand extends Command {
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
-        if (args.length < 1) {
-            sender.sendMessage(GlobalMessage.MESSAGES_CLEAR);
+        if (args.length < 2) {
+            GlobalMessage.usage(sender, getUsage());
             return;
         }
         switch (args[0]) {
