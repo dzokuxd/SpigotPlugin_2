@@ -4,6 +4,7 @@ import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -73,5 +74,15 @@ public class ChatUtil {
         IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + ChatUtil.color(s) + "\"}");
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte) 2);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(bar);
+    }
+    public static Material getMaterial(String materialName) {
+        Material returnMaterial = null;
+        if (isInteger(materialName)) {
+            int id = Integer.parseInt(materialName);
+            returnMaterial = Material.getMaterial(id);
+        } else {
+            returnMaterial = Material.matchMaterial(materialName);
+        }
+        return returnMaterial;
     }
 }

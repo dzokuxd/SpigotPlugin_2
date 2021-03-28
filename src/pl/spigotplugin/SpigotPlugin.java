@@ -111,6 +111,10 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new StpCommand());
         registerCommand(new SpawnCommand());
         registerCommand(new OpenCommand());
+        registerCommand(new ChatCommand());
+        registerCommand(new EnchantCommand());
+        registerCommand(new ConfigCommand());
+        registerCommand(new GiveCommand());
     }
 
     private void registerCommand(Command command){
