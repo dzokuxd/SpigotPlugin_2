@@ -8,6 +8,9 @@ import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.DataUtil;
+import pl.spigotplugin.utils.TimeUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class EventsCommand extends PlayerCommand {
     public EventsCommand() { super("events", "events (<turbo all/gracz czas>/case/kill/beacon) set (czas)", ""); }
@@ -63,16 +66,22 @@ public class EventsCommand extends PlayerCommand {
                     Config.saveConfig();
                     Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany &c&lTurboDrop &6do &c" + DataUtil.getDate(time));
                     return;
-                }//TODO napraw bo zamiast minut sa sekundy
+                }
                 User u = UserManager.getUser(args[1]);
                 if (u == null) {
                     p.sendMessage("&cGracz nie istnieje!");
                     return;
                 }
-                long time = DataUtil.parseDateDiff(args[2], true);
-                u.setTurboDrop(time);
+                long turboDropHave = 0L;
+                long currentTurboDrop = u.getTurboDrop();
+                if(currentTurboDrop >System.currentTimeMillis()){
+                    turboDropHave = currentTurboDrop-System.currentTimeMillis();
+                }
+                long givenTurboDrop = DataUtil.parseDateDiff(args[2], true);
+                u.setTurboDrop(givenTurboDrop+turboDropHave);
                 u.save();
-                p.sendMessage("&6Ustawiles &c&lTurboDrop &6dla gracza &c" + args[1] + " &6do &c" + DataUtil.getDate(time));
+                p.sendMessage("&6Dodales: &c"+DataUtil.secondsToString(givenTurboDrop)+"");
+                p.sendMessage("&c&lTurboDrop &6dla gracza &c" + args[1] + " &6do &c" + DataUtil.getDate(u.getTurboDrop()));
                 return;
             }
             default: {

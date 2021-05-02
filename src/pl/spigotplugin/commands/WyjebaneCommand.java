@@ -8,7 +8,7 @@ import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 
 public class WyjebaneCommand extends PlayerCommand {
-    public WyjebaneCommand() { super("wyjebane", "", "", "ignore"); }
+    public WyjebaneCommand() { super("wyjebane", "wyjebane <msg/tpa> <gracz>", "", "ignore"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

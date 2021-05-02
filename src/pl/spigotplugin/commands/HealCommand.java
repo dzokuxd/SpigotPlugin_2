@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import pl.spigotplugin.api.PlayerCommand;
 
 public class HealCommand extends PlayerCommand {
-    public HealCommand() { super("heal", "/heal [gracz]", ""); }
+    public HealCommand() { super("heal", "heal <gracz>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

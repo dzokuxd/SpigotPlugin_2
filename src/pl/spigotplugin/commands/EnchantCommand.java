@@ -9,7 +9,7 @@ import pl.spigotplugin.managers.EnchantManager;
 
 public class EnchantCommand extends PlayerCommand {
     public EnchantCommand() {
-        super("enchant", "/enchant <zaklecie> [poziom]", "");
+        super("enchant", "enchant <zaklecie> [poziom]", "");
     }
 
     @Override

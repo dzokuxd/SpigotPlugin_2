@@ -47,9 +47,9 @@ public class EventMenu {
                 .build();
         ItemStack turbo = new ItemBuilder(
                 Material.DIAMOND_PICKAXE).setTitle("&7&lTurbo drop")
-                .addLore("&6Serwer: &c" + (Config.EVENTS_TURBO > System.currentTimeMillis() ? "&c" + DataUtil.secondsToString(Config.EVENTS_TURBO) : "&cBrak"))
-                .addLore("&6Gracz: &c" + (u != null && u.getTurboDrop() > System.currentTimeMillis() ? "&c" + DataUtil.secondsToString(u.getTurboDrop()) : "&cBrak"))
-                .setGlow(Config.EVENTS_TURBO > System.currentTimeMillis())
+                .addLore("&6Serwer: &c" + (Config.EVENTS_TURBO > System.currentTimeMillis() ? "&a" + DataUtil.secondsToString(Config.EVENTS_TURBO) : "&cBrak"))
+                .addLore("&6Gracz: &c" + (u != null && u.getTurboDrop() > System.currentTimeMillis() ? "&a" + DataUtil.secondsToString(u.getTurboDrop()) : "&cBrak"))
+                .setGlow(Config.EVENTS_TURBO > System.currentTimeMillis() || (u != null && u.getTurboDrop() > System.currentTimeMillis()))
                 .build();
         inv.setItem(10, stone);
         inv.setItem(12, kill);

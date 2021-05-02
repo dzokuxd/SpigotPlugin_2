@@ -9,9 +9,9 @@ import java.lang.reflect.Field;
 public class Config
 {
     public static String host = "mysql.titanaxe.com";
-    public static String dataBase = "srv139831";
-    public static String user = "srv139831";
-    public static String password = "QiQu8hfP";
+    public static String dataBase = "srv155087";
+    public static String user = "srv155087";
+    public static String password = "DkUxXtrk";
     public static int BORDER_WORLD = 800;
     public static int BORDER_NETHER = 800;
     public static int CUBOID_TNT_OD = 14;
@@ -20,6 +20,7 @@ public class Config
     public static long EVENTS_KILL = 0L;
     public static long EVENTS_CASE = 0L;
     public static long EVENTS_TURBO = 0L;
+    public static int LVL = 1;
     public static boolean MANAGE_TPA = false;
     public static boolean MANAGE_SPAWN = false;
     public static boolean MANAGE_KIT = false;

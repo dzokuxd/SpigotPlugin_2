@@ -6,7 +6,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class StpCommand extends PlayerCommand {
-    public StpCommand() { super("stp", "/stp <gracz>", ""); }
+    public StpCommand() { super("stp", "stp <gracz>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -26,5 +26,5 @@ public class StpCommand extends PlayerCommand {
         o.teleport(p.getLocation());
         p.sendMessage("&7\u00bb &6Przeteleportowales gracza &c" + o.getName() + " &6do gracza &c" + p.getName());
         o.sendMessage("&7\u00bb &6Zostales przeteleportowany do gracza &c" + o.getName() + " &6przez &c" + p.getName());
-    }
+    }//TODO nie dziala
 }

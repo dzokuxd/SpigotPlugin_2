@@ -6,7 +6,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class TopCommand extends PlayerCommand {
-    public TopCommand() { super("top ", "/top", ""); }
+    public TopCommand() { super("top ", "/op", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,6 +17,6 @@ public class TopCommand extends PlayerCommand {
         }
         location.setY(y);
         p.teleport(location);
-        p.sendMessage(GlobalMessage.MESSAGES_TOP);
+        p.sendMessage(GlobalMessage.TOP);
     }
 }

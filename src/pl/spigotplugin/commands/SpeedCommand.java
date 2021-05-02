@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class SpeedCommand extends PlayerCommand {
-    public SpeedCommand() { super("speed", "/speed (1-10)", ""); }
+    public SpeedCommand() { super("speed", "speed <1-10>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -15,14 +15,14 @@ public class SpeedCommand extends PlayerCommand {
         }
         float speed = Float.parseFloat(args[0]);
         if (speed > 10) {
-            p.sendMessage(GlobalMessage.MESSAGES_SPEED);
+            p.sendMessage(GlobalMessage.FLY_POPRAW);
             return;
         } else if (speed < 1) {
-            p.sendMessage(GlobalMessage.MESSAGES_SPEED);
+            p.sendMessage(GlobalMessage.FLY_POPRAW);
             return;
         }
         float finalSpeed = speed / 10;
         p.setFlySpeed(finalSpeed);
-        p.sendMessage(GlobalMessage.MESSAGES_SPEEDFLY.replace("{SPEEDFLY}", String.valueOf(finalSpeed)));
+        p.sendMessage(GlobalMessage.FLY_SPEED.replace("{SPEEDFLY}", String.valueOf(finalSpeed)));
     }
 }

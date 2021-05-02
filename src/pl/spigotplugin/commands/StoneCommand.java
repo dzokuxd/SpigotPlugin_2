@@ -9,6 +9,6 @@ public class StoneCommand extends PlayerCommand {
 
     @Override
     public void onCommand(Player p, String[] args) {
-        StoneMenu.show(p);
+        StoneMenu.menu(p);
     }
 }

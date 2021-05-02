@@ -4,6 +4,7 @@ package pl.spigotplugin.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,11 +19,15 @@ import org.bukkit.material.Button;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.managers.UserManager;
+import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.RandomUtil;
+import pl.spigotplugin.utils.TimeUtil;
 import pl.spigotplugin.utils.VoucherUtil;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerInteractListener implements Listener {
     public static Map<UUID, Long> times = new HashMap<>();
@@ -30,6 +35,7 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        User u = UserManager.getUser(p);
         if (p.getItemInHand().isSimilar(VoucherUtil.vip)) {
             if (p.hasPermission("vip")) {
                 p.sendMessage("&cPosiadasz ta lub lepsza range!");
@@ -50,6 +56,21 @@ public class PlayerInteractListener implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user" + p.getName() + " group set svip");
             return;
         }
+        if (u == null) {
+            return;
+        }
+        if (p.getItemInHand().isSimilar(VoucherUtil.turbo)) {
+            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na &cTURBODROP 10M!");
+            ChatUtil.removeItems(p, VoucherUtil.turbo);
+            long turboDropHave = 0L;
+            long currentTurboDrop = u.getTurboDrop();
+            if(currentTurboDrop >System.currentTimeMillis()){
+                turboDropHave = currentTurboDrop-System.currentTimeMillis();
+            }
+            long givenTurboDrop = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10);
+            u.setTurboDrop(givenTurboDrop+turboDropHave);
+            return;
+        }
         Block clickedBlock = e.getClickedBlock();
         if(clickedBlock != null){
             if (clickedBlock.getType() == Material.STONE_BUTTON) {
@@ -57,10 +78,8 @@ public class PlayerInteractListener implements Listener {
                     return;
                 Button button = (Button) clickedBlock.getState().getData();
                 Block relative = clickedBlock.getRelative(button.getAttachedFace());
-
                 if (relative.getType() != Material.JUKEBOX)
                     return;
-
                 randomTP(p);
                 return;
             }
@@ -71,17 +90,18 @@ public class PlayerInteractListener implements Listener {
             if (base.getType() != Material.JUKEBOX) {
                 return;
             }
-            int x = RandomUtil.getRandInt(-Config.BORDER_NETHER, Config.BORDER_NETHER);
-            int z = RandomUtil.getRandInt(-Config.BORDER_NETHER, Config.BORDER_NETHER);
+            int x = RandomUtil.getRandInt(-90, 90);
+            int z = RandomUtil.getRandInt(-90, 90);
             int i = 0;
+            World world_nether = Bukkit.getWorld("gtp");
             for (Player players : this.getPlayersInRadius(clickedBlock.getLocation(), 3)) {
                 ++i;
-                Location location = new Location(Bukkit.getWorld("world_nether"),x, p.getWorld().getHighestBlockYAt(x,z),z);
+                Location location = new Location(world_nether,x, world_nether.getHighestBlockYAt(x,z),z);
                 if (i > 2) continue;
                 p.teleport(location);
                 Location ploc =p.getLocation().clone();
                 ploc.setY(p.getLocation().getY() + 5.0);
-               p.teleport(ploc);
+                p.teleport(ploc);
                 players.teleport(p.getLocation());
                 for (PotionEffect activePotionEffect : players.getActivePotionEffects()) {
                     players.removePotionEffect(activePotionEffect.getType());

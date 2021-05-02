@@ -10,7 +10,7 @@ import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class RenameCommand extends PlayerCommand {
-    public RenameCommand() { super("rename", "rename (nazwa)", ""); }
+    public RenameCommand() { super("rename", "rename <nazwa>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

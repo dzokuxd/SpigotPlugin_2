@@ -6,7 +6,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class ClearCommand extends PlayerCommand {
-    public ClearCommand() { super("clear", "/clear", "", "ci"); }
+    public ClearCommand() { super("clear", "clear", "", "ci"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -16,7 +16,7 @@ public class ClearCommand extends PlayerCommand {
             p.getInventory().setLeggings(null);
             p.getInventory().setBoots(null);
             p.getInventory().clear();
-            p.sendMessage(GlobalMessage.MESSAGES_CLEAR);
+            p.sendMessage(GlobalMessage.CLEAR_CI);
             return;
         }
         Player x = Bukkit.getPlayer(args[0]);
@@ -29,7 +29,7 @@ public class ClearCommand extends PlayerCommand {
         x.getInventory().setChestplate(null);
         x.getInventory().setBoots(null);
         x.getInventory().clear();
-        x.sendMessage(GlobalMessage.MESSAGES_CLEAR1.replace("{PLAYER}", p.getName()));
-        p.sendMessage(GlobalMessage.MESSAGES_CLEAR2.replace("{PLAYER1}",x.getName()));
+        x.sendMessage(GlobalMessage.CLEAR_YOU.replace("{PLAYER}", p.getName()));
+        p.sendMessage(GlobalMessage.CLEAR_PLAYER.replace("{PLAYER1}",x.getName()));
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GlobalMessage
 {
-    private static File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "GlobalMessage.yml");
+    private static final File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "GlobalMessage.yml");
     private static FileConfiguration c = null;
     public static String MESSAGES_HELP = "&7&m----------&7[ &c&lPOMOC &7]&M----------" +
             "\n&c/kit &7- &6Lista dostepnych kitow" +
@@ -43,24 +43,24 @@ public class GlobalMessage
             "\n&7 vip";
     public static String MESSAGES_SVIP = "&7SVIP" +
             "\n&7 svip";
-    public static String MESSAGES_TOP = "Przeteleportowano na najwyzszy blok!";
-    public static String MESSAGES_SPEED = "Predkosc speed musi wynosic 1-10!";
-    public static String MESSAGES_SPEEDFLY = "Ustawile predkosc latania na {SPEEDFLY}";
-    public static String MESSAGES_FLYSTATUS = "Latanie: {FLY}";
-    public static String MESSAGES_FLYPLAYER = "Latanie: {FLYPLAYER}";
-    public static String MESSAGES_CLEAR = "Wyczyszczono ekwipunek!";
-    public static String MESSAGES_CLEAR1 = "Twoj ekwipunek zostal wyczyszczony przez {PLAYER}!";
-    public static String MESSAGES_CLEAR2 = "Wyczysciles eq gracza {PLAYER1}!";
-    public static String MESSAGES_GAMEMODE = "gamemode: {GAMEMODE}";
-    public static String MESSAGES_GAMEMODEPLAYER1 = "gamemode: {GAMEMODESTATUS} przez {GAMEMODEPLAYER1}";
-    public static String MESSAGES_GAMEMODEPLAYER2 = "gamemode: {GAMEMODESTATUS} dla {GAMEMODEPLAYER2}";
-    public static String MESSAGES_VANISH_FALSE = "vanish off";
-    public static String MESSAGES_VANISH_TRUE = "vanish on";
-    public static String MESSAGES_VANISH_AFALSE = "administrator {VANISHPLAYER} wylaczyl vanisha";
-    public static String MESSAGES_VANISH_ATRUE = "administrator {VANISHPLAYER1} wlaczyl vanisha";
-    public static String MESSAGES_AUTOCX_TRUE = "&6Auto CobbleX &cwylaczono";
-    public static String MESSAGES_AUTOCX_FALSE = "&6Auto CobbleX &awlaczono";
     public static List<String> MESSAGES_AUTOMSG = new ArrayList<>();
+    public static String TOP = "Przeteleportowano na najwyzszy blok!";
+    public static String FLY_POPRAW = "Predkosc speed musi wynosic 1-10!";
+    public static String FLY_SPEED = "Ustawile predkosc latania na {SPEEDFLY}";
+    public static String FLY_YOU = "Latanie: {FLY}";
+    public static String FLY_PLAYER = "Latanie: {FLYPLAYER}";
+    public static String CLEAR_CI = "Wyczyszczono ekwipunek!";
+    public static String CLEAR_YOU = "Twoj ekwipunek zostal wyczyszczony przez {PLAYER}!";
+    public static String CLEAR_PLAYER = "Wyczysciles eq gracza {PLAYER}!";
+    public static String GAMEMODE_GM = "gamemode: {GAMEMODE}";
+    public static String GAMEMODE_YOU = "gamemode: {GAMEMODESTATUS} dla {GAMEMODEPLAYER}";
+    public static String GAMEMODE_PLAYER = "gamemode: {GAMEMODESTATUS} przez {GAMEMODEPLAYER}";
+    public static String VANISH_FALSE = "vanish off";
+    public static String VANISH_TRUE = "vanish on";
+    public static String VANISH_SEEFALSE = "administrator {VANISHPLAYER} wylaczyl vanisha";
+    public static String VANISH_SEETRUE = "administrator {VANISHPLAYER} wlaczyl vanisha";
+    public static String COBBLEX_AUTOCX_TRUE = "&6Auto CobbleX &cwylaczono";
+    public static String COBBLEX_AUTOCX_FALSE = "&6Auto CobbleX &awlaczono";
 
     public static String USAGE = "&cPoprawne uzycie: /{USAGE}";
 

@@ -9,7 +9,7 @@ import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.objects.user.Ban;
 
 public class UnbanCommand extends Command {
-    public UnbanCommand() { super("unban", "unban gracz", ""); }
+    public UnbanCommand() { super("unban", "unban <gracz>", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {

@@ -7,7 +7,7 @@ import pl.spigotplugin.api.Command;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
-    public DajCommand() { super("daj", "/daj gracz|* boyfarmer|antynogi|stoniarka|case|633  ilosc", "", ""); }
+    public DajCommand() { super("daj", "daj gracz|* boyfarmer|antynogi|stoniarka|case|633  ilosc", "", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {

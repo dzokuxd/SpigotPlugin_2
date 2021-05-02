@@ -6,7 +6,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class OpenCommand extends PlayerCommand {
-    public OpenCommand() { super("open", "open <nick>", ""); }
+    public OpenCommand() { super("open", "open <nick> <inv/ender>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -28,6 +28,6 @@ public class OpenCommand extends PlayerCommand {
                 }
             case "ender":
                 p.openInventory(p.getEnderChest());
-        }
+        }//TODO nic nie dziala
     }
 }

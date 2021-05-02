@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class HelpCommand extends PlayerCommand {
-    public HelpCommand() { super("pomoc", "/pomoc", "", "help");
+    public HelpCommand() { super("pomoc", "pomoc", "", "help");
     }
 
     @Override

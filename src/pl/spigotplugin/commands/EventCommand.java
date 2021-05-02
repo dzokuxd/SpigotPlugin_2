@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.menu.EventMenu;
 
 public class EventCommand extends PlayerCommand {
-    public EventCommand() { super("eventy", "/eventy", ""); }
+    public EventCommand() { super("eventy", "eventy", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

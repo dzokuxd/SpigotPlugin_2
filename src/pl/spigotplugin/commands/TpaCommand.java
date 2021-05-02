@@ -9,7 +9,7 @@ import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 
 public class TpaCommand extends PlayerCommand {
-    public TpaCommand() { super("tpa", "", ""); }
+    public TpaCommand() { super("tpa", "tpa <gracz>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

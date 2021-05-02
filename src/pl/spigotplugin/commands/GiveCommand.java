@@ -9,7 +9,7 @@ import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class GiveCommand extends PlayerCommand {
-    public GiveCommand() { super("give", "/give <gracz> <id[:base]> [ilosc]", ""); }
+    public GiveCommand() { super("give", "give <gracz> <id[:base]> [ilosc]", ""); }
 
     @Override
     public void onCommand(Player sender, String[] args) {

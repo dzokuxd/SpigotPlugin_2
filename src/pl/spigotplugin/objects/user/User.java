@@ -27,7 +27,7 @@ public class User {
     private int lvl = 1;
     private int exp = 0;
     private int wykStone = 0;
-    private String statystykikopania = "0@0@0@0@0@0@0";
+    private String statystykikopania = "0@0@0@0@0@0@0@0@0@0@0";
 
     public User(Player p) {
         this.name = p.getName();
@@ -61,6 +61,8 @@ public class User {
     public long getTurboDrop() { return turboDrop; }
 
     public void setTurboDrop(long turboDrop) { this.turboDrop = turboDrop; }
+
+    public void addTurboDrop(long turboDrop) {this.turboDrop+=turboDrop;}
 
     public boolean isAutoMessages() { return this.autoMessages; }
 
@@ -124,29 +126,29 @@ public class User {
 
     public void setKit_vip(long kit_vip) {
         this.kit_vip = kit_vip;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_vip='" + kit_vip + "' WHERE name='" + name + "'");
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_vip ='" + kit_vip + "' WHERE name='" + name + "'");
     }
 
     public void setKit_svip(long kit_svip) {
         this.kit_svip = kit_svip;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_svip='" + kit_svip + "' WHERE name='" + name + "'");
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_svip ='" + kit_svip + "' WHERE name='" + name + "'");
     }
 
     public void setKit_start(long kit_start) {
         this.kit_start = kit_start;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_start='" + kit_start + "' WHERE name='" + name + "'");
+        SpigotPlugin.getMySQL().update("UPDATE users SET kit_start ='" + kit_start + "' WHERE name='" + name + "'");
     }
     public void setLvl(int lvl) {
         this.lvl = lvl;
-            SpigotPlugin.getMySQL().update("UPDATE users SET lv` ='" + lvl + "', exp ='" + exp + "' WHERE name ='" + name + "'");
+            SpigotPlugin.getMySQL().update("UPDATE users SET lvl ='" + lvl + "', exp ='" + exp + "' WHERE name ='" + name + "'");
     }
 
     private void insert() {
-        SpigotPlugin.getMySQL().update("INSERT INTO users (name, turboDrop, kit_start, kit_vip, kit_svip, lvl, exp) VALUES ('" + name + "', "+turboDrop+", '" + kit_start + "','" + kit_vip + "','" + kit_svip + "','" +lvl+"','" +exp+"')");
+        SpigotPlugin.getMySQL().update("INSERT INTO users (name, turboDrop, kit_start, kit_vip, kit_svip, lvl, exp, statystykikopania) VALUES ('" + name + "', "+turboDrop+", '" + kit_start + "','" + kit_vip + "','" + kit_svip + "','" +lvl+"','" +exp+"','" +statystykikopania+"')");
     }
 
     public void save() {
-        SpigotPlugin.getMySQL().update("UPDATE users SET turboDrop = '" + turboDrop + "', kit_start =' " + kit_start + "',kit_svip = '" + kit_svip + "', lvl = '" + lvl + "', lvl = '" + exp + "' WHERE name = '"+name+"'");
+        SpigotPlugin.getMySQL().update("UPDATE users SET turboDrop = '" + turboDrop + "', kit_start =' " + kit_start + "',kit_svip = '" + kit_svip + "', lvl = '" + lvl + "', lvl = '" + exp + "', statystykikopania = '" + statystykikopania + "' WHERE name = '"+name+"'");
     }
 
     public BukkitTask getCurrentTeleport() {

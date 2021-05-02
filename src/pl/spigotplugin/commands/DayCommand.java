@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import pl.spigotplugin.api.Command;
 
 public class DayCommand extends Command {
-    public DayCommand() { super("day", "/day", ""); }
+    public DayCommand() { super("day", "day", ""); }
 
     @Override
     public void onExecute(CommandSender p, String[] args) {

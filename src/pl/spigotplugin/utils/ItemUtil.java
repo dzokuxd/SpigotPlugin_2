@@ -17,8 +17,8 @@ public class ItemUtil {
     public static ItemStack getDefaultCobbleXItem() {
         ItemStack item = new ItemStack(Material.COBBLESTONE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatUtil.color("&5cobblex"));
-        meta.setLore(Arrays.asList("poloz na ziemi", "abyt otrzymac item"));
+        meta.setDisplayName(ChatUtil.color("&bCobblex"));
+        meta.setLore(Arrays.asList(ChatUtil.color("&bPoloz na ziemi, aby otrzymac item")));
         item.setItemMeta(meta);
         return item;
     }

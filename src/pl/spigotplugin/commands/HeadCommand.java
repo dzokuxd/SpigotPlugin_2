@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class HeadCommand extends PlayerCommand {
-    public HeadCommand() { super("head", "/head [gracz]", "");
+    public HeadCommand() { super("head", "head <gracz>", "");
     }
 
     @Override

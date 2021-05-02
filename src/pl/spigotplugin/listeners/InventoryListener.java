@@ -1,6 +1,7 @@
 package pl.spigotplugin.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -12,15 +13,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.spigotplugin.commands.StoneCommand;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.ChatMenu;
 import pl.spigotplugin.menu.KitMenu;
+import pl.spigotplugin.menu.StoneMenu;
+import pl.spigotplugin.objects.drop.Drop;
+import pl.spigotplugin.objects.drop.RandomDropData;
 import pl.spigotplugin.objects.user.Backup;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.settings.Settings;
 import pl.spigotplugin.utils.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class InventoryListener implements Listener {
     @EventHandler
@@ -274,6 +281,72 @@ public class InventoryListener implements Listener {
                 ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
                 p.sendMessage("&8\u00bb &cOtrzymales kit mieso!");
                 KitMenu.show(p);
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lMenu Dropow"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 10) {
+                StoneMenu.stone((Player) e.getWhoClicked());
+            } else if (e.getSlot() == 12) {
+                StoneMenu.ez633((Player) e.getWhoClicked());
+            } else if (e.getSlot() == 14) {
+                StoneMenu.easycase((Player) e.getWhoClicked());
+            } else if (e.getSlot() == 16) {
+                StoneMenu.inventory((Player) e.getWhoClicked());
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Case"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 53) {
+                StoneMenu.menu((Player) e.getWhoClicked());
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Ez6/3/3"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 8) {
+                StoneMenu.menu((Player) e.getWhoClicked());
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color(Settings.inventoryName))) {
+            e.setCancelled(true);
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Stone"))) {
+            e.setCancelled(true);
+            ItemStack item1 = e.getCurrentItem();
+            if (item1 != null) {
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    Drop d = RandomDropData.getDropByName(ChatColor.stripColor(ChatUtil.color(meta.getDisplayName())));
+                    if (d != null) {
+                        d.changeStatus(e.getWhoClicked().getUniqueId());
+                        List<String> string = meta.getLore();
+                        string.set(4, ChatUtil.color(" &8\u00bb &7Drop: " + (d.isDisabled(e.getWhoClicked().getUniqueId()) ? "&cNie" : "&aTak")));
+                        meta.setLore(string);
+                        item.setItemMeta(meta);
+                        StoneMenu.stone((Player) e.getWhoClicked());
+                    }
+                    if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&4Wroc do poprzedniej strony!"))) {
+                        p.closeInventory();
+                        StoneMenu.menu(p);
+                    } else if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&aWlacz Wszystkie Dropy"))) {
+                        for (Drop drop : RandomDropData.getDrops()) {
+                            drop.setStatus(e.getWhoClicked().getUniqueId(), true);
+                        }
+                        StoneMenu.stone(p);
+                    } else if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&cWylacz Wszystkie Dropy"))) {
+                        for (Drop drop : RandomDropData.getDrops()) {
+                            drop.setStatus(e.getWhoClicked().getUniqueId(), false);
+                        }
+                        StoneMenu.stone(p);
+                    }
+                    if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&7&lCobblestone"))) {
+                        RandomDropData.changeNoCobble(e.getWhoClicked().getUniqueId());
+                        List<String> string = meta.getLore();
+                        string.set(0, ChatUtil.color(" &8\u00bb &7Drop: &" + (RandomDropData.isNoCobble(e.getWhoClicked().getUniqueId()) ? "cNie" : "aTak")));
+                        meta.setLore(string);
+                        item.setItemMeta(meta);
+                    }
+                }
             }
         }
     }

@@ -6,7 +6,7 @@ import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class ConfigCommand extends Command {
-    public ConfigCommand() { super("config", "/config <reload>", "", "cfg");
+    public ConfigCommand() { super("config", "config <reload>", "", "cfg");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ConfigCommand extends Command {
                 return;
             }
             default: {
-                sender.sendMessage(GlobalMessage.MESSAGES_CLEAR);
+                sender.sendMessage(GlobalMessage.USAGE);
             }
         }
     }

@@ -7,24 +7,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.configs.DropFile;
+import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.utils.DropUtil;
-import pl.spigotplugin.utils.LevelUtil;
-import pl.spigotplugin.utils.RandomUtil;
+import pl.spigotplugin.utils.*;
 
 import java.util.*;
 
 public class RandomDropData implements DropData{
-    private static List<Drop> drops;
-    private static Set<UUID> noCobble;
-    private static Set<UUID> noMsg;
-
-    static {
-        drops = new ArrayList<Drop>();
-        noCobble = new HashSet<UUID>();
-        noMsg = new HashSet<UUID>();
-    }
+    private static List<Drop> drops = new ArrayList<>();
+    private static Set<UUID> noCobble = new HashSet<>();
+    private static Set<UUID> noMsg = new HashSet<>();
 
     public RandomDropData() {
         super();
@@ -99,12 +92,12 @@ public class RandomDropData implements DropData{
             }
             double chance = d.getChance();
             if (player.hasPermission("core.drop.vip")) {
-                chance *= 1.25;
+                chance += 1.0;
             } else if (player.hasPermission("core.drop.svip")) {
-                chance *= 1.5;
+                chance += 0.50;
             }
             if (Config.EVENTS_TURBO > System.currentTimeMillis() || u != null && (u.getTurboDrop() > System.currentTimeMillis())) {
-                chance *= 2;
+                chance += 2;
             }
             double bonus = 0.0;
             if (u != null) {
@@ -131,11 +124,15 @@ public class RandomDropData implements DropData{
             if (d.getMessage().equalsIgnoreCase("")) {
                 continue;
             }
+            CombatUtil c = CombatManager.getCombat(player);
+            if (c != null && c.hasFight()) {
+                return;
+            }
             String msg = d.getMessage();
             msg = msg.replace("{AMOUNT}", Integer.toString(itemDrop.getAmount()));
             msg = msg.replace("{EXP}", expDrop + (d.getDisabled().contains(player.getUniqueId()) ? " &c(wylaczone)" : ""));
             if (!RandomDropData.isNoMsg(player.getUniqueId())) {
-                player.sendMessage(msg);
+                ChatUtil.sendActionBar(player, msg);
             }
         }
         if (!RandomDropData.noCobble.contains(player.getUniqueId())) {

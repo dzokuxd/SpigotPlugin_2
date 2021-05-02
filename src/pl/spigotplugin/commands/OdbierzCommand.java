@@ -2,12 +2,13 @@ package pl.spigotplugin.commands;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.menu.IsMenu;
 
-public class WorkbenchCommand extends PlayerCommand {
-    public WorkbenchCommand() { super("workbench", "workbench", "", "wb"); }
+public class OdbierzCommand extends PlayerCommand {
+    public OdbierzCommand() { super("odbierz", "odbierz", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
-        p.openWorkbench(null, true);
+        IsMenu.show(p);
     }
 }

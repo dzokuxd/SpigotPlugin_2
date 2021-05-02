@@ -15,7 +15,7 @@ public class RepairCommand extends PlayerCommand {
         times = new HashMap<UUID, Long>();
     }
 
-    public RepairCommand() { super("repair", "/repair", ""); }
+    public RepairCommand() { super("repair", "repair", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

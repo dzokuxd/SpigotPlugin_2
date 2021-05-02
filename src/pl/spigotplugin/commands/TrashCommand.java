@@ -8,7 +8,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class TrashCommand extends PlayerCommand {
-    public TrashCommand() { super("smietnik", "/smietnik", "", "kosz");
+    public TrashCommand() { super("smietnik", "smietnik", "", "kosz");
     }
 
     @Override

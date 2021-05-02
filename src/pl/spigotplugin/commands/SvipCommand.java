@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class SvipCommand extends PlayerCommand {
-    public SvipCommand() { super("svip", "/svip", "");
+    public SvipCommand() { super("svip", "svip", "");
     }
 
     @Override

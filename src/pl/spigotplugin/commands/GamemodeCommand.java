@@ -20,7 +20,7 @@ public class GamemodeCommand extends PlayerCommand {
                     return;
                 }
                 p.setGameMode(mode);
-                p.sendMessage(GlobalMessage.MESSAGES_GAMEMODE.replace("{GAMEMODE}",mode.name()));
+                p.sendMessage(GlobalMessage.GAMEMODE_GM.replace("{GAMEMODE}",mode.name()));
                 break;
             }
             case 2:{
@@ -35,8 +35,8 @@ public class GamemodeCommand extends PlayerCommand {
                     return;
                 }
                 x.setGameMode(mode);
-                x.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER1.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER1}",p.getName()));
-                p.sendMessage(GlobalMessage.MESSAGES_GAMEMODEPLAYER2.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER2}",x.getName()));
+                x.sendMessage(GlobalMessage.GAMEMODE_PLAYER.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",p.getName()));
+                p.sendMessage(GlobalMessage.GAMEMODE_YOU.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",x.getName()));
                 break;
             }
             default: {

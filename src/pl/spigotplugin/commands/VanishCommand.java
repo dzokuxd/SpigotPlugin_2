@@ -8,7 +8,7 @@ import pl.spigotplugin.configs.GlobalMessage;
 
 public class VanishCommand extends PlayerCommand {
     public VanishCommand() {
-        super("vanish", "/vanish", "", "v");
+        super("vanish", "vanish", "", "v");
     }
 
     @Override
@@ -16,18 +16,18 @@ public class VanishCommand extends PlayerCommand {
         if (args.length == 0) {
             if (p.getGameMode() == GameMode.SPECTATOR) {
                 p.setGameMode(GameMode.SURVIVAL);
-                p.sendMessage(GlobalMessage.MESSAGES_VANISH_FALSE);
+                p.sendMessage(GlobalMessage.VANISH_FALSE);
                 for (Player admins : Bukkit.getOnlinePlayers()) {
                     if (admins.hasPermission("vanish")) {
-                        admins.sendMessage(GlobalMessage.MESSAGES_VANISH_ATRUE.replace("{VANISHPLAYER}", p.getName()));
+                        admins.sendMessage(GlobalMessage.VANISH_SEETRUE.replace("{VANISHPLAYER}", p.getName()));
                     }
                 }
             } else {
                 p.setGameMode(GameMode.SPECTATOR);
-                p.sendMessage(GlobalMessage.MESSAGES_VANISH_TRUE);
+                p.sendMessage(GlobalMessage.VANISH_TRUE);
                 for (Player admins : Bukkit.getOnlinePlayers()) {
                     if (admins.hasPermission("vanish")) {
-                        admins.sendMessage(GlobalMessage.MESSAGES_VANISH_AFALSE.replace("{VANISHPLAYER1}", p.getName()));
+                        admins.sendMessage(GlobalMessage.VANISH_SEEFALSE.replace("{VANISHPLAYER}", p.getName()));
                     }
                 }
             }

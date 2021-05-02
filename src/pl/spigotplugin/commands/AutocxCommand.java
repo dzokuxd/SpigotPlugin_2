@@ -12,10 +12,10 @@ public class AutocxCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         if (BlockBreakListener.playerSet.contains(p)) {
             BlockBreakListener.playerSet.remove(p);
-            p.sendMessage(GlobalMessage.MESSAGES_AUTOCX_TRUE);
+            p.sendMessage(GlobalMessage.COBBLEX_AUTOCX_TRUE);
         } else {
             BlockBreakListener.playerSet.add(p);
-            p.sendMessage(GlobalMessage.MESSAGES_AUTOCX_FALSE);
+            p.sendMessage(GlobalMessage.COBBLEX_AUTOCX_FALSE);
         }
     }
 }

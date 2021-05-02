@@ -10,7 +10,7 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class ItemShopCommand extends Command {
-    public ItemShopCommand() { super("itemshop", "/is <gracz> <VIP, SVIP, UNBAN, COINS, TURBODROP, CASE, 633>", "", "is"); }
+    public ItemShopCommand() { super("itemshop", "is <gracz> <VIP, SVIP, UNBAN, COINS, TURBODROP, CASE, 633>", "","is"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
@@ -23,14 +23,14 @@ public class ItemShopCommand extends Command {
             case "vip": {
                 Bukkit.broadcastMessage("&7&m-------------------------------------");
                 Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage("&7u00bb &6Gracz &c" + name + " &6zakupil range &6&lVIP");
+                Bukkit.broadcastMessage("&7\u00bb &6Gracz &c" + name + " &6zakupil range &6&lVIP");
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage("&7\u00bb &6Nasz sklep: &cwww." + (Config.IP));
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage("         &7\u00bb &cDziekujemy za wsparcie!");
                 Bukkit.broadcastMessage("&7&m-------------------------------------");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set vip");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "turbo drop " + name + " 10m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "voucher " + name + " turbo 1");
                 return;
             }
             case "svip": {
@@ -43,7 +43,7 @@ public class ItemShopCommand extends Command {
                 Bukkit.broadcastMessage("         &7\u00bb &cDziekujemy za wsparcie!");
                 Bukkit.broadcastMessage("&7&m-------------------------------------");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set svip");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "turbo drop " + name + " 20m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "voucher " + name + " turbo 1");
                 return;
             }
             case "unban": {
@@ -87,7 +87,7 @@ public class ItemShopCommand extends Command {
                     return;
                 }
                 if (args.length < 3) {
-                    sender.sendMessage("/is <gracz> turbod <ilosc>");
+                    sender.sendMessage("/is <gracz> turbo <ilosc>");
                     return;
                 }
                 if (!ChatUtil.isInteger(args[2])) {
@@ -97,7 +97,7 @@ public class ItemShopCommand extends Command {
                 int amout = Integer.parseInt(args[2]);
                 Bukkit.broadcastMessage(("&7&m-------------------------------------"));
                 Bukkit.broadcastMessage((""));
-                Bukkit.broadcastMessage(("&7\u00bb &6Gracz &c" + name + " &6zakupila &c&lTurboDrop " + amout + "m"));
+                Bukkit.broadcastMessage(("&7\u00bb &6Gracz &c" + name + " &6zakupil &c&lTurboDrop " + amout + "m"));
                 Bukkit.broadcastMessage((""));
                 Bukkit.broadcastMessage((" &7\u00bb &7Nasz sklep: &cwww." + (Config.IP)));
                 Bukkit.broadcastMessage((""));

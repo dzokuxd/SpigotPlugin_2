@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class VipCommand extends PlayerCommand {
-    public VipCommand() { super("vip", "/vip", "");
+    public VipCommand() { super("vip", "vip", "");
     }
 
     @Override

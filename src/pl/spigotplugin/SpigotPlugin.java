@@ -1,23 +1,28 @@
 package pl.spigotplugin;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.spigotplugin.api.*;
 import pl.spigotplugin.commands.*;
 import pl.spigotplugin.configs.*;
+import pl.spigotplugin.handler.CreateWorldHandler;
 import pl.spigotplugin.listeners.*;
-import pl.spigotplugin.managers.BanManager;
-import pl.spigotplugin.managers.MuteManager;
-import pl.spigotplugin.managers.UserManager;
+import pl.spigotplugin.managers.*;
 import pl.spigotplugin.mysql.MySQL;
 import pl.spigotplugin.tasks.AutoMsgTask;
+import pl.spigotplugin.tasks.CombatTask;
+import pl.spigotplugin.tasks.LiveTpsTask;
+import pl.spigotplugin.tasks.TurboTask;
+import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.CraftingUtil;
 
 import java.sql.SQLException;
 
 public class SpigotPlugin extends JavaPlugin {
     private static MySQL mySQL;
     private static SpigotPlugin plugin;
-
     public static SpigotPlugin getPlugin(){
         return SpigotPlugin.plugin;
     }
@@ -36,24 +41,33 @@ public class SpigotPlugin extends JavaPlugin {
         }
         GlobalMessage.reloadLang();
         Config.reloadConfig();
+        DropFile.reloadConfig();
         registerManager();
         registerListeners(getServer().getPluginManager());
         registerCommands();
         registerTasks();
+        CraftingUtil.registerRecipe();
+        getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
     }
     private void registerManager() {
         UserManager.loadUsers();
         BanManager.loadBans();
         MuteManager.loadMutes();
+        DropFile.saveDefaultConfig();
+        DropManager.setup();
     }
 
     public void onDisable(){
-        super.onDisable();
+        CombatManager.getCombats().clear();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.kickPlayer(ChatUtil.color("&cServer zostal wylaczony!"));
+        }
     }
 
     private void registerListeners(PluginManager pm) {
         pm.registerEvents(new PlayerInteractListener(), this);
         pm.registerEvents(new BlockPlaceListener(), this);
+        pm.registerEvents(new BlockBreakListener(), this);
         pm.registerEvents(new BorderListener(), this);
         pm.registerEvents(new RainListener(), this);
         pm.registerEvents(new CreatureSpawnListener(), this);
@@ -66,6 +80,9 @@ public class SpigotPlugin extends JavaPlugin {
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);
+        new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
+        new CombatTask().runTaskTimerAsynchronously(this, 40L, 20L);
+        new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
     }
 
     private void registerCommands() {
@@ -126,6 +143,8 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new ItemShopCommand());
         registerCommand(new DajCommand());
         registerCommand(new StoneCommand());
+        registerCommand(new OdbierzCommand());
+        registerCommand(new LiveTpsCommand());
     }
 
     private void registerCommand(Command command){

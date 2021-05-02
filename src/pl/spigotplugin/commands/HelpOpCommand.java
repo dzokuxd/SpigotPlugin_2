@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HelpOpCommand extends PlayerCommand {
-    public HelpOpCommand() { super("helpop", "/helpop <wiadomosc>", ""); }
+    public HelpOpCommand() { super("helpop", "helpop <wiadomosc>", ""); }
 
     private static Map<UUID, Long> times = new ConcurrentHashMap<>();
 

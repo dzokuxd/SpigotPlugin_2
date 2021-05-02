@@ -6,34 +6,34 @@ import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.component.Teleporter;
 import pl.spigotplugin.configs.Config;
-import pl.spigotplugin.configs.GlobalMessage;
 
 public class SpawnCommand extends PlayerCommand {
 
     public SpawnCommand() {
-        super("spawn", "/spawn", "");
+        super("spawn", "spawn", "");
     }
 
-    private static final Location loc = new Location(Bukkit.getWorld("world"), 0, 90, 0);
+    private final Location loc = new Location(Bukkit.getWorld("world"), 0, 90, 0);
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length == 0) {
-            GlobalMessage.usage(p, getUsage());
-        }
-        if (!p.hasPermission("core.cmd.admin")) {
-            p.sendMessage("&cNie masz dostepu!");
+            if (!Config.MANAGE_SPAWN) {
+                p.sendMessage("&4Blad: &cAktualnie teleport na spawn jest wylaczony!");
+                return;
+            }
+            Teleporter.sendRequest(p, loc);
             return;
         }
-        Player o = Bukkit.getPlayer(args[0]);
-        if (o == null) {
+        if (!p.hasPermission("df")) {
             p.sendMessage("&4Blad: &cGracz offline!");
             return;
         }
-        if (!Config.MANAGE_SPAWN) {
-            p.sendMessage("&4Blad: &cAktualnie teleport na spawn jest wylaczony");
+        Player target = Bukkit.getPlayerExact(args[0]);
+        if (target == null) {
+            p.sendMessage("&4Blad: &cGracz offline!");
             return;
         }
-        Teleporter.sendRequest(p, loc);
+        target.teleport(loc);
     }
 }

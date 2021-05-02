@@ -104,7 +104,7 @@ public class ChatCommand extends Command {
                     return;
                 }
                 int i = Integer.parseInt(args[1]);
-                /*Config.LVL = i;*/
+                Config.LVL = i;
                 Config.saveConfig();
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage("");
@@ -118,7 +118,7 @@ public class ChatCommand extends Command {
             }
             default: {
                 GlobalMessage.usage(sender, getUsage());
-            }//TODO lvl
+            }
         }
     }
 }
