@@ -7,7 +7,7 @@ import pl.spigotplugin.api.Command;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
-    public DajCommand() { super("daj", "daj gracz|* boyfarmer|antynogi|stoniarka|case|633  ilosc", "", ""); }
+    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|easy633> <ilosc>", "", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
@@ -17,9 +17,9 @@ public class DajCommand extends Command {
         }
         if (args[1].equalsIgnoreCase("boyfarmer")) {
             if (args[0].equals("*")) {
+                int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {
-                    int size = Integer.parseInt(args[1]);
-                    DajUtil.giveWithAmount(args[2].toLowerCase(), size, pp);
+                    DajUtil.giveWithAmount(args[1].toLowerCase(), size, pp);
                 }
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
@@ -27,16 +27,16 @@ public class DajCommand extends Command {
                     sender.sendMessage("&4Blad: &cGracz jest offline");
                     return;
                 }
-                int size = Integer.parseInt(args[1]);
-                DajUtil.giveWithAmount(args[2].toLowerCase(), size, o);
+                int size = Integer.parseInt(args[2]);
+                DajUtil.giveWithAmount(args[1].toLowerCase(), size, o);
             }
             return;
         }
         if (args[1].equalsIgnoreCase("antynogi")) {
             if (args[0].equals("*")) {
+                int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {
-                    int size = Integer.parseInt(args[1]);
-                    DajUtil.giveWithAmount(args[2].toLowerCase(), size, pp);
+                    DajUtil.giveWithAmount(args[1].toLowerCase(), size, pp);
                 }
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
@@ -44,16 +44,16 @@ public class DajCommand extends Command {
                     sender.sendMessage("&4Blad: &cGracz jest offline");
                     return;
                 }
-                int size = Integer.parseInt(args[1]);
-                DajUtil.giveWithAmount(args[2].toLowerCase(), size, o);
+                int size = Integer.parseInt(args[2]);
+                DajUtil.giveWithAmount(args[1].toLowerCase(), size, o);
             }
             return;
         }
         if (args[1].equalsIgnoreCase("stoniarka")) {
             if (args[0].equals("*")) {
+                int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {
-                    int size = Integer.parseInt(args[1]);
-                    DajUtil.giveWithAmount(args[2].toLowerCase(), size, pp);
+                    DajUtil.giveWithAmount(args[1].toLowerCase(), size, pp);
                 }
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
@@ -61,16 +61,16 @@ public class DajCommand extends Command {
                     sender.sendMessage("&4Blad: &cGracz jest offline");
                     return;
                 }
-                int size = Integer.parseInt(args[1]);
-                DajUtil.giveWithAmount(args[2].toLowerCase(), size, o);
+                int size = Integer.parseInt(args[2]);
+                DajUtil.giveWithAmount(args[1].toLowerCase(), size, o);
             }
             return;
         }
-        if (args[1].equalsIgnoreCase("case")) {
+        if (args[1].equalsIgnoreCase("easycase")) {
             if (args[0].equals("*")) {
+                int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {
-                    int size = Integer.parseInt(args[1]);
-                    DajUtil.giveWithAmount(args[2].toLowerCase(), size, pp);
+                    DajUtil.giveWithAmount(args[1].toLowerCase(), size, pp);
                 }
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
@@ -78,16 +78,16 @@ public class DajCommand extends Command {
                     sender.sendMessage("&4Blad: &cGracz jest offline");
                     return;
                 }
-                int size = Integer.parseInt(args[1]);
-                DajUtil.giveWithAmount(args[2].toLowerCase(), size, o);
+                int size = Integer.parseInt(args[2]);
+                DajUtil.giveWithAmount(args[1].toLowerCase(), size, o);
             }
             return;
         }
-        if (args[1].equalsIgnoreCase("633")) {
+        if (args[1].equalsIgnoreCase("easy633")) {
             if (args[0].equals("*")) {
+                int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {
-                    int size = Integer.parseInt(args[1]);
-                    DajUtil.giveWithAmount(args[2].toLowerCase(), size, pp);
+                    DajUtil.giveWithAmount(args[1].toLowerCase(), size, pp);
                 }
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
@@ -95,9 +95,9 @@ public class DajCommand extends Command {
                     sender.sendMessage("&4Blad: &cGracz jest offline");
                     return;
                 }
-                int size = Integer.parseInt(args[1]);
-                DajUtil.giveWithAmount(args[2].toLowerCase(), size, o);
-            }//TODO napraw all
+                int size = Integer.parseInt(args[2]);
+                DajUtil.giveWithAmount(args[1].toLowerCase(), size, o);
+            }
         }
     }
 }

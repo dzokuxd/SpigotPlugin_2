@@ -1,0 +1,15 @@
+package pl.spigotplugin.commands;
+
+import org.bukkit.entity.Player;
+import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.menu.TopkiMenu;
+
+public class TopkiCommand extends PlayerCommand {
+    public TopkiCommand() { super("topki", "topki", "");
+    }
+
+    @Override
+    public void onCommand(Player p, String[] args) {
+        TopkiMenu.show(p);
+    }
+}

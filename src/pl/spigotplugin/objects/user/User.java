@@ -4,14 +4,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.helper.JSONHelper;
+import pl.spigotplugin.mysql.MySQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class User {
+    public ConcurrentHashMap<Material, Integer> getDrops() {
+        return drops;
+    }
+
     private String name;
     private long turboDrop = 0;
     private boolean autoMessages = true;
@@ -27,7 +34,16 @@ public class User {
     private int lvl = 1;
     private int exp = 0;
     private int wykStone = 0;
-    private String statystykikopania = "0@0@0@0@0@0@0@0@0@0@0";
+    private int koxy = 0;
+    private int refile = 0;
+    private int perly = 0;
+    private int strzaly = 0;
+    private int koxEaten = 0;
+    private int refilEaten = 0;
+    private int pearlThrown = 0;
+    private int arrowsShoten = 0;
+
+    private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
 
     public User(Player p) {
         this.name = p.getName();
@@ -43,7 +59,15 @@ public class User {
         this.lvl = rs.getInt("lvl");
         this.exp = rs.getInt("exp");
         this.wykStone = rs.getInt("wykStone");
-        this.statystykikopania = rs.getString("statystykikopania");
+        this.drops = JSONHelper.jsonStringToDrops(rs.getString("drops"));
+        this.koxy = rs.getInt("koxy");
+        this.refile = rs.getInt("refile");
+        this.perly = rs.getInt("perly");
+        this.strzaly = rs.getInt("strzaly");
+        this.koxEaten = rs.getInt("koxEaten");
+        this.refilEaten = rs.getInt("refilEaten");
+        this.pearlThrown = rs.getInt("pearlThrown");
+        this.arrowsShoten = rs.getInt("arrowsShoten");
     }
 
     public String getName() {
@@ -61,8 +85,6 @@ public class User {
     public long getTurboDrop() { return turboDrop; }
 
     public void setTurboDrop(long turboDrop) { this.turboDrop = turboDrop; }
-
-    public void addTurboDrop(long turboDrop) {this.turboDrop+=turboDrop;}
 
     public boolean isAutoMessages() { return this.autoMessages; }
 
@@ -124,31 +146,130 @@ public class User {
         this.wykStone = wykstone;
     }
 
-    public void setKit_vip(long kit_vip) {
-        this.kit_vip = kit_vip;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_vip ='" + kit_vip + "' WHERE name='" + name + "'");
+    public int getkoxy() {
+        return koxy;
     }
 
-    public void setKit_svip(long kit_svip) {
-        this.kit_svip = kit_svip;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_svip ='" + kit_svip + "' WHERE name='" + name + "'");
+    public int getRefile() {
+        return refile;
     }
 
-    public void setKit_start(long kit_start) {
-        this.kit_start = kit_start;
-        SpigotPlugin.getMySQL().update("UPDATE users SET kit_start ='" + kit_start + "' WHERE name='" + name + "'");
+    public int getPerly() {
+        return perly;
     }
-    public void setLvl(int lvl) {
-        this.lvl = lvl;
-            SpigotPlugin.getMySQL().update("UPDATE users SET lvl ='" + lvl + "', exp ='" + exp + "' WHERE name ='" + name + "'");
+
+    public int getStrzaly() {
+        return strzaly;
     }
+
+    public void removeKoxy(int index) {
+        this.koxy -= index;
+    }
+
+    public void removeRefile(int index) {
+        this.refile -= index;
+    }
+
+    public void removePerly(int index) {
+        this.perly -= index;
+    }
+
+    public void removeStrzaly(int index) {
+        this.strzaly -= index;
+    }
+
+    public void addKoxy(int index) {
+        this.koxy += index;
+    }
+
+    public void addRefile(int index) {
+        this.refile += index;
+    }
+
+    public void addPerly(int index) { this.perly += index; }
+
+    public void addStrzaly(int index) {
+        this.strzaly += index;
+    }
+
+    public void addkoxEaten(int index) { this.koxEaten += index; }
+
+    public void addrefilEaten(int index) { this.refilEaten += index; }
+
+    public void addpearlThrown(int index) { this.pearlThrown += index; }
+
+    public void arrowsShoten(int index) { this.arrowsShoten += index; }
+
+    public void setKit_vip(long kit_vip) { this.kit_vip = kit_vip; }
+
+    public void setKit_svip(long kit_svip) { this.kit_svip = kit_svip; }
+
+    public void setKit_start(long kit_start) { this.kit_start = kit_start; }
+
+    public void setLvl(int lvl) { this.lvl = lvl; }
 
     private void insert() {
-        SpigotPlugin.getMySQL().update("INSERT INTO users (name, turboDrop, kit_start, kit_vip, kit_svip, lvl, exp, statystykikopania) VALUES ('" + name + "', "+turboDrop+", '" + kit_start + "','" + kit_vip + "','" + kit_svip + "','" +lvl+"','" +exp+"','" +statystykikopania+"')");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("name", name);
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        MySQLUtil.insert("users", data);
     }
 
     public void save() {
-        SpigotPlugin.getMySQL().update("UPDATE users SET turboDrop = '" + turboDrop + "', kit_start =' " + kit_start + "',kit_svip = '" + kit_svip + "', lvl = '" + lvl + "', lvl = '" + exp + "', statystykikopania = '" + statystykikopania + "' WHERE name = '"+name+"'");
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        MySQLUtil.save("users", "name", name, data);
+    }
+
+    public void saveSync() {
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        MySQLUtil.saveSync("users", "name", name, data);
     }
 
     public BukkitTask getCurrentTeleport() {
@@ -157,190 +278,5 @@ public class User {
 
     public void setCurrentTeleport(BukkitTask currentTeleport) {
         this.currentTeleport = currentTeleport;
-    }
-    public int getDiamond() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[0]);
-    }
-
-    public void setDiamond(int i) {
-        this.statystykikopania = i + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getEmerald() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[1]);
-    }
-
-    public void setEmerald(int i) {
-        this.statystykikopania = getDiamond() + "@" + i + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getGold() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[2]);
-    }
-
-    public void setGold(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + i + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getIron() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[3]);
-    }
-
-    public void setIron(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + i + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getApple() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[4]);
-    }
-
-    public void setApple(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + i + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getObs() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[5]);
-    }
-
-    public void setObs(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + i + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getCoal() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[6]);
-    }
-
-    public void setCoal(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + i + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getLeather() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[7]);
-    }
-
-    public void setLeather(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + i + "@" + getSand() + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getSand() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[8]);
-    }
-
-    public void setSand(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + i + "@" + getPearl() + "@" + getGunPowder() + "@";
-    }
-
-    public int getPearl() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[9]);
-    }
-
-    public void setPearl(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + i + "@" + getGunPowder() + "@";
-    }
-
-    public int getGunPowder() {
-        String[] splitter = this.statystykikopania.split("@");
-        return Integer.parseInt(splitter[10]);
-    }
-
-    public void setGunPowder(int i) {
-        this.statystykikopania = getDiamond() + "@" + getEmerald() + "@" + getGold() + "@" + getIron() + "@" + getApple() + "@" + getObs() + "@" + getCoal() + "@" + getLeather() + "@" + getSand() + "@" + getPearl() + "@" + i + "@";
-    }
-
-    public void setAmountByMaterial(Material material) {
-        switch (material) {
-            case DIAMOND: {
-                setDiamond(getDiamond() + 1);
-                break;
-            }
-            case EMERALD: {
-                setEmerald(getEmerald() + 1);
-                break;
-            }
-            case GOLD_INGOT: {
-                setGold(getGold() + 1);
-                break;
-            }
-            case IRON_INGOT: {
-                setIron(getIron() + 1);
-                break;
-            }
-            case APPLE: {
-                setApple(getApple() + 1);
-                break;
-            }
-            case OBSIDIAN: {
-                setObs(getObs() + 1);
-                break;
-            }
-            case COAL: {
-                setCoal(getCoal() + 1);
-                break;
-            }
-            case LEATHER: {
-                setLeather(getLeather() + 1);
-                break;
-            }
-            case SAND: {
-                setSand(getSand() + 1);
-                break;
-            }
-            case ENDER_PEARL: {
-                setPearl(getPearl() + 1);
-                break;
-            }
-            case SULPHUR: {
-                setGunPowder(getGunPowder() + 1);
-                break;
-            }
-        }
-    }
-    public int getAmountByMaterial(Material material) {
-        switch (material) {
-            case DIAMOND: {
-                return getDiamond();
-            }
-            case EMERALD: {
-                return getEmerald();
-            }
-            case GOLD_INGOT: {
-                return getGold();
-            }
-            case IRON_INGOT: {
-                return getIron();
-            }
-            case APPLE: {
-                return getApple();
-            }
-            case OBSIDIAN: {
-                return getObs();
-            }
-            case COAL: {
-                return getCoal();
-            }
-            case LEATHER: {
-                return getLeather();
-            }
-            case SAND: {
-                return getSand();
-            }
-            case ENDER_PEARL: {
-                return getPearl();
-            }
-            case SULPHUR: {
-                return getGunPowder();
-            }
-        }
-        return 0;
     }
 }

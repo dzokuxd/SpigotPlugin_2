@@ -1,9 +1,11 @@
 package pl.spigotplugin.objects.user;
 
-import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.mysql.MySQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Mute {
     private String name;
@@ -29,8 +31,15 @@ public class Mute {
         this.start = rs.getLong("start");
     }
 
-    private void insert() {
-        SpigotPlugin.getMySQL().update("INSERT INTO mutes (name, admin, reason, time, start) VALUES ('" + name + "','" + admin + "','" + reason + "','" + time + "','" + start + "');");
+    public void insert(){
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("name",name);
+        data.put("admin",admin);
+        data.put("reason",reason);
+        data.put("time",time);
+        data.put("start",start);
+
+        MySQLUtil.insert("bans",data);
     }
 
     public long getStart() {

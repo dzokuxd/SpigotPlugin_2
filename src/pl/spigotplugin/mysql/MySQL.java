@@ -21,7 +21,7 @@ public class MySQL {
 
         connect();
 
-        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, WykStone BIGINT,statystykikopania TEXT NOT NULL)");
+        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT,drops TEXT NOT NULL, koxy int(11) NOT NULL, refile int(11) NOT NULL, perly int(11) NOT NULL, strzaly int(11) NOT NULL, koxEaten int(11) NOT NULL, refilEaten int(11) NOT NULL, pearlThrown int(11) NOT NULL, arrowsShoten int(11) NOT NULL)");
 
 
         update("CREATE TABLE IF NOT EXISTS backups (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
@@ -44,6 +44,8 @@ public class MySQL {
                 "reason text NOT NULL, " +
                 "admin varchar(32) NOT NULL, " +
                 "start BIGINT(22) NOT NULL);");
+
+        MySQLUtil.mysql = this;
     }
 
     private void connect() throws SQLException {
@@ -70,6 +72,21 @@ public class MySQL {
                 }
             }
         });
+    }
+
+    public void updateSync(String update) {
+        Statement statement;
+        try {
+            statement = this.connection.createStatement();
+            statement.executeUpdate(update);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            try {
+                connect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public ResultSet query(String query) throws SQLException {

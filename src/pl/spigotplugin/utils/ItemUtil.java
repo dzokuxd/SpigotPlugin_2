@@ -70,6 +70,33 @@ public class ItemUtil {
             return ChatUtil.color("&a");
         }
     }
+    public static int remove(ItemStack base, Player player, int amount) {
+        int actual = 0;
+        int remaining = amount;
+        ItemStack[] contents;
+        for (int length = (contents = player.getInventory().getContents()).length, i = 0; i < length; ++i) {
+            ItemStack itemStack = contents[i];
+            if (actual == amount) {
+                break;
+            }
+            if (itemStack != null && itemStack.getType().equals(base.getType()) && itemStack.getDurability() == base.getDurability()) {
+                if (remaining == 0) {
+                    actual += itemStack.getAmount();
+                    player.getInventory().remove(itemStack);
+                } else if (itemStack.getAmount() >= amount) {
+                    actual += itemStack.getAmount() - amount;
+                    itemStack.setAmount(amount);
+                    remaining = 0;
+                } else {
+                    int add = itemStack.getAmount();
+                    remaining -= add;
+                    player.getInventory().remove(itemStack);
+                    actual += add;
+                }
+            }
+        }
+        return actual;
+    }
     public static List<ItemStack> getItems(String string, int modifier) {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (String s : string.split(";")) {
@@ -106,5 +133,6 @@ public class ItemUtil {
         }
         return amount;
     }
+
 }
 

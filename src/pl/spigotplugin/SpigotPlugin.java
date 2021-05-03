@@ -60,7 +60,8 @@ public class SpigotPlugin extends JavaPlugin {
     public void onDisable(){
         CombatManager.getCombats().clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.kickPlayer(ChatUtil.color("&cServer zostal wylaczony!"));
+            UserManager.getUser(p).saveSync();
+            p.kickPlayer(ChatUtil.color("&cSerwer zostal wylaczony!"));
         }
     }
 
@@ -145,6 +146,11 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new StoneCommand());
         registerCommand(new OdbierzCommand());
         registerCommand(new LiveTpsCommand());
+        registerCommand(new GameplayCommand());
+        registerCommand(new TpCommand());
+        registerCommand(new LevelCommand());
+        registerCommand(new TopkiCommand());
+        registerCommand(new SchowekCommand());
     }
 
     private void registerCommand(Command command){

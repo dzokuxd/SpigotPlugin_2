@@ -14,6 +14,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.potion.PotionEffect;
@@ -21,10 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.RandomUtil;
-import pl.spigotplugin.utils.TimeUtil;
-import pl.spigotplugin.utils.VoucherUtil;
+import pl.spigotplugin.utils.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +33,9 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        ItemStack s = e.getItem();
         User u = UserManager.getUser(p);
+        Block clickedBlock = e.getClickedBlock();
         if (p.getItemInHand().isSimilar(VoucherUtil.vip)) {
             if (p.hasPermission("vip")) {
                 p.sendMessage("&cPosiadasz ta lub lepsza range!");
@@ -71,7 +71,6 @@ public class PlayerInteractListener implements Listener {
             u.setTurboDrop(givenTurboDrop+turboDropHave);
             return;
         }
-        Block clickedBlock = e.getClickedBlock();
         if(clickedBlock != null){
             if (clickedBlock.getType() == Material.STONE_BUTTON) {
                 if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
@@ -107,6 +106,26 @@ public class PlayerInteractListener implements Listener {
                     players.removePotionEffect(activePotionEffect.getType());
                 }
             }
+        }
+        if (s == null) {
+            return;
+        }
+        int strzalyw = ItemUtil.getItemAmount(Material.ARROW, p, (short) 0);
+        if (strzalyw > Config.LIMIT_STRZAL) {
+            ItemStack item = new ItemStack(Material.ARROW, (strzalyw - Config.LIMIT_STRZAL), (short) 0);
+            int added = ItemUtil.remove(item, p, Config.LIMIT_STRZAL);
+            u.addStrzaly(added);
+            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_STRZAL + " &6strzal! &7(&c" + added + " &6strzaly zostaja odlozone do twojego schowka&7)");
+        }
+        if (s.getType() == Material.ENDER_PEARL) {
+            int pearl = ItemUtil.getItemAmount(Material.ENDER_PEARL, p, (short) 0);
+            if (pearl > Config.LIMIT_PEARL) {
+                ItemStack item = new ItemStack(Material.ENDER_PEARL, (pearl - Config.LIMIT_PEARL), (short) 0);
+                int added = ItemUtil.remove(item, p, Config.LIMIT_PEARL);
+                u.addPerly(added);
+                p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_PEARL + " &6perel! &7(&c" + added + " &6perly zostaja odlozone do twojego schowka&7)");
+            }
+            u.addpearlThrown(1);
         }
         ItemStack k = e.getPlayer().getItemInHand();
         if (k.getType().equals(Material.DIAMOND_PICKAXE) && k.getDurability() == 1559) {
@@ -149,6 +168,52 @@ public class PlayerInteractListener implements Listener {
         if (item.getType() == Material.MINECART) {
             p.sendMessage( "&cCraftowanie wagonikow jest wylaczone!");
             e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void PlayerItemConsume(PlayerItemConsumeEvent e) {
+        Player p = e.getPlayer();
+        User u = UserManager.getUser(p);
+        ItemStack is = e.getItem();
+        if (!is.getType().equals(Material.GOLDEN_APPLE)) {
+            return;
+        }
+        int i = ItemUtil.getItemAmount(Material.GOLDEN_APPLE, p, (short) 1);
+        if (i > Config.LIMIT_KOX) {
+            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (i - Config.LIMIT_KOX), (short) 1);
+            int added = ItemUtil.remove(item, p, Config.LIMIT_KOX);
+            u.addKoxy(added);
+            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_KOX + " &6koxy! &7(&c" + added + " &6koxy zostaja odlozone do twojego schowka&7)");
+        }
+        int ii = ItemUtil.getItemAmount(Material.GOLDEN_APPLE, p, (short) 0);
+        if (ii > Config.LIMIT_REFILE) {
+            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (ii - Config.LIMIT_REFILE), (short) 0);
+            int added = ItemUtil.remove(item, p, Config.LIMIT_REFILE);
+            u.addRefile(added);
+            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_REFILE + " &6refile! &7(&c" + added + " &6refile zostaja odlozone do twojego schowka&7)");
+        }
+        if (is.getDurability() == 1) {
+            e.setCancelled(true);
+            p.getInventory().removeItem(new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
+
+            p.removePotionEffect(PotionEffectType.ABSORPTION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 1));
+
+            p.removePotionEffect(PotionEffectType.REGENERATION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 4));
+
+            u.addkoxEaten(1);
+
+        } else {
+            p.removePotionEffect(PotionEffectType.REGENERATION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 2));
+
+            p.removePotionEffect(PotionEffectType.ABSORPTION);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 0));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 3, 0));
+
+            u.addrefilEaten(1);
+
         }
     }
     private List<Player> getPlayersInRadius(Location location, int size) {

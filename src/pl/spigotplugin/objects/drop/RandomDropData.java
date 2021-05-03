@@ -68,6 +68,7 @@ public class RandomDropData implements DropData{
     public void breakBlock(Block block, Player player, ItemStack item) {
         List<ItemStack> drop = new ArrayList<>();
         User u = UserManager.getUser(player);
+        if (u == null) return;
         if(block.getType() == Material.STONE) {
             u.setWykStone(u.getWykStone()+1);
         }
@@ -114,12 +115,14 @@ public class RandomDropData implements DropData{
             }
             if (!d.isDisabled(player.getUniqueId())) {
                 drop.add(itemDrop);
-                u.setAmountByMaterial(itemDrop.getType());
+                if (u.getDrops().containsKey(itemDrop.getType())) {
+                    u.getDrops().put(itemDrop.getType(), u.getDrops().get(itemDrop.getType()) + 1);
+                } else {
+                    u.getDrops().put(itemDrop.getType(), 1);
+                }
             }
             player.giveExp(expDrop);
-            if (u != null) {
-                u.setExp(u.getExp() + expDrop);
-            }
+            u.setExp(u.getExp() + expDrop);
             LevelUtil.checkLevel(u);
             if (d.getMessage().equalsIgnoreCase("")) {
                 continue;

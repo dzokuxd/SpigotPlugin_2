@@ -5,29 +5,32 @@ import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
+import java.util.Locale;
+
 public class OpenCommand extends PlayerCommand {
     public OpenCommand() { super("open", "open <nick> <inv/ender>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
-        if (args.length < 1) {
+        if (args.length != 2) {
             GlobalMessage.usage(p, getUsage());
             return;
         }
-        switch (args[0]) {
+        Player o = Bukkit.getPlayer(args[0]);
+        if (o == null) {
+            p.sendMessage("&4Blad: &cGracz nie jest online!");
+            return;
+        }
+        switch (args[1].toLowerCase()) {
             case "inv":
-                Player o = Bukkit.getPlayer(args[0]);
-                if (o == null) {
-                    p.sendMessage("&4Blad: &cGracz nie jest online!");
-                    return;
-                }
-                Player other = Bukkit.getPlayer(args[0]);
-                if (other != null) {
-                    p.openInventory(other.getInventory());
-                    return;
-                }
+                p.openInventory(o.getInventory());
+                break;
             case "ender":
-                p.openInventory(p.getEnderChest());
-        }//TODO nic nie dziala
+                p.openInventory(o.getEnderChest());
+                break;
+            default:
+                GlobalMessage.usage(p, getUsage());
+                break;
+        }
     }
 }

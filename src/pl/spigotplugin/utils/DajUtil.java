@@ -9,16 +9,14 @@ import pl.spigotplugin.configs.Config;
 public class DajUtil {
     public static ItemStack boyfarmer = new ItemBuilder(
             Material.ENDER_PORTAL_FRAME)
-            .addEnchantment(Enchantment.DURABILITY,10)
             .setTitle("&a&lBoyFarmer")
-            .addEnchantment(Enchantment.THORNS, 10)
+            .setGlow(true)
             .build();
     public static ItemStack antynogi = new ItemBuilder(
             Material.NAME_TAG)
-            .addEnchantment(Enchantment.DURABILITY,10)
             .setTitle("&6&lAnty Nogi")
             .addLore(ChatUtil.color("&7\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!"))
-            .addEnchantment(Enchantment.DURABILITY, 2)
+            .setGlow(true)
             .build();
     public static ItemStack stoniarka = new ItemBuilder(
             Material.ENDER_STONE)
@@ -28,13 +26,13 @@ public class DajUtil {
             .build();
     public static ItemStack casenormal = new ItemBuilder(
             Material.CHEST)
-            .addEnchantment(Enchantment.DURABILITY,10)
             .setTitle("&c&lSkrzynia "+ Config.IP)
+            .setGlow(true)
             .build();
     public static ItemStack case633 = new ItemBuilder(
             Material.CHEST)
-            .addEnchantment(Enchantment.DURABILITY,10)
             .setTitle("&c&lSkrzynia Ez6/3/3")
+            .setGlow(true)
             .build();
 
     public static void giveWithAmount(String type, int amount, Player sender) {
@@ -55,12 +53,12 @@ public class DajUtil {
                 toGive.setAmount(amount);
                 break;
             }
-            case "casenormal":{
+            case "easycase":{
                 toGive = casenormal.clone();
                 toGive.setAmount(amount);
                 break;
             }
-            case "case633":{
+            case "easy633":{
                 toGive = case633.clone();
                 toGive.setAmount(amount);
                 break;

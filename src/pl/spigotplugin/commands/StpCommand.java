@@ -12,6 +12,7 @@ public class StpCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         if (args.length < 1) {
             GlobalMessage.usage(p, getUsage());
+            return;
         }
         String nickja = args[0];
         if (nickja.equalsIgnoreCase(p.getName())) {
@@ -26,5 +27,5 @@ public class StpCommand extends PlayerCommand {
         o.teleport(p.getLocation());
         p.sendMessage("&7\u00bb &6Przeteleportowales gracza &c" + o.getName() + " &6do gracza &c" + p.getName());
         o.sendMessage("&7\u00bb &6Zostales przeteleportowany do gracza &c" + o.getName() + " &6przez &c" + p.getName());
-    }//TODO nie dziala
+    }
 }

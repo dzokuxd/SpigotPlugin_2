@@ -12,8 +12,12 @@ public class Config
     public static String dataBase = "srv155087";
     public static String user = "srv155087";
     public static String password = "DkUxXtrk";
+    public static int LIMIT_STRZAL = 24;
+    public static int LIMIT_PEARL = 4;
+    public static int LIMIT_REFILE = 12;
+    public static int LIMIT_KOX = 2;
     public static int BORDER_WORLD = 800;
-    public static int BORDER_NETHER = 800;
+    public static int BORDER_GTP = 800;
     public static int CUBOID_TNT_OD = 14;
     public static int CUBOID_TNT_DO = 22;
     public static long EVENTS_BEACON = 0L;
@@ -24,6 +28,7 @@ public class Config
     public static boolean MANAGE_TPA = false;
     public static boolean MANAGE_SPAWN = false;
     public static boolean MANAGE_KIT = false;
+    public static boolean MANAGE_DIAX = false;
     public static String IP = "easyage.pl";
 
     public static void loadConfig() {

@@ -24,6 +24,7 @@ public class StoneMenu {
     public static void stone(Player p) {
         Inventory inv = Bukkit.createInventory(p, 36, ChatUtil.color("&7&lDrop z Stone"));
         User u = UserManager.getUser(p);
+        if (u == null) return;
         for (Drop d : RandomDropData.getDrops()) {
             double chance = d.getChance();
             if (p.hasPermission("core.drop.svip")) {
@@ -31,15 +32,10 @@ public class StoneMenu {
             } else if (p.hasPermission("core.drop.vip")) {
                 chance += 0.50;
             }
-            if (Config.EVENTS_TURBO > System.currentTimeMillis() || (u != null && u.getTurboDrop() > System.currentTimeMillis())) {
+            if (Config.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
                 chance += 1;
             }
-            double bonus;
-            if (u == null) {
-                bonus = 0.0;
-            } else {
-                bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
-            }
+            double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
             ItemBuilder b = new ItemBuilder(d.getWhat().getType(), 1);
             b.setTitle("&7&l" + d.getName());
             b.addLore(" &7\u00bb &6Szansa na drop: &c" + ChatUtil.round(chance, 3));
@@ -47,7 +43,7 @@ public class StoneMenu {
             b.addLore(" &7\u00bb &6Wypada ponizej: &c" + d.getMaxHeight() + " &6poziomu");
             b.addLore(" &7\u00bb &6Fortune: " + (d.isFortune() ? "&aTak" : "&cNie"));
             b.addLore(" &7\u00bb &6Drop: " + (d.isDisabled(p.getUniqueId()) ? "&cWylaczony" : "&aWlaczony"));
-            b.addLore(" &7\u00bb &6Wykopane: &c" + u.getAmountByMaterial(d.getWhat().getType()) + " &6szt.").setGlow(!d.isDisabled(p.getUniqueId())).build();
+            b.addLore(" &7\u00bb &6Wykopane: &c" + u.getDrops().getOrDefault(d.getWhat().getType(), 0) + " &6szt.").setGlow(!d.isDisabled(p.getUniqueId())).build();
             inv.addItem(b.build());
         }
         ItemBuilder wroc = new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!");

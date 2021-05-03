@@ -8,7 +8,7 @@ import pl.spigotplugin.listeners.BorderListener;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BorderCommand extends Command {
-    public BorderCommand() { super("border", "border (world/nether) <liczba>", ""); }
+    public BorderCommand() { super("border", "border (world/gtp) <liczba>", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
@@ -25,8 +25,8 @@ public class BorderCommand extends Command {
             case "world":
                 Config.BORDER_WORLD = border;
                 break;
-            case "nether":
-                Config.BORDER_NETHER = border;
+            case "gtp":
+                Config.BORDER_GTP = border;
                 break;
             default:
                 GlobalMessage.usage(sender, getUsage());
