@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.menu.CheckMenu;
 import pl.spigotplugin.utils.CheckUtil;
 
 public class CheckCommand extends PlayerCommand {
@@ -76,6 +77,7 @@ public class CheckCommand extends PlayerCommand {
             Bukkit.broadcastMessage("&7Cheaty: &cban");
             Bukkit.broadcastMessage("&7Logout: &cban");
             target.sendMessage("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (Config.IP));
+            CheckMenu.show(p);
         }
     }
 }

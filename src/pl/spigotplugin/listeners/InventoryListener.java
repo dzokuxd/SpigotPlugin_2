@@ -13,16 +13,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.spigotplugin.commands.BanCommand;
 import pl.spigotplugin.commands.StoneCommand;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.UserManager;
-import pl.spigotplugin.menu.ChatMenu;
-import pl.spigotplugin.menu.KitMenu;
-import pl.spigotplugin.menu.SchowekMenu;
-import pl.spigotplugin.menu.StoneMenu;
+import pl.spigotplugin.menu.*;
 import pl.spigotplugin.objects.drop.Drop;
 import pl.spigotplugin.objects.drop.RandomDropData;
 import pl.spigotplugin.objects.user.Backup;
+import pl.spigotplugin.objects.user.Ban;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.settings.Settings;
 import pl.spigotplugin.utils.*;
@@ -294,6 +294,42 @@ public class InventoryListener implements Listener {
                 StoneMenu.easycase((Player) e.getWhoClicked());
             } else if (e.getSlot() == 16) {
                 StoneMenu.inventory((Player) e.getWhoClicked());
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lItemShop"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 10) {
+                if (u.getEasycase() <= 0) {
+                    p.closeInventory();
+                    p.sendMessage("&8\u00bb &cNie posiadasz zadnych easycase'ow!");
+                    return;
+                }
+                p.sendMessage("&aOdebrales: "+u.getEasycase()+" &aEasyCase'ow");
+                DajUtil.giveWithAmount("easycase", u.getEasycase(), p);
+                u.setEasycase(0);
+                OdbierzMenu.show(p);
+                return;
+            }
+            if (e.getSlot() == 16) {
+                if (u.getCase611() <= 0) {
+                    p.closeInventory();
+                    p.sendMessage("&8\u00bb &cNie posiadasz zadnych case'ow 6/1/1!");
+                    return;
+                }
+                p.sendMessage("&aOdebrales :"+u.getCase611()+" Case'ow 6/1/1");
+                DajUtil.giveWithAmount("case611", u.getCase611(), p);
+                u.setCase611(0);
+                OdbierzMenu.show(p);
+                return;
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSprawdzanie"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 11) {
+                p.sendMessage("dzokv to debil");
+            }//TODO  dodac bana i ze nie mozna zamknac inv dopuki nie wybierzesz
+            if (e.getSlot() == 15) {
+                p.closeInventory();
             }
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Case"))) {

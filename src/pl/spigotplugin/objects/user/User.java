@@ -42,6 +42,9 @@ public class User {
     private int refilEaten = 0;
     private int pearlThrown = 0;
     private int arrowsShoten = 0;
+    private int coins = 0;
+    private int easycase = 0;
+    private int case611 = 0;
 
     private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
 
@@ -68,6 +71,9 @@ public class User {
         this.refilEaten = rs.getInt("refilEaten");
         this.pearlThrown = rs.getInt("pearlThrown");
         this.arrowsShoten = rs.getInt("arrowsShoten");
+        this.coins = rs.getInt("coins");
+        this.easycase = rs.getInt("easycase");
+        this.case611 = rs.getInt("case611");
     }
 
     public String getName() {
@@ -124,73 +130,43 @@ public class User {
 
     public void removeIgnoreTpa(Player p) { this.ignoreTpa.remove(p); }
 
-    public void removeLvl(int index) {
-        this.lvl -= index;
-    }
-
-    public int getLvl() {
-        return lvl;
-    }
-
-    public int getExp() {
-        return exp;
-    }
-
     public void setExp(int exp) { this.exp = exp; }
 
-    public int getWykStone() {
-        return wykStone;
-    }
+    public void setWykStone(int wykstone) { this.wykStone = wykstone; }
 
-    public void setWykStone(int wykstone) {
-        this.wykStone = wykstone;
-    }
+    public int getWykStone() { return wykStone; }
 
-    public int getkoxy() {
-        return koxy;
-    }
+    public int getExp() { return exp; }
 
-    public int getRefile() {
-        return refile;
-    }
+    public int getLvl() { return lvl; }
 
-    public int getPerly() {
-        return perly;
-    }
+    public int getkoxy() { return koxy; }
 
-    public int getStrzaly() {
-        return strzaly;
-    }
+    public int getRefile() { return refile; }
 
-    public void removeKoxy(int index) {
-        this.koxy -= index;
-    }
+    public int getPerly() { return perly; }
 
-    public void removeRefile(int index) {
-        this.refile -= index;
-    }
+    public int getStrzaly() { return strzaly; }
 
-    public void removePerly(int index) {
-        this.perly -= index;
-    }
+    public int getEasycase() { return easycase; }
 
-    public void removeStrzaly(int index) {
-        this.strzaly -= index;
-    }
+    public int getCase611() { return case611; }
 
-    public void addKoxy(int index) {
-        this.koxy += index;
-    }
+    public void removeKoxy(int index) { this.koxy -= index; }
 
-    public void addRefile(int index) {
-        this.refile += index;
-    }
+    public void removeRefile(int index) { this.refile -= index; }
+
+    public void removePerly(int index) { this.perly -= index; }
+
+    public void removeStrzaly(int index) { this.strzaly -= index; }
+
+    public void addKoxy(int index) { this.koxy += index; }
+
+    public void addRefile(int index) { this.refile += index; }
 
     public void addPerly(int index) { this.perly += index; }
 
-    public void addStrzaly(int index) {
-        this.strzaly += index;
-    }
+    public void addStrzaly(int index) { this.strzaly += index; }
 
     public void addkoxEaten(int index) { this.koxEaten += index; }
 
@@ -198,7 +174,13 @@ public class User {
 
     public void addpearlThrown(int index) { this.pearlThrown += index; }
 
-    public void arrowsShoten(int index) { this.arrowsShoten += index; }
+    public void addarrowsShoten(int index) { this.arrowsShoten += index; }
+
+    public void addCoins(int index) { this.coins += index; }
+
+    public void addEasycase(int index) { this.easycase += index; }
+
+    public void addCase611(int index) { this.case611 += index; }
 
     public void setKit_vip(long kit_vip) { this.kit_vip = kit_vip; }
 
@@ -207,6 +189,10 @@ public class User {
     public void setKit_start(long kit_start) { this.kit_start = kit_start; }
 
     public void setLvl(int lvl) { this.lvl = lvl; }
+
+    public void setEasycase(int easycase) { this.easycase = easycase; }
+
+    public void setCase611(int case611) { this.case611 = case611; }
 
     private void insert() {
         Map<String,Object> data = new ConcurrentHashMap<>();
@@ -227,6 +213,9 @@ public class User {
         data.put("refilEaten", refilEaten);
         data.put("pearlThrown", pearlThrown);
         data.put("arrowsShoten", arrowsShoten);
+        data.put("coins", coins);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
         MySQLUtil.insert("users", data);
     }
 
@@ -248,6 +237,9 @@ public class User {
         data.put("refilEaten", refilEaten);
         data.put("pearlThrown", pearlThrown);
         data.put("arrowsShoten", arrowsShoten);
+        data.put("coins", coins);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
         MySQLUtil.save("users", "name", name, data);
     }
 
@@ -269,6 +261,9 @@ public class User {
         data.put("refilEaten", refilEaten);
         data.put("pearlThrown", pearlThrown);
         data.put("arrowsShoten", arrowsShoten);
+        data.put("coins", coins);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
         MySQLUtil.saveSync("users", "name", name, data);
     }
 

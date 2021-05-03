@@ -2,13 +2,14 @@ package pl.spigotplugin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 import java.util.Locale;
 
 public class OpenCommand extends PlayerCommand {
-    public OpenCommand() { super("open", "open <nick> <inv/ender>", ""); }
+    public OpenCommand() { super("open", "open <nick> <inv/ender/armor>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -27,6 +28,11 @@ public class OpenCommand extends PlayerCommand {
                 break;
             case "ender":
                 p.openInventory(o.getEnderChest());
+                break;
+            case "armor":
+                Inventory eq = Bukkit.createInventory(null, 9, "Zbroja gracza: " + p.getName());
+                o.getInventory().getArmorContents();
+                p.openInventory(eq);
                 break;
             default:
                 GlobalMessage.usage(p, getUsage());

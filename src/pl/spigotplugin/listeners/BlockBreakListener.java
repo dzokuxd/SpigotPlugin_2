@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.managers.DropManager;
 import pl.spigotplugin.managers.UserManager;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class BlockBreakListener implements Listener {
     public static Set<Player> playerSet = new ConcurrentSet<>();
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
@@ -36,6 +37,13 @@ public class BlockBreakListener implements Listener {
                 p.getInventory().addItem(Settings.cobblexItem);
                 p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
             }
+        }
+        if (p.hasPermission("regionplugin.bypass")) {
+            return;
+        }
+        if (CuboidUtil.isOutsideSpawn(b.getLocation())) {
+            e.setCancelled(true);
+            p.sendMessage("&cTa interakcja jest zablokowana!");
         }
         if (CheckUtil.checkedPlayers.contains(e.getPlayer())) {
             e.setCancelled(true);

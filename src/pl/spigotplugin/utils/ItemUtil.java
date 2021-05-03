@@ -1,5 +1,6 @@
 package pl.spigotplugin.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -20,6 +20,9 @@ public class Config
     public static int BORDER_GTP = 800;
     public static int CUBOID_TNT_OD = 14;
     public static int CUBOID_TNT_DO = 22;
+    public static int REGION_SIZE_SPAWN = 75;
+    public static int REGION_SIZE_OUTSITE = 150;
+    public static int REGION_BYPASSY = 50;
     public static long EVENTS_BEACON = 0L;
     public static long EVENTS_KILL = 0L;
     public static long EVENTS_CASE = 0L;

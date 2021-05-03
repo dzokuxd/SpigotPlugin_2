@@ -8,6 +8,7 @@ import pl.spigotplugin.objects.user.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,8 @@ public class UserManager {
     public static User getUser(String name) {
         return users.get(name.toLowerCase());
     }
+
+    public static Map<String, User> getUsers1() { return UserManager.users; }
 
     public static User getUser(Player p) {
         return users.get(p.getName().toLowerCase());

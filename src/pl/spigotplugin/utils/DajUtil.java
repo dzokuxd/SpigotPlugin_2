@@ -31,7 +31,7 @@ public class DajUtil {
             .build();
     public static ItemStack case633 = new ItemBuilder(
             Material.CHEST)
-            .setTitle("&c&lSkrzynia Ez6/3/3")
+            .setTitle("&c&lSkrzynia Ez6/1/1")
             .setGlow(true)
             .build();
 
@@ -58,7 +58,7 @@ public class DajUtil {
                 toGive.setAmount(amount);
                 break;
             }
-            case "easy633":{
+            case "case611":{
                 toGive = case633.clone();
                 toGive.setAmount(amount);
                 break;

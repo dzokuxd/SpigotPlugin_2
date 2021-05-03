@@ -10,7 +10,7 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.ItemBuilder;
 
-public class IsMenu {
+public class OdbierzMenu {
     public static void show(Player p) {
         Inventory inv = Bukkit.createInventory(p, 27, ChatUtil.color("&7&lItemShop"));
         User u = UserManager.getUser(p);
@@ -21,13 +21,13 @@ public class IsMenu {
         ItemStack easycase = new ItemBuilder(
                 Material.CHEST,1)
                 .setTitle("&7&lEasyCase")
-                .addLore("&6Posiadasz: ")
+                .addLore("&6Posiadasz: &c"+u.getEasycase())
                 .addLore("&cKliknij, aby odebrac!")
                 .build();
         ItemStack ez633 = new ItemBuilder(
                 Material.CHEST,1)
-                .setTitle("&7&lEz6/3/3")
-                .addLore("&6Posiadasz: ")
+                .setTitle("&7&lCase6/3/3")
+                .addLore("&6Posiadasz: &c"+u.getCase611())
                 .addLore("&cKliknij, aby odebrac!")
                 .build();
         inv.setItem(10, easycase);

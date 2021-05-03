@@ -10,7 +10,7 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class ItemShopCommand extends Command {
-    public ItemShopCommand() { super("itemshop", "is <gracz> <VIP, SVIP, UNBAN, COINS, TURBODROP, CASE, 633>", "","is"); }
+    public ItemShopCommand() { super("itemshop", "is <gracz> <VIP, SVIP, UNBAN, COINS, TURBODROP, EASYCASE, CASE611>", "","is"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
@@ -76,10 +76,54 @@ public class ItemShopCommand extends Command {
                 Bukkit.broadcastMessage((""));
                 Bukkit.broadcastMessage(("         &7\u00bb &cDziekujemy za wsparcie!"));
                 Bukkit.broadcastMessage(("&7&m-------------------------------------"));
-                /*u.addCoins(amout);*/
+                u.addCoins(amout);
                 u.save();
                 return;
-            }//TODO widac
+            }
+            case "easycase": {
+                if (args.length < 3) {
+                    sender.sendMessage("/is <gracz> easycase <ilosc>");
+                }
+                if (!ChatUtil.isInteger(args[2])) {
+                    sender.sendMessage("&cWartosc nie jest liczba!");
+                    return;
+                }
+                int amout = Integer.parseInt(args[2]);
+                User u = UserManager.getUser(name);
+                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage(("&7\u00bb &6Gracz &c" + name + " &6zakupil &c&lEasyCase'y! x" + amout));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage((" &7\u00bb &6Nasz sklep: &cwww." + (Config.IP)));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage(("         &7\u00bb &cDziekujemy za wsparcie!"));
+                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
+                u.addEasycase(amout);
+                u.save();
+                return;
+            }
+            case "case611": {
+                if (args.length < 3) {
+                    sender.sendMessage("/is <gracz> case633 <ilosc>");
+                }
+                if (!ChatUtil.isInteger(args[2])) {
+                    sender.sendMessage("&cWartosc nie jest liczba!");
+                    return;
+                }
+                int amout = Integer.parseInt(args[2]);
+                User u = UserManager.getUser(name);
+                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage(("&7\u00bb &6Gracz &c" + name + " &6zakupil &c&lCase'y 6/1/1! x" + amout));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage((" &7\u00bb &6Nasz sklep: &cwww." + (Config.IP)));
+                Bukkit.broadcastMessage((""));
+                Bukkit.broadcastMessage(("         &7\u00bb &cDziekujemy za wsparcie!"));
+                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
+                u.addCase611(amout);
+                u.save();
+                return;
+            }
             case "turbodrop": {
                 User u = UserManager.getUser(args[0]);
                 if (u == null) {
@@ -107,8 +151,8 @@ public class ItemShopCommand extends Command {
                 return;
             }
             default: {
-                sender.sendMessage("&7\u00bb &7Dostepne uslugi: &bVIP, SVIP, UNBAN, COINS, TURBODROP, CASE, 6/3/3");
-            }//TODO DODAC CASY
+                sender.sendMessage("&7\u00bb &7Dostepne uslugi: &bVIP, SVIP, UNBAN, COINS, TURBODROP, EASYCASE, 6/1/1");
+            }
         }
     }
 }

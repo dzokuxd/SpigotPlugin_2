@@ -1,5 +1,6 @@
 package pl.spigotplugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -48,6 +49,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerTasks();
         CraftingUtil.registerRecipe();
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
+        ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
     }
     private void registerManager() {
         UserManager.loadUsers();
@@ -78,6 +80,7 @@ public class SpigotPlugin extends JavaPlugin {
         pm.registerEvents(new CommandListener(), this);
         pm.registerEvents(new EnityDamageListener(), this);
         pm.registerEvents(new PlayerMoveListener(), this);
+        pm.registerEvents(new CommandListener(), this);
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);

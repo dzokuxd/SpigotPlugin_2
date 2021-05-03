@@ -53,6 +53,6 @@ public class BanCommand extends Command {
         }
         Ban ban = new Ban(args[0], admin, reason, 0L);
         BanManager.addBan(args[0], ban);
-        Bukkit.broadcastMessage("&cGracz " + args[0] + " zostal permanence zbanowany przez " + sender.getName() + " powod: &c" + reason);
+        Bukkit.broadcastMessage("&cGracz " + args[0] + " zostal permamentnie zbanowany przez " + sender.getName() + " powod: &c" + reason);
     }
 }

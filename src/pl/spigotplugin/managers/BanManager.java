@@ -16,7 +16,7 @@ public class BanManager {
     private static ConcurrentHashMap<String, Ban> bans;
 
     static {
-        BanManager.bans = new ConcurrentHashMap<String, Ban>();
+        BanManager.bans = new ConcurrentHashMap<>();
     }
 
     public static Ban getBan(String name) {
