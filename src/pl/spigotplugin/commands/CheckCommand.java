@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.CheckMenu;
+import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.CheckUtil;
 
 public class CheckCommand extends PlayerCommand {
@@ -73,6 +75,8 @@ public class CheckCommand extends PlayerCommand {
                 return;
             }
             CheckUtil.checkedPlayers.add(target);
+            User user = UserManager.getUser(target);
+            user.setInBeingChecked(true);
             Bukkit.broadcastMessage("&7\u00bb &6Gracz &c " + target.getName() + "&6jest aktualnie sprawdzany przez: &c" + p.getName());
             Bukkit.broadcastMessage("&7Cheaty: &cban");
             Bukkit.broadcastMessage("&7Logout: &cban");

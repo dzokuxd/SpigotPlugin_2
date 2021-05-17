@@ -3,16 +3,20 @@ package pl.spigotplugin.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.commands.BanCommand;
 import pl.spigotplugin.commands.StoneCommand;
 import pl.spigotplugin.configs.Config;
@@ -29,6 +33,9 @@ import pl.spigotplugin.utils.*;
 
 import java.sql.SQLException;
 import java.util.List;
+
+import static org.bukkit.ChatColor.DARK_GREEN;
+import static org.bukkit.Color.GREEN;
 
 public class InventoryListener implements Listener {
     @EventHandler
@@ -80,6 +87,7 @@ public class InventoryListener implements Listener {
                     }
                 }
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCraftingi"))) {
             e.setCancelled(true);
@@ -105,6 +113,7 @@ public class InventoryListener implements Listener {
                 CraftingUtil.openPotka(p);
                 return;
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 1/5"))) {
             e.setCancelled(true);
@@ -122,6 +131,7 @@ public class InventoryListener implements Listener {
             } else {
                 CraftingUtil.openMenu(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 2/5"))) {
             e.setCancelled(true);
@@ -139,6 +149,7 @@ public class InventoryListener implements Listener {
             } else {
                 CraftingUtil.openMenu(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 3/5"))) {
             e.setCancelled(true);
@@ -156,6 +167,7 @@ public class InventoryListener implements Listener {
             } else {
                 CraftingUtil.openMenu(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 4/5"))) {
             e.setCancelled(true);
@@ -173,6 +185,7 @@ public class InventoryListener implements Listener {
             } else {
                 CraftingUtil.openMenu(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lCrafting 5/5"))) {
             e.setCancelled(true);
@@ -190,6 +203,7 @@ public class InventoryListener implements Listener {
             } else {
                 CraftingUtil.openMenu(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lKity"))) {
             e.setCancelled(true);
@@ -283,6 +297,7 @@ public class InventoryListener implements Listener {
                 p.sendMessage("&8\u00bb &cOtrzymales kit mieso!");
                 KitMenu.show(p);
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lMenu Dropow"))) {
             e.setCancelled(true);
@@ -295,6 +310,7 @@ public class InventoryListener implements Listener {
             } else if (e.getSlot() == 16) {
                 StoneMenu.inventory((Player) e.getWhoClicked());
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lItemShop"))) {
             e.setCancelled(true);
@@ -305,8 +321,8 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 p.sendMessage("&aOdebrales: "+u.getEasycase()+" &aEasyCase'ow");
-                DajUtil.giveWithAmount("easycase", u.getEasycase(), p);
                 u.setEasycase(0);
+                DajUtil.giveWithAmount("easycase", u.getEasycase(), p);
                 OdbierzMenu.show(p);
                 return;
             }
@@ -317,38 +333,89 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 p.sendMessage("&aOdebrales :"+u.getCase611()+" Case'ow 6/1/1");
-                DajUtil.giveWithAmount("case611", u.getCase611(), p);
                 u.setCase611(0);
+                DajUtil.giveWithAmount("case611", u.getCase611(), p);
                 OdbierzMenu.show(p);
                 return;
             }
+            return;
+        }
+        if (e.getInventory().getName().contains("Grupa dla: ")) {
+            if (e.getCurrentItem() != null) {
+                e.setCancelled(true);
+                String groupToGive = "Gracz";
+                switch (e.getRawSlot()) {
+                    case 1:
+                        groupToGive = "VIP";
+                        break;
+                    case 2:
+                        groupToGive = "SVIP";
+                        break;
+                    case 3:
+                        groupToGive = "EASY";
+                        break;
+                    case 4:
+                        groupToGive = "YOUTUBE";
+                        break;
+                    case 5:
+                        groupToGive = "HELPER";
+                        break;
+                    case 6:
+                        groupToGive = "MOD";
+                        break;
+                    case 7:
+                        groupToGive = "ADMIN";
+                        break;
+                    case 8:
+                        groupToGive = "H@";
+                        break;
+                    case 9:
+                        groupToGive = "PREZES";
+                        break;
+                    default:
+                        break;
+                }
+
+                String name = e.getInventory().getName().replace("Grupa dla: ", "");
+
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
+            }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSprawdzanie"))) {
             e.setCancelled(true);
             if (e.getSlot() == 11) {
-                p.sendMessage("dzokv to debil");
-            }//TODO  dodac bana i ze nie mozna zamknac inv dopuki nie wybierzesz
-            if (e.getSlot() == 15) {
-                p.closeInventory();
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"ban "+p.getName() + " 1d");
+                return;
             }
+            if (e.getSlot() == 15) {
+                u.setInBeingChecked(false);
+                p.closeInventory();
+                return;
+            }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Case"))) {
             e.setCancelled(true);
             if (e.getSlot() == 53) {
                 StoneMenu.menu((Player) e.getWhoClicked());
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lGamePlay"))) {
             e.setCancelled(true);
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Ez6/3/3"))) {
             e.setCancelled(true);
             if (e.getSlot() == 8) {
                 StoneMenu.menu((Player) e.getWhoClicked());
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color(Settings.inventoryName))) {
             e.setCancelled(true);
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSchowek"))) {
             e.setCancelled(true);
@@ -369,7 +436,6 @@ public class InventoryListener implements Listener {
                 wyplac.strzalyw(u, k4);
                 return;
             }
-
             if (slot == 10) {
                 if (u.getkoxy() <= 0) {
                     p.sendMessage("&8\u00bb &cNie posiadasz koxow do wyplacenia!");
@@ -450,6 +516,7 @@ public class InventoryListener implements Listener {
                     SchowekMenu.show(p);
                     return;
                 }
+                return;
             }
             if (slot == 13) {
                 if (u.getStrzaly() <= 0) {
@@ -478,6 +545,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
             }
+            return;
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Stone"))) {
             e.setCancelled(true);
@@ -588,7 +656,6 @@ public class InventoryListener implements Listener {
                 SchowekMenu.show(p);
             }
         }
-
         public static void pearl(User u, int k3) {
             Player p = u.getPlayer();
             int schowek_perly;
@@ -645,6 +712,19 @@ public class InventoryListener implements Listener {
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
                 SchowekMenu.show(p);
             }
+        }
+    }
+
+    @EventHandler
+    public void d(InventoryCloseEvent event) {
+        if (event.getInventory().getName().equals(ChatUtil.color("&7&lSprawdzanie"))) {
+            Player player = (Player) event.getPlayer();
+            User user = UserManager.getUser(player);
+            if (!user.isInBeingChecked())
+                return;
+            SpigotPlugin.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(SpigotPlugin.getPlugin(), () -> {
+                player.openInventory(event.getInventory());
+            }, 2);
         }
     }
 }

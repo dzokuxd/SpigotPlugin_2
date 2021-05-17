@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class User {
+public class User implements Comparable<User> {
     public ConcurrentHashMap<Material, Integer> getDrops() {
         return drops;
     }
@@ -34,6 +34,7 @@ public class User {
     private int lvl = 1;
     private int exp = 0;
     private int wykStone = 0;
+    private int wykObsidian = 0;
     private int koxy = 0;
     private int refile = 0;
     private int perly = 0;
@@ -45,6 +46,14 @@ public class User {
     private int coins = 0;
     private int easycase = 0;
     private int case611 = 0;
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    private long time;
+
+    private boolean inBeingChecked = false;
 
     private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
 
@@ -62,6 +71,7 @@ public class User {
         this.lvl = rs.getInt("lvl");
         this.exp = rs.getInt("exp");
         this.wykStone = rs.getInt("wykStone");
+        this.wykObsidian = rs.getInt("wykObsidian");
         this.drops = JSONHelper.jsonStringToDrops(rs.getString("drops"));
         this.koxy = rs.getInt("koxy");
         this.refile = rs.getInt("refile");
@@ -74,6 +84,7 @@ public class User {
         this.coins = rs.getInt("coins");
         this.easycase = rs.getInt("easycase");
         this.case611 = rs.getInt("case611");
+        this.time = rs.getLong("time");
     }
 
     public String getName() {
@@ -132,21 +143,37 @@ public class User {
 
     public void setExp(int exp) { this.exp = exp; }
 
+    public long getTime() { return time; }
+
     public void setWykStone(int wykstone) { this.wykStone = wykstone; }
 
+    public void setWykObsidian(int wykObsidian) { this.wykObsidian = wykObsidian; }
+
     public int getWykStone() { return wykStone; }
+
+    public int getWykObsidian() { return wykObsidian; }
 
     public int getExp() { return exp; }
 
     public int getLvl() { return lvl; }
 
+    public int getCoins() { return coins; }
+
     public int getkoxy() { return koxy; }
+
+    public int getKoxEaten() { return koxEaten; }
 
     public int getRefile() { return refile; }
 
+    public int getRefilEaten() { return refilEaten; }
+
     public int getPerly() { return perly; }
 
+    public int getPearlThrown() { return pearlThrown; }
+
     public int getStrzaly() { return strzaly; }
+
+    public int getArrowsShoten() { return arrowsShoten; }
 
     public int getEasycase() { return easycase; }
 
@@ -204,6 +231,7 @@ public class User {
         data.put("lvl", lvl);
         data.put("exp", exp);
         data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
         data.put("drops", JSONHelper.dropsToJsonString(drops));
         data.put("koxy", koxy);
         data.put("refile", refile);
@@ -216,6 +244,7 @@ public class User {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("time", time);
         MySQLUtil.insert("users", data);
     }
 
@@ -228,6 +257,7 @@ public class User {
         data.put("lvl", lvl);
         data.put("exp", exp);
         data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
         data.put("drops", JSONHelper.dropsToJsonString(drops));
         data.put("koxy", koxy);
         data.put("refile", refile);
@@ -240,6 +270,7 @@ public class User {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("time", time);
         MySQLUtil.save("users", "name", name, data);
     }
 
@@ -252,6 +283,7 @@ public class User {
         data.put("lvl", lvl);
         data.put("exp", exp);
         data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
         data.put("drops", JSONHelper.dropsToJsonString(drops));
         data.put("koxy", koxy);
         data.put("refile", refile);
@@ -264,6 +296,7 @@ public class User {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("time", time);
         MySQLUtil.saveSync("users", "name", name, data);
     }
 
@@ -273,5 +306,18 @@ public class User {
 
     public void setCurrentTeleport(BukkitTask currentTeleport) {
         this.currentTeleport = currentTeleport;
+    }
+
+    public boolean isInBeingChecked() {
+        return inBeingChecked;
+    }
+
+    public void setInBeingChecked(boolean inBeingChecked) {
+        this.inBeingChecked = inBeingChecked;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return this.name.compareTo(o.name);
     }
 }

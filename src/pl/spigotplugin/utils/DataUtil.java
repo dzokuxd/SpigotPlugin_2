@@ -6,23 +6,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataUtil {
-    private static SimpleDateFormat dateFormat;
-    private static SimpleDateFormat timeFormat;
-    private static LinkedHashMap<Integer, String> values;
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm:ss");
+    private static final SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss");
+    private static final Map<Integer, String> values = new LinkedHashMap<>(6);
 
     static {
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm:ss");
-        timeFormat = new SimpleDateFormat("HH:mm:ss");
-        (values = new LinkedHashMap<Integer, String>(6)).put(31104000, "y");
-        DataUtil.values.put(2592000, "msc");
-        DataUtil.values.put(86400, "d");
-        DataUtil.values.put(3600, "h");
-        DataUtil.values.put(60, "min");
-        DataUtil.values.put(1, "s");
+        values.put(31104000, "y");
+        values.put(2592000, "msc");
+        values.put(86400, "d");
+        values.put(3600, "h");
+        values.put(60, "min");
+        values.put(1, "s");
     }
 
     public static String secondsToString(long l) {
         int seconds = (int) ((l - System.currentTimeMillis()) / 1000);
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Integer, String> e : DataUtil.values.entrySet()) {
+            int iDiv = seconds / e.getKey();
+            if (iDiv >= 1) {
+                int x = (int) Math.floor(iDiv);
+                sb.append(x + e.getValue());
+                seconds -= x * e.getKey();
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String secondsToStringNoMinus(long l) {
+        int seconds = (int) ((l) / 1000);
+        if (seconds == 0)
+            return "0s";
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<Integer, String> e : DataUtil.values.entrySet()) {
             int iDiv = seconds / e.getKey();

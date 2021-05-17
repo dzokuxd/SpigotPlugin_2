@@ -50,6 +50,7 @@ public class SpigotPlugin extends JavaPlugin {
         CraftingUtil.registerRecipe();
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
+        TopsManager.sortUser();
     }
     private void registerManager() {
         UserManager.loadUsers();
@@ -154,6 +155,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new LevelCommand());
         registerCommand(new TopkiCommand());
         registerCommand(new SchowekCommand());
+        registerCommand(new GroupCommand());
     }
 
     private void registerCommand(Command command){

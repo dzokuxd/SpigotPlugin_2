@@ -115,6 +115,7 @@ public class PlayerInteractListener implements Listener {
             ItemStack item = new ItemStack(Material.ARROW, (strzalyw - Config.LIMIT_STRZAL), (short) 0);
             int added = ItemUtil.remove(item, p, Config.LIMIT_STRZAL);
             u.addStrzaly(added);
+            u.addarrowsShoten(1);
             p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_STRZAL + " &6strzal! &7(&c" + added + " &6strzaly zostaja odlozone do twojego schowka&7)");
         }
         if (s.getType() == Material.ENDER_PEARL) {
@@ -123,9 +124,9 @@ public class PlayerInteractListener implements Listener {
                 ItemStack item = new ItemStack(Material.ENDER_PEARL, (pearl - Config.LIMIT_PEARL), (short) 0);
                 int added = ItemUtil.remove(item, p, Config.LIMIT_PEARL);
                 u.addPerly(added);
+                u.addpearlThrown(1);
                 p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_PEARL + " &6perel! &7(&c" + added + " &6perly zostaja odlozone do twojego schowka&7)");
             }
-            u.addpearlThrown(1);
         }
         ItemStack k = e.getPlayer().getItemInHand();
         if (k.getType().equals(Material.DIAMOND_PICKAXE) && k.getDurability() == 1559) {
@@ -201,7 +202,6 @@ public class PlayerInteractListener implements Listener {
 
             p.removePotionEffect(PotionEffectType.REGENERATION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 4));
-
             u.addkoxEaten(1);
 
         } else {
@@ -211,7 +211,6 @@ public class PlayerInteractListener implements Listener {
             p.removePotionEffect(PotionEffectType.ABSORPTION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 0));
             p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 3, 0));
-
             u.addrefilEaten(1);
 
         }

@@ -28,6 +28,7 @@ public class UserManager {
     public static User createrUser(Player p) {
         User u = new User(p);
         users.put(p.getName().toLowerCase(), u);
+        TopsManager.add(u);
         return u;
     }
 
@@ -41,6 +42,7 @@ public class UserManager {
             while (rs.next()) {
                 User u = new User(rs);
                 users.put(u.getName().toLowerCase(), u);
+                TopsManager.add(u);
             }
             rs.close();
         } catch (SQLException e) {

@@ -7,6 +7,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.Potion;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class ItemBuilder {
     private Material mat;
     private int amount;
     private String title;
+    private String skullOwner = "";
     private Color color;
     private Potion potion;
     private boolean glow;
@@ -46,6 +48,10 @@ public class ItemBuilder {
     }
     public ItemBuilder setGlow(Boolean bool){
         this.glow=bool;
+        return this;
+    }
+    public ItemBuilder setSkullOwner(String str){
+        this.skullOwner = str;
         return this;
     }
     public ItemBuilder addLores(List<String> lores) {
@@ -96,6 +102,11 @@ public class ItemBuilder {
         }
         if(glow){
             meta.addEnchant(Enchantment.DURABILITY, 10, false);
+        }
+        if (!skullOwner.isEmpty()) {
+            SkullMeta skullMeta = (SkullMeta) meta;
+            skullMeta.setOwner(skullOwner);
+            meta = skullMeta;
         }
         for (Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {
             meta.addEnchant(entry.getKey(), entry.getValue(), true);
