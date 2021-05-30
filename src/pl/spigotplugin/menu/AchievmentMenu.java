@@ -1,0 +1,322 @@
+package pl.spigotplugin.menu;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import pl.spigotplugin.enums.AchievmentType;
+import pl.spigotplugin.enums.AchievmentTypeName;
+import pl.spigotplugin.managers.UserManager;
+import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class AchievmentMenu {
+
+    public static void open(Player player) {
+        Inventory inventory = Bukkit.createInventory(null,27,"Osiagniecia:");
+        inventory.setItem(9,new ItemStack(Material.STONE));
+        inventory.setItem(10,new ItemStack(Material.OBSIDIAN));
+        inventory.setItem(11,new ItemStack(Material.DIAMOND_SWORD));
+        inventory.setItem(12,new ItemStack(Material.IRON_SWORD));
+        inventory.setItem(13,new ItemStack(Material.GOLDEN_APPLE, (short) 1));
+        inventory.setItem(14,new ItemStack(Material.GOLDEN_APPLE, (short) 0));
+        inventory.setItem(15,new ItemStack(Material.WATCH));
+        player.openInventory(inventory);
+    }
+
+    private static List<String> convert(String str) {
+        String[] split = str.split(";:;");
+        List<String> list = new LinkedList<>();
+        Collections.addAll(list, split);
+        return list;
+    }
+    public static void openSub(Player player, AchievmentTypeName type) {
+        User user = UserManager.getUser(player);
+
+        Inventory inventory = null;
+        switch (type) {
+            case STONE:{
+                inventory = Bukkit.createInventory(null,27,"stone");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("STONE_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%mined",String.valueOf(user.getWykStone()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+                break;
+            }
+            case OBSIDIAN:{
+                inventory = Bukkit.createInventory(null,27,"obsidian");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("OBS_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%obs",String.valueOf(user.getWykObsidian()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+
+                break;
+            }
+            case KOX:{
+                inventory = Bukkit.createInventory(null,27,"kox");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("KOX_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%kox",String.valueOf(user.getKoxEaten()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+
+                break;
+            }
+            case REF:{
+                inventory = Bukkit.createInventory(null,27,"ref");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("REF_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%ref",String.valueOf(user.getRefilEaten()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+
+                break;
+            }
+            case TIME:{
+                inventory = Bukkit.createInventory(null,27,"time");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("TIME_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+                        long now = System.currentTimeMillis();
+                        long join = user.getTime();
+                        long date = now - join;
+                        long seconds = date / 1000 % 60;
+                        long minutes = date / (60 * 1000) % 60;
+                        long hours = date / (60 * 60 * 1000) % 24;
+                        long days = date / (24 * 60 * 60 * 1000);
+                        String spedzonyczas = days + "d" + hours + "h" + minutes + "m" + seconds + "s";
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%time", spedzonyczas)));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+
+                break;
+            }
+            case KILLS:{
+                inventory = Bukkit.createInventory(null,27,"kills");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("KILLS_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%killed",String.valueOf(user.getKills()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+                break;
+            }
+            case ASYSTY:{
+                inventory = Bukkit.createInventory(null,27,"asysty");
+
+                for (int i = 0; i < 27; i++) {
+                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
+                }
+
+                AtomicInteger atomicInteger = new AtomicInteger(9);
+                for (AchievmentType value : AchievmentType.values()) {
+                    if(value.getType() == type) {
+
+                        ItemStack guiIcon = value.getGuiIcon().clone();
+
+                        String name = value.name();
+                        int tryToGetANumberForThisShit = Integer.parseInt(name.replace("ASYSTY_",""));
+
+                        guiIcon.setAmount(tryToGetANumberForThisShit);
+
+                        ItemMeta itemMeta = guiIcon.getItemMeta();
+                        itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
+
+                        List<String> thisIsVeryShit = new LinkedList<>();
+
+                        for (String s : convert(value.getGuiLore())) {
+                            thisIsVeryShit.add(ChatUtil.color(s.replace("%asysty",String.valueOf(user.getAsysty()))));
+                        }
+
+                        itemMeta.setLore(thisIsVeryShit);
+                        guiIcon.setItemMeta(itemMeta);
+
+                        inventory.setItem(atomicInteger.getAndIncrement(), guiIcon);
+
+                    }
+
+                }
+                break;
+            }
+        }
+
+        if(inventory == null) {
+            System.out.println(ChatUtil.color("&4Blad: &cCos poszlo nie tak!"));
+            return;
+        }
+        player.openInventory(inventory);
+    }
+}

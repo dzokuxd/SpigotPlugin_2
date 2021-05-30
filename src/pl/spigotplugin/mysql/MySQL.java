@@ -18,10 +18,9 @@ public class MySQL {
         this.dataBase = Config.dataBase;
         this.user = Config.user;
         this.password = Config.password;
-
         connect();
 
-        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT NOT NULL, koxy int(11) NOT NULL, refile int(11) NOT NULL, perly int(11) NOT NULL, strzaly int(11) NOT NULL, koxEaten int(11) NOT NULL, refilEaten int(11) NOT NULL, pearlThrown int(11) NOT NULL, arrowsShoten int(11) NOT NULL, coins int(11) NOT NULL, easycase int(11) NOT NULL, case611 int(11) NOT NULL, time bigint(22) NOT NULL)");
+        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT NOT NULL, koxy int(11) NOT NULL, refile int(11) NOT NULL, perly int(11) NOT NULL, strzaly int(11) NOT NULL, koxEaten int(11) NOT NULL, refilEaten int(11) NOT NULL, pearlThrown int(11) NOT NULL, arrowsShoten int(11) NOT NULL, coins int(11) NOT NULL, easycase int(11) NOT NULL, case611 int(11) NOT NULL, kills int(11) NOT NULL, asysty int(11) NOT NULL, time bigint(22) NOT NULL, `os` text NOT NULL)");
 
 
         update("CREATE TABLE IF NOT EXISTS backups (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +

@@ -20,6 +20,8 @@ import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.commands.BanCommand;
 import pl.spigotplugin.commands.StoneCommand;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.enums.AchievmentType;
+import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.*;
@@ -32,6 +34,7 @@ import pl.spigotplugin.settings.Settings;
 import pl.spigotplugin.utils.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.bukkit.ChatColor.DARK_GREEN;
@@ -204,6 +207,225 @@ public class InventoryListener implements Listener {
                 CraftingUtil.openMenu(p);
             }
             return;
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("Osiagniecia:"))) {
+            e.setCancelled(true);
+            AchievmentTypeName type = null;
+            switch (e.getRawSlot()) {
+
+                case 9:
+                    type = AchievmentTypeName.STONE;
+                    break;
+                case 10:
+                    type = AchievmentTypeName.OBSIDIAN;
+                    break;
+                case 11:
+                    type = AchievmentTypeName.KILLS;
+                    break;
+                case 12:
+                    type = AchievmentTypeName.ASYSTY;
+                    break;
+                case 13:
+                    type = AchievmentTypeName.KOX;
+                    break;
+                case 14:
+                    type = AchievmentTypeName.REF;
+                    break;
+                case 15:
+                    type = AchievmentTypeName.TIME;
+                    break;
+                default:
+                    break;
+            }
+            if(type == null) {
+                System.out.println("Blad: &cCos poszlo nie tak!");
+                return;
+            }
+            AchievmentMenu.openSub(p, type);
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("stone"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.STONE;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getWykStone() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                            u.save();
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("kills"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.KILLS;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getKills() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("asysty"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.ASYSTY;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getAsysty() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("ref"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.REF;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getRefilEaten() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("obsidian"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.OBSIDIAN;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getWykObsidian() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("kox"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.KOX;
+                if(value.getType() == name) {
+                    if(value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if(get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if(u.getKoxEaten() >= value.getNeededAmount()) {
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name,get+1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("time"))) {
+            e.setCancelled(true);
+            for (AchievmentType value : AchievmentType.values()) {
+                AchievmentTypeName name = AchievmentTypeName.TIME;
+                if (value.getType() == name) {
+                    if (value.getGuiSlot() == e.getRawSlot()) {
+                        int lvl = e.getRawSlot() - 8;
+                        int get = u.getAchLvl(name);
+                        if (get >= lvl) {
+                            p.sendMessage("&4Blad: &cNie posiadasz wymagan!");
+                            return;
+                        }
+                        if (u.getTime() >= value.getNeededAmount()) {
+
+                            HashMap<Integer, ItemStack> notAdded = p.getInventory().addItem(value.getReward());
+                            for (ItemStack itemStack : notAdded.values()) {
+                                p.getLocation().getWorld().dropItemNaturally(p.getLocation(), itemStack);
+                            }
+                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            u.setAchLvl(name, get + 1);
+                        } else {
+                            p.sendMessage("&4Blad: &cOdebrales juz nagrode za to osiagniecie!");
+                        }
+                    }
+                }
+            }
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lKity"))) {
             e.setCancelled(true);

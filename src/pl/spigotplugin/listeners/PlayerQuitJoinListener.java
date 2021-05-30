@@ -90,7 +90,7 @@ public class PlayerQuitJoinListener implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " logout podzcas sprasdzadnia");
         }
     }
-    private static void quitGame(Player p) {
+    private void quitGame(Player p) {
         User user = UserManager.getUser(p);
         if (user == null) return;
         CombatUtil combat = CombatManager.getCombat(p);

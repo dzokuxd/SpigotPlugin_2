@@ -9,6 +9,7 @@ import pl.spigotplugin.api.*;
 import pl.spigotplugin.commands.*;
 import pl.spigotplugin.configs.*;
 import pl.spigotplugin.handler.CreateWorldHandler;
+import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.listeners.*;
 import pl.spigotplugin.managers.*;
 import pl.spigotplugin.mysql.MySQL;
@@ -51,6 +52,7 @@ public class SpigotPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
         TopsManager.sortUser();
+        ItemHolder.init();
     }
     private void registerManager() {
         UserManager.loadUsers();
@@ -82,11 +84,12 @@ public class SpigotPlugin extends JavaPlugin {
         pm.registerEvents(new EnityDamageListener(), this);
         pm.registerEvents(new PlayerMoveListener(), this);
         pm.registerEvents(new CommandListener(), this);
+        pm.registerEvents(new TradeListener(), this);
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);
         new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
-        new CombatTask().runTaskTimerAsynchronously(this, 40L, 20L);
+        new CombatTask().runTaskTimer(this, 40L, 20L);
         new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
     }
 
@@ -156,6 +159,8 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new TopkiCommand());
         registerCommand(new SchowekCommand());
         registerCommand(new GroupCommand());
+        registerCommand(new AchievementCommand());
+        registerCommand(new ShopCommand());
     }
 
     private void registerCommand(Command command){

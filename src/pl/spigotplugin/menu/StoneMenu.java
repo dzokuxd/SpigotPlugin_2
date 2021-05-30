@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.managers.DropManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.drop.Drop;
@@ -77,7 +78,6 @@ public class StoneMenu {
 
     public static void menu(Player p) {
         Inventory inv = Bukkit.createInventory(p, 27, ChatUtil.color("&7&lMenu Dropow"));
-        ItemBuilder air = new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 15).setTitle("&7\u2022");
         ItemBuilder stone = new ItemBuilder(Material.STONE).setTitle("&7Drop z &c&lStone").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
         ItemBuilder cx = new ItemBuilder(Material.MOSSY_COBBLESTONE).setTitle("&7Drop z &c&lCobbleX").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
         ItemBuilder ez633 = new ItemBuilder(Material.CHEST).setTitle("&7Drop z &c&lEz6/1/1").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
@@ -86,22 +86,21 @@ public class StoneMenu {
         inv.setItem(16, cx.build());
         inv.setItem(12, ez633.build());
         inv.setItem(14, easycase.build());
+        ItemStack itemStack = ItemHolder.get("gui.black");
         for (int j = 0; j < 27; j++) {
-            if (j == 10 || j == 12 || j == 14 || j == 16) continue;
-
-            inv.setItem(j, air.build());
+            inv.setItem(j, itemStack);
         }
         p.openInventory(inv);
     }
 
     public static void ez633(Player p) {
         Inventory inv = Bukkit.createInventory(p, 9, ChatUtil.color("&7&lDrop z Ez6/3/3"));
-        ItemBuilder air = new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short) 15).setTitle("&7\u2022");
         ItemBuilder kilof = new ItemBuilder(Material.DIAMOND_PICKAXE).setTitle("&4&lKilof 6/1/1").addLore("&7\u00bb &6Szansa: &c1.0").addEnchantment(Enchantment.DIG_SPEED,5).addEnchantment(Enchantment.DURABILITY,1).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,1);
         ItemBuilder lose = new ItemBuilder(Material.GOLD_INGOT).setTitle("&e&lNagroda pocieszenia").addLore("&7\u00bb &6Szansa: &c99.0");
         ItemBuilder wroc = new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!");
-        for (int i = 0; i < 9; i++) {
-            inv.setItem(i, air.build());
+        ItemStack itemStack = ItemHolder.get("gui.black");
+        for (int j = 0; j < 9; j++) {
+            inv.setItem(j, itemStack);
         }
         inv.setItem(0, kilof.build());
         inv.setItem(1, lose.build());
@@ -111,9 +110,9 @@ public class StoneMenu {
 
     public static void easycase(Player p) {
         Inventory inv = Bukkit.createInventory(p, 54, ChatUtil.color("&7&lDrop z Case"));
-        ItemBuilder air = new ItemBuilder(Material.getMaterial(160), 1, (short) 15).setTitle("&8\u2022");
+        ItemStack itemStack = ItemHolder.get("gui.black");
         for (int j = 0; j < 54; j++) {
-            inv.setItem(j, air.build());
+            inv.setItem(j, itemStack);
         }
         ItemBuilder legendarne = new ItemBuilder(Material.getMaterial(160), 1, (short) 5).setTitle("&7&lLegendarne");
         ItemBuilder srednie = new ItemBuilder(Material.getMaterial(160), 1, (short) 4).setTitle("&7&lSrednie");

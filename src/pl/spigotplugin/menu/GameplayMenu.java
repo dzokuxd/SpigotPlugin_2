@@ -7,15 +7,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.ItemBuilder;
 
 public class GameplayMenu {
     public static void show(Player p){
         Inventory inv = Bukkit.createInventory(p, 54, ChatUtil.color("&7&lGamePlay"));
-        ItemBuilder air = new ItemBuilder(Material.getMaterial(160), 1, (short) 15).setTitle("&8\u2022");
+        ItemStack itemStack = ItemHolder.get("gui.black");
         for (int j = 0; j < 54; j++) {
-            inv.setItem(j, air.build());
+            inv.setItem(j, itemStack);
         }
         ItemStack tnt = new ItemBuilder(
                 Material.TNT)

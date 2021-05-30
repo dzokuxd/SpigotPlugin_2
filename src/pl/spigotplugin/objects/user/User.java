@@ -4,12 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.helper.JSONHelper;
 import pl.spigotplugin.mysql.MySQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,6 +48,9 @@ public class User implements Comparable<User> {
     private int coins = 0;
     private int easycase = 0;
     private int case611 = 0;
+    private int kills = 0;
+    private int asysty = 0;
+    private String achievments = "0@0@0@0@0@0@0";
 
     public void setTime(long time) {
         this.time = time;
@@ -84,7 +89,9 @@ public class User implements Comparable<User> {
         this.coins = rs.getInt("coins");
         this.easycase = rs.getInt("easycase");
         this.case611 = rs.getInt("case611");
-        this.time = rs.getLong("time");
+        this.kills = rs.getInt("kills");
+        this.asysty = rs.getInt("asysty");
+        this.time = rs.getLong("time");//TODO napraw osiagniecia
     }
 
     public String getName() {
@@ -179,6 +186,10 @@ public class User implements Comparable<User> {
 
     public int getCase611() { return case611; }
 
+    public int getKills() { return kills; }
+
+    public int getAsysty() { return asysty; }
+
     public void removeKoxy(int index) { this.koxy -= index; }
 
     public void removeRefile(int index) { this.refile -= index; }
@@ -244,7 +255,10 @@ public class User implements Comparable<User> {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
         data.put("time", time);
+        data.put("os", achievments);
         MySQLUtil.insert("users", data);
     }
 
@@ -270,7 +284,10 @@ public class User implements Comparable<User> {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
         data.put("time", time);
+        data.put("os", achievments);
         MySQLUtil.save("users", "name", name, data);
     }
 
@@ -296,8 +313,73 @@ public class User implements Comparable<User> {
         data.put("coins", coins);
         data.put("easycase", easycase);
         data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
         data.put("time", time);
+        data.put("os", achievments);
         MySQLUtil.saveSync("users", "name", name, data);
+    }
+    public int getAchLvl(AchievmentTypeName type) {
+        String[] split = achievments.split("@");
+        Bukkit.broadcastMessage(split.length+"");
+        Bukkit.broadcastMessage(Arrays.toString(split));
+        switch (type) {
+            case STONE:{
+                return Integer.parseInt(split[0]);
+            }
+            case OBSIDIAN:{
+                return Integer.parseInt(split[1]);
+            }
+            case KILLS:{
+                return Integer.parseInt(split[2]);
+            }
+            case ASYSTY:{
+                return Integer.parseInt(split[3]);
+            }
+            case KOX:{
+                return Integer.parseInt(split[4]);
+            }
+            case REF:{
+                return Integer.parseInt(split[5]);
+            }
+            case TIME:{
+                return Integer.parseInt(split[6]);
+            }
+            default: return 0;
+        }
+    }
+
+    public void setAchLvl(AchievmentTypeName type, int value) {
+        switch (type) {
+            case STONE:{
+                achievments = value + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case OBSIDIAN:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + value + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case KILLS:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + value + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case ASYSTY:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + value + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case KOX:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + value + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case REF:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + value + "@" + getAchLvl(AchievmentTypeName.TIME);
+                break;
+            }
+            case TIME:{
+                achievments = getAchLvl(AchievmentTypeName.STONE) + "@" + getAchLvl(AchievmentTypeName.OBSIDIAN) + "@" + getAchLvl(AchievmentTypeName.KILLS) + "@" + getAchLvl(AchievmentTypeName.ASYSTY) + "@" + getAchLvl(AchievmentTypeName.KOX) + "@" + getAchLvl(AchievmentTypeName.REF) + "@" + value;
+                break;
+            }
+        }
     }
 
     public BukkitTask getCurrentTeleport() {
