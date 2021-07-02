@@ -25,14 +25,14 @@ public class OdbierzMenu {
                 .addLore("&6Posiadasz: &c"+u.getEasycase())
                 .addLore("&cKliknij, aby odebrac!")
                 .build();
-        ItemStack ez633 = new ItemBuilder(
+        ItemStack easy611 = new ItemBuilder(
                 Material.CHEST,1)
                 .setTitle("&7&lCase6/3/3")
                 .addLore("&6Posiadasz: &c"+u.getCase611())
                 .addLore("&cKliknij, aby odebrac!")
                 .build();
         inv.setItem(10, easycase);
-        inv.setItem(16, ez633);
+        inv.setItem(16, easy611);
         p.openInventory(inv);
     }
 }

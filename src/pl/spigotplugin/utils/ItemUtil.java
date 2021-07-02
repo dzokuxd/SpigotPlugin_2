@@ -1,25 +1,23 @@
 package pl.spigotplugin.utils;
 
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ItemUtil {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static ItemStack getDefaultCobbleXItem() {
         ItemStack item = new ItemStack(Material.COBBLESTONE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatUtil.color("&bCobblex"));
-        meta.setLore(Arrays.asList(ChatUtil.color("&bPoloz na ziemi, aby otrzymac item")));
+        meta.setLore(Collections.singletonList(ChatUtil.color("&bPoloz na ziemi, aby otrzymac item")));
         item.setItemMeta(meta);
         return item;
     }
@@ -52,24 +50,14 @@ public class ItemUtil {
         }
         return true;
     }
-    public static String getItem(Player p, String it, int mod) {
+    public static void getItem(Player p, String it, int mod) {
         List<ItemStack> items = ItemUtil.getItems(it, mod);
         p.sendMessage("&6Brakuje ci:");
+        Inventory inventory = Bukkit.createInventory(p, 9, ChatUtil.color("&cBrakuje Ci"));
         for (ItemStack is : items) {
-            int id = is.getType().getId();
-            int data = is.getData().getData();
-            int amount = is.getAmount();
-            int ii = ItemUtil.getItemAmount(Material.getMaterial(id), p, (short) data);
-            p.sendMessage((color(ii, amount) + "\u00bb" + is.getItemMeta().getDisplayName() + " " + ii + "/" + amount + " - " + ((double) ii / amount * 100.0 + "%") + "\n"));
+            inventory.addItem(is);
         }
-        return null;
-    }
-    private static String color(int i, int i2) {
-        if (i >= i2) {
-            return ChatUtil.color("&c");
-        } else {
-            return ChatUtil.color("&a");
-        }
+        p.openInventory(inventory);
     }
     public static int remove(ItemStack base, Player player, int amount) {
         int actual = 0;

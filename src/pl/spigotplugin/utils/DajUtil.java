@@ -27,12 +27,10 @@ public class DajUtil {
     public static ItemStack casenormal = new ItemBuilder(
             Material.CHEST)
             .setTitle("&c&lSkrzynia "+ Config.IP)
-            .setGlow(true)
             .build();
     public static ItemStack case633 = new ItemBuilder(
             Material.CHEST)
-            .setTitle("&c&lSkrzynia Ez6/1/1")
-            .setGlow(true)
+            .setTitle("&c&lSkrzynia Easy6/1/1")
             .build();
 
     public static void giveWithAmount(String type, int amount, Player sender) {

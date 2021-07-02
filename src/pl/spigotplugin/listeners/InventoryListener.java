@@ -125,13 +125,14 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "4:0-6:Cobblestone;152:0-2:Redstone";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    ItemUtil.getItem(p, cost, 1);
+                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
                 ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_STONE, 1).setTitle(ChatUtil.color("&c&lStoniarka")).addEnchantment(Enchantment.THORNS, 10).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles stoniarke!");
             } else {
+                p.closeInventory();
                 CraftingUtil.openMenu(p);
             }
             return;
@@ -143,13 +144,14 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "49:0-6:Obsidian;41:0-2:Gold Block;152:0-1:redstone block;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    ItemUtil.getItem(p, cost, 1);
+                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
                 ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PORTAL_FRAME, 4).setTitle(ChatUtil.color("&a&lBoyFarmer")).addEnchantment(Enchantment.THORNS, 10).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles boyfarmer!");
             } else {
+                p.closeInventory();
                 CraftingUtil.openMenu(p);
             }
             return;
@@ -161,13 +163,14 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "49:0-8:Obsidian;368:0-1:Ender Pearl;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    ItemUtil.getItem(p, cost, 1);
+                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
                 ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_CHEST, 1).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles enderchest!");
             } else {
+                p.closeInventory();
                 CraftingUtil.openMenu(p);
             }
             return;
@@ -179,13 +182,14 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "41:0-8:Gold Block;397:3-1:Glwoa Gracz;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    ItemUtil.getItem(p, cost, 1);
+                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
                 ChatUtil.giveItems(p, new ItemBuilder(Material.NAME_TAG, 1).setTitle(ChatUtil.color("&6&lAnty Nogi")).addLore(ChatUtil.color("")).addLore(ChatUtil.color("&8\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!")).addEnchantment(Enchantment.DURABILITY, 2).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles Anty Nogi");
             } else {
+                p.closeInventory();
                 CraftingUtil.openMenu(p);
             }
             return;
@@ -197,13 +201,14 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "20:0-8:Szklo;397:3-1:Glwoa Gracz;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    ItemUtil.getItem(p, cost, 1);
+                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
                 ChatUtil.giveItems(p, new ItemBuilder(Material.POTION, 1, (short) 8227).setTitle(ChatUtil.color("&c&lPotka Fire")).addLore(ChatUtil.color("")).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles Potke Fire");
             } else {
+                p.closeInventory();
                 CraftingUtil.openMenu(p);
             }
             return;
@@ -526,7 +531,7 @@ public class InventoryListener implements Listener {
             if (e.getSlot() == 10) {
                 StoneMenu.stone((Player) e.getWhoClicked());
             } else if (e.getSlot() == 12) {
-                StoneMenu.ez633((Player) e.getWhoClicked());
+                StoneMenu.easy611((Player) e.getWhoClicked());
             } else if (e.getSlot() == 14) {
                 StoneMenu.easycase((Player) e.getWhoClicked());
             } else if (e.getSlot() == 16) {
@@ -628,7 +633,7 @@ public class InventoryListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Ez6/3/3"))) {
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDrop z Easy6/1/1"))) {
             e.setCancelled(true);
             if (e.getSlot() == 8) {
                 StoneMenu.menu((Player) e.getWhoClicked());

@@ -1,13 +1,11 @@
 package pl.spigotplugin.menu;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.ItemBuilder;
 
 public class CheckMenu {
     public static void show(Player p) {
@@ -16,10 +14,8 @@ public class CheckMenu {
         for (int j = 0; j < 27; j++) {
             inv.setItem(j, itemStack);
         }
-        ItemStack tak = new ItemBuilder(Material.STAINED_CLAY, 1, (short) 13).setTitle("&2&lPrzyznaje sie").addLore("&7Kliknij, aby dostac bana").addLore("&cJesli sie przyznasz dostaniesz bana na 1 dzien").build();
-        ItemStack nie = new ItemBuilder(Material.STAINED_CLAY, 1, (short) 14).setTitle("&2&lNie przyznaje sie").addLore("&7Kliknij, aby pozostac na serwerze").addLore("&7Jesli sie nie przyznasz sprawdzanie bedzie trwalo dalej").build();
-        inv.setItem(11, tak);
-        inv.setItem(15, nie);
+        inv.setItem(11, ItemHolder.get("gui.check.yes"));
+        inv.setItem(15, ItemHolder.get("gui.check.no"));
         p.openInventory(inv);
     }
 }

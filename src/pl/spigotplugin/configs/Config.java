@@ -33,6 +33,7 @@ public class Config
     public static boolean MANAGE_KIT = false;
     public static boolean MANAGE_DIAX = false;
     public static boolean MANAGE_SHOP = false;
+    public static boolean MANAGE_GUILDCREATE = false;
     public static String IP = "easyage.pl";
 
     public static void loadConfig() {

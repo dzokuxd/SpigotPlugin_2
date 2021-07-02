@@ -198,6 +198,8 @@ public class User implements Comparable<User> {
 
     public void removeStrzaly(int index) { this.strzaly -= index; }
 
+    public void removeCoins(int paramInt) { this.coins -= paramInt; }
+
     public void addKoxy(int index) { this.koxy += index; }
 
     public void addRefile(int index) { this.refile += index; }

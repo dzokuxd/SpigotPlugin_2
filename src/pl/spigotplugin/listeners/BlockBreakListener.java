@@ -24,24 +24,22 @@ import java.util.Set;
 public class BlockBreakListener implements Listener {
     public static Set<Player> playerSet = new ConcurrentSet<>();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
         User u = UserManager.getUser(p);
-        if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
-            if (playerSet.contains(p)) ;
-            int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
-            if (amount > 64 * 9) {
-                p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 64 * 9));
-                p.getInventory().addItem(Settings.cobblexItem);
-                p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
+        if (playerSet.contains(p)) {
+            if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
+                int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
+                if (amount > 64 * 9) {
+                    p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 64 * 9));
+                    p.getInventory().addItem(Settings.cobblexItem);
+                    p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
+                }
             }
         }
-        if (p.hasPermission("regionplugin.bypass")) {
-            return;
-        }
-        if (CuboidUtil.isOutsideSpawn(b.getLocation())) {
+        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
             e.setCancelled(true);
             p.sendMessage("&cTa interakcja jest zablokowana!");
         }
@@ -59,10 +57,6 @@ public class BlockBreakListener implements Listener {
             p.sendMessage("&6Trafiles na: &cSkrzynie &7(1szt) &c+20");
             u.setExp(u.getExp() + 20);
             ChatUtil.giveItems(p, d);
-            return;
-        }
-        if (e.isCancelled()) {
-            return;
         }
         int exp = DropManager.getExp(b.getType(), p);
         p.giveExp(exp);

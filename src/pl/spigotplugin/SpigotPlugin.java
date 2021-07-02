@@ -60,6 +60,7 @@ public class SpigotPlugin extends JavaPlugin {
         MuteManager.loadMutes();
         DropFile.saveDefaultConfig();
         DropManager.setup();
+        GuildManager.loadGuilds();
     }
 
     public void onDisable(){
@@ -161,6 +162,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new GroupCommand());
         registerCommand(new AchievementCommand());
         registerCommand(new ShopCommand());
+        registerCommand(new PayCommand());
     }
 
     private void registerCommand(Command command){

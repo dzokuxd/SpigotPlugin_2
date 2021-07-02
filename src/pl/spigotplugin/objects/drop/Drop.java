@@ -26,9 +26,9 @@ public class Drop {
 
     public Drop(String name) {
         super();
-        this.biomes = new ArrayList<Biome>();
-        this.tools = new ArrayList<Material>();
-        this.disabled = new HashSet<UUID>();
+        this.biomes = new ArrayList<>();
+        this.tools = new ArrayList<>();
+        this.disabled = new HashSet<>();
         this.name = name;
         this.chance = DropFile.getConfig().getDouble("random-drops." + name + ".chance");
         this.exp = DropFile.getConfig().getInt("random-drops." + name + ".exp");

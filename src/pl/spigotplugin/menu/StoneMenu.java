@@ -47,7 +47,6 @@ public class StoneMenu {
             b.addLore(" &7\u00bb &6Wykopane: &c" + u.getDrops().getOrDefault(d.getWhat().getType(), 0) + " &6szt.").setGlow(!d.isDisabled(p.getUniqueId())).build();
             inv.addItem(b.build());
         }
-        ItemBuilder wroc = new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!");
         ItemBuilder cbl = new ItemBuilder(Material.COBBLESTONE,1).setTitle("&7&lCobblestone").addLore(" &7\u00bb &7Drop: &"+(RandomDropData.isNoCobble(p.getUniqueId()) ? "cNie" : "aTak"));
         ItemBuilder on = new ItemBuilder(Material.WOOL, (short) 5).setTitle("&aWlacz Wszystkie Dropy");
         ItemBuilder off = new ItemBuilder(Material.WOOL, (short) 14).setTitle("&cWylacz Wszystkie Dropy");
@@ -60,7 +59,7 @@ public class StoneMenu {
         inv.setItem(27, on.build());
         inv.setItem(34, cbl.build());
         inv.setItem(29, itemBuilder.build());
-        inv.setItem(35, wroc.build());
+        inv.setItem(35, ItemHolder.get("gui.back"));
 
         p.openInventory(inv);
     }
@@ -78,33 +77,27 @@ public class StoneMenu {
 
     public static void menu(Player p) {
         Inventory inv = Bukkit.createInventory(p, 27, ChatUtil.color("&7&lMenu Dropow"));
-        ItemBuilder stone = new ItemBuilder(Material.STONE).setTitle("&7Drop z &c&lStone").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
-        ItemBuilder cx = new ItemBuilder(Material.MOSSY_COBBLESTONE).setTitle("&7Drop z &c&lCobbleX").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
-        ItemBuilder ez633 = new ItemBuilder(Material.CHEST).setTitle("&7Drop z &c&lEz6/1/1").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
-        ItemBuilder easycase = new ItemBuilder(Material.CHEST).setTitle("&7Drop z &c&lEasyCase").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!");
-        inv.setItem(10, stone.build());
-        inv.setItem(16, cx.build());
-        inv.setItem(12, ez633.build());
-        inv.setItem(14, easycase.build());
         ItemStack itemStack = ItemHolder.get("gui.black");
         for (int j = 0; j < 27; j++) {
             inv.setItem(j, itemStack);
         }
+        inv.setItem(10, ItemHolder.get("gui.drop.main.stone"));
+        inv.setItem(16, ItemHolder.get("gui.drop.main.cx"));
+        inv.setItem(12, ItemHolder.get("gui.drop.main.611"));
+        inv.setItem(14, ItemHolder.get("gui.drop.main.easycase"));
         p.openInventory(inv);
     }
 
-    public static void ez633(Player p) {
-        Inventory inv = Bukkit.createInventory(p, 9, ChatUtil.color("&7&lDrop z Ez6/3/3"));
-        ItemBuilder kilof = new ItemBuilder(Material.DIAMOND_PICKAXE).setTitle("&4&lKilof 6/1/1").addLore("&7\u00bb &6Szansa: &c1.0").addEnchantment(Enchantment.DIG_SPEED,5).addEnchantment(Enchantment.DURABILITY,1).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,1);
-        ItemBuilder lose = new ItemBuilder(Material.GOLD_INGOT).setTitle("&e&lNagroda pocieszenia").addLore("&7\u00bb &6Szansa: &c99.0");
-        ItemBuilder wroc = new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!");
+    public static void easy611(Player p) {
+        Inventory inv = Bukkit.createInventory(p, 9, ChatUtil.color("&7&lDrop z Easy6/1/1"));
         ItemStack itemStack = ItemHolder.get("gui.black");
         for (int j = 0; j < 9; j++) {
             inv.setItem(j, itemStack);
         }
-        inv.setItem(0, kilof.build());
-        inv.setItem(1, lose.build());
-        inv.setItem(8, wroc.build());
+        inv.setItem(0, ItemHolder.get("gui.drop.easy611.611"));
+        inv.setItem(1, ItemHolder.get("gui.drop.easy611.gold"));
+        inv.setItem(2, ItemHolder.get("gui.drop.easy611.dirt"));
+        inv.setItem(8, ItemHolder.get("gui.back"));
         p.openInventory(inv);
     }
 
@@ -114,158 +107,33 @@ public class StoneMenu {
         for (int j = 0; j < 54; j++) {
             inv.setItem(j, itemStack);
         }
-        ItemBuilder legendarne = new ItemBuilder(Material.getMaterial(160), 1, (short) 5).setTitle("&7&lLegendarne");
-        ItemBuilder srednie = new ItemBuilder(Material.getMaterial(160), 1, (short) 4).setTitle("&7&lSrednie");
-        ItemBuilder slabe = new ItemBuilder(Material.getMaterial(160), 1, (short) 14).setTitle("&7&lSlabe");
-        ItemBuilder najgorsze = new ItemBuilder(Material.getMaterial(160), 1, (short) 8).setTitle("&7&lNajgorsze");
-        ItemBuilder wroc = new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!");
-        ItemStack beacon = new ItemBuilder(
-                Material.BEACON ,1)
-                .setTitle("&e&lBeacon")
-                .addLore("&7\u00bb &6Szansa: &c1.0")
-                .setGlow(true)
-                .build();
-        ItemStack ez6 = new ItemBuilder(
-                Material.ENDER_CHEST ,1)
-                .setTitle("&e&lEz6/1/1")
-                .addLore("&7\u00bb &6Szansa: &c1.0")
-                .build();
-        ItemStack golden = new ItemBuilder(
-                Material.SKULL_ITEM, 1, (short) 3)
-                .setTitle("&e&lGoldenHead")
-                .addLore("&7\u00bb &6Szansa: &c1.0")
-                .build();
-        ItemStack knock = new ItemBuilder(
-                Material.DIAMOND_SWORD ,1)
-                .setTitle("&e&lMiecz knock 2")
-                .addEnchantment(Enchantment.KNOCKBACK,2)
-                .addLore("&7\u00bb &6Szansa: &c1.0")
-                .build();
-        ItemStack perly = new ItemBuilder(
-                Material.ENDER_PEARL ,8)
-                .setTitle("&e&lPerly")
-                .addLore("&7\u00bb &6Szansa: &c1.0")
-                .setGlow(true)
-                .build();
-        ItemStack tnt = new ItemBuilder(
-                Material.TNT ,16)
-                .setTitle("&e&lTNT")
-                .addLore("&6Szansa: &c5.0")
-                .build();
-        ItemStack biblio = new ItemBuilder(
-                Material.BOOKSHELF ,16)
-                .setTitle("&e&lBookshelf")
-                .addLore("&6Szansa: &c5.0")
-                .build();
-        ItemStack gold64 = new ItemBuilder(
-                Material.GOLD_INGOT ,64)
-                .setTitle("&e&lZloto")
-                .addLore("&6Szansa: &c5.0")
-                .build();
-        ItemStack ref = new ItemBuilder(
-                Material.GOLDEN_APPLE ,16,(short) 0)
-                .setTitle("&e&lRefile")
-                .addLore("&6Szansa: &c5.0")
-                .build();
-        ItemStack kox = new ItemBuilder(
-                Material.GOLDEN_APPLE ,16,(short) 1)
-                .setTitle("&e&lKox")
-                .addLore("&6Szansa: &c5.0")
-                .build();
-        ItemStack helm = new ItemBuilder(
-                Material.DIAMOND_HELMET ,1)
-                .setTitle("&e&lDiamentowy Helm")
-                .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,3)
-                .addEnchantment(Enchantment.DURABILITY,2)
-                .addLore("&6Szansa: &c10.0")
-                .build();
-        ItemStack klata = new ItemBuilder(
-                Material.DIAMOND_CHESTPLATE ,1)
-                .setTitle("&e&lDiamentowa Klata")
-                .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,3)
-                .addEnchantment(Enchantment.DURABILITY,2)
-                .addLore("&6Szansa: &c10.0")
-                .build();
-        ItemStack spodnie = new ItemBuilder(
-                Material.DIAMOND_LEGGINGS ,1)
-                .setTitle("&e&lDiamentowe Spodnie")
-                .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,3)
-                .addEnchantment(Enchantment.DURABILITY,2)
-                .addLore("&6Szansa: &c10.0")
-                .build();
-        ItemStack buty = new ItemBuilder(
-                Material.DIAMOND_BOOTS ,1)
-                .setTitle("&e&lDiamentowe Buty")
-                .addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL,3)
-                .addEnchantment(Enchantment.DURABILITY,2)
-                .addLore("&6Szansa: &c10.0")
-                .build();
-        ItemStack kilof5 = new ItemBuilder(
-                Material.DIAMOND_PICKAXE ,1)
-                .setTitle("&e&lDiamentowy Kilof")
-                .addEnchantment(Enchantment.DIG_SPEED,5)
-                .addEnchantment(Enchantment.DURABILITY,3)
-                .addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,3)
-                .addLore("&6Szansa: &c10.0")
-                .build();
-        ItemStack miecz = new ItemBuilder(
-                Material.DIAMOND_SWORD)
-                .setTitle("&e&lMiecz Sharp")
-                .addEnchantment(Enchantment.DAMAGE_ALL,4)
-                .addLore("&6Szansa: &c20.0")
-                .build();
-        ItemStack kilof3 = new ItemBuilder(
-                Material.DIAMOND_PICKAXE ,1)
-                .setTitle("&e&lDiamentowy Kilof")
-                .addEnchantment(Enchantment.DIG_SPEED,3)
-                .addEnchantment(Enchantment.DURABILITY,2)
-                .addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,2)
-                .addLore("&6Szansa: &c20.0")
-                .build();
-        ItemStack gold16 = new ItemBuilder(
-                Material.GOLD_INGOT ,16).
-                setTitle("&e&lZloto")
-                .addLore("&6Szansa: &c20.0")
-                .build();
-        ItemStack anvil = new ItemBuilder(
-                Material.ANVIL ,8)
-                .setTitle("&e&lKowadla")
-                .addLore("&6Szansa: &c20.0")
-                .build();
-        ItemStack dirt = new ItemBuilder(
-                Material.DIRT ,64)
-                .setTitle("&e&lZiemia")
-                .addLore("&6Szansa: &c20.0")
-                .setGlow(true)
-                .build();
-        inv.setItem(1,legendarne.build());
-        inv.setItem(3,srednie.build());
-        inv.setItem(5,slabe.build());
-        inv.setItem(7,najgorsze.build());
-        inv.setItem(10,beacon);
-        inv.setItem(12,tnt);
-        inv.setItem(14,helm);
-        inv.setItem(16,miecz);
-        inv.setItem(19,ez6);
-        inv.setItem(21,biblio);
-        inv.setItem(23,klata);
-        inv.setItem(25,kilof3);
-        inv.setItem(28,golden);
-        inv.setItem(30,gold64);
-        inv.setItem(32,spodnie);
-        inv.setItem(34,gold16);
-        inv.setItem(37,knock);
-        inv.setItem(39,ref);
-        inv.setItem(41,buty);
-        inv.setItem(43,anvil);
-        inv.setItem(46,perly);
-        inv.setItem(48,kox);
-        inv.setItem(50,kilof5);
-        inv.setItem(52,dirt);
-        inv.setItem(53,wroc.build());
+        inv.setItem(1,ItemHolder.get("gui.drop.easycase.legendarne"));
+        inv.setItem(3,ItemHolder.get("gui.drop.easycase.srednie"));
+        inv.setItem(5,ItemHolder.get("gui.drop.easycase.slabe"));
+        inv.setItem(7,ItemHolder.get("gui.drop.easycase.najgorsze"));
+        inv.setItem(10,ItemHolder.get("gui.drop.easycase.beacon"));
+        inv.setItem(12,ItemHolder.get("gui.drop.easycase.tnt"));
+        inv.setItem(14,ItemHolder.get("gui.drop.easycase.helm"));
+        inv.setItem(16,ItemHolder.get("gui.drop.easycase.miecz"));
+        inv.setItem(19,ItemHolder.get("gui.drop.easycase.easy611"));
+        inv.setItem(21,ItemHolder.get("gui.drop.easycase.biblioteczki"));
+        inv.setItem(23,ItemHolder.get("gui.drop.easycase.klata"));
+        inv.setItem(25,ItemHolder.get("gui.drop.easycase.kilof3"));
+        inv.setItem(28,ItemHolder.get("gui.drop.easycase.goldenhead"));
+        inv.setItem(30,ItemHolder.get("gui.drop.easycase.gold64"));
+        inv.setItem(32,ItemHolder.get("gui.drop.easycase.spodnie"));
+        inv.setItem(34,ItemHolder.get("gui.drop.easycase.gold16"));
+        inv.setItem(37,ItemHolder.get("gui.drop.easycase.knock"));
+        inv.setItem(39,ItemHolder.get("gui.drop.easycase.ref"));
+        inv.setItem(41,ItemHolder.get("gui.drop.easycase.buty"));
+        inv.setItem(43,ItemHolder.get("gui.drop.easycase.anvil"));
+        inv.setItem(46,ItemHolder.get("gui.drop.easycase.perly"));
+        inv.setItem(48,ItemHolder.get("gui.drop.easycase.kox"));
+        inv.setItem(50,ItemHolder.get("gui.drop.easycase.kilof5"));
+        inv.setItem(52,ItemHolder.get("gui.drop.easycase.dirt"));
+        inv.setItem(53,ItemHolder.get("gui.back"));
         p.openInventory(inv);
     }
-
     public boolean onCommand(Player sender, String[] args) {
         menu(sender);
         return true;

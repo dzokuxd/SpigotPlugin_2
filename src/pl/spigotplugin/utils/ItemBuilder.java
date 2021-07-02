@@ -161,32 +161,4 @@ public class ItemBuilder {
     }
 
 
-    public boolean isItem(ItemStack item, boolean strictDataMatch) {
-        ItemMeta meta = item.getItemMeta();
-        if (item.getType() != this.getType()) {
-            return false;
-        }
-        if (!meta.hasDisplayName() && this.getTitle() != null) {
-            return false;
-        }
-        if (!meta.getDisplayName().equals(this.getTitle())) {
-            return false;
-        }
-        if (!meta.hasLore() && !this.getLore().isEmpty()) {
-            return false;
-        }
-        if (meta.hasLore()) {
-            for (String lore : meta.getLore()) {
-                if (!this.getLore().contains(lore)) {
-                    return false;
-                }
-            }
-        }
-        for (Enchantment enchant : item.getEnchantments().keySet()) {
-            if (!this.hasEnchantment(enchant)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
