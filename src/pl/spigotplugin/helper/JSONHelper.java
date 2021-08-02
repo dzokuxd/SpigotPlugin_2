@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class JSONHelper {
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
+    public static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 
     public static String dropsToJsonString(ConcurrentHashMap<Material, Integer> drops) {
         return GSON.toJson(drops);

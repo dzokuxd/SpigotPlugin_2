@@ -2,6 +2,7 @@ package pl.spigotplugin;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,10 +14,7 @@ import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.listeners.*;
 import pl.spigotplugin.managers.*;
 import pl.spigotplugin.mysql.MySQL;
-import pl.spigotplugin.tasks.AutoMsgTask;
-import pl.spigotplugin.tasks.CombatTask;
-import pl.spigotplugin.tasks.LiveTpsTask;
-import pl.spigotplugin.tasks.TurboTask;
+import pl.spigotplugin.tasks.*;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.CraftingUtil;
 
@@ -36,14 +34,14 @@ public class SpigotPlugin extends JavaPlugin {
     }
 
     public void onEnable(){
+        GlobalMessage.reloadLang();
+        Config.reloadConfig();
+        DropFile.reloadConfig();
         try {
             mySQL = new MySQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        GlobalMessage.reloadLang();
-        Config.reloadConfig();
-        DropFile.reloadConfig();
         registerManager();
         registerListeners(getServer().getPluginManager());
         registerCommands();
@@ -53,6 +51,9 @@ public class SpigotPlugin extends JavaPlugin {
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
         TopsManager.sortUser();
         ItemHolder.init();
+        initBukkitSettings();
+
+
     }
     private void registerManager() {
         UserManager.loadUsers();
@@ -61,6 +62,17 @@ public class SpigotPlugin extends JavaPlugin {
         DropFile.saveDefaultConfig();
         DropManager.setup();
         GuildManager.loadGuilds();
+    }
+
+    private void initBukkitSettings() {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings on");
+        for (final World world : Bukkit.getWorlds()) {
+            world.setStorm(false);
+            world.setThundering(false);
+            world.setTime(1000L);
+            world.setGameRuleValue("doDaylightCycle", "false");
+            world.setGameRuleValue("doFireTick", "false");
+        }
     }
 
     public void onDisable(){
@@ -92,6 +104,7 @@ public class SpigotPlugin extends JavaPlugin {
         new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
         new CombatTask().runTaskTimer(this, 40L, 20L);
         new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
+        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(), 1200, 1200);
     }
 
     private void registerCommands() {
@@ -163,6 +176,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new AchievementCommand());
         registerCommand(new ShopCommand());
         registerCommand(new PayCommand());
+        registerCommand(new ManageCommand());
     }
 
     private void registerCommand(Command command){

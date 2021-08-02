@@ -5,6 +5,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.DropFile;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.ItemUtil;
 
 import java.util.*;
 
@@ -38,7 +39,7 @@ public class Drop {
         this.maxHeight = DropFile.getConfig().getInt("random-drops." + name + ".height.max");
         this.minAmount = DropFile.getConfig().getInt("random-drops." + name + ".amount.min");
         this.maxAmount = DropFile.getConfig().getInt("random-drops." + name + ".amount.max");
-        ItemStack what = ChatUtil.getItemStackFromString(DropFile.getConfig().getString("random-drops." + name + ".drop.what"));
+        ItemStack what = ItemUtil.getItemStackFromString(DropFile.getConfig().getString("random-drops." + name + ".drop.what"));
         this.what = what;
         this.from = Material.getMaterial(DropFile.getConfig().getString("random-drops." + name + ".drop.from"));
         for (String s : DropFile.getConfig().getStringList("random-drops." + name + ".biome")) {

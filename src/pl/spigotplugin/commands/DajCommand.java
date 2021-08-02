@@ -7,7 +7,7 @@ import pl.spigotplugin.api.Command;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
-    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|easy611> <ilosc>", "", ""); }
+    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|case611> <ilosc>", "", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
@@ -83,7 +83,7 @@ public class DajCommand extends Command {
             }
             return;
         }
-        if (args[1].equalsIgnoreCase("easy611")) {
+        if (args[1].equalsIgnoreCase("case611")) {
             if (args[0].equals("*")) {
                 int size = Integer.parseInt(args[2]);
                 for (Player pp : Bukkit.getOnlinePlayers()) {

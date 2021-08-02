@@ -3,9 +3,7 @@ package pl.spigotplugin.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -17,28 +15,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.commands.BanCommand;
-import pl.spigotplugin.commands.StoneCommand;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.enums.AchievmentType;
 import pl.spigotplugin.enums.AchievmentTypeName;
-import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.*;
 import pl.spigotplugin.objects.drop.Drop;
 import pl.spigotplugin.objects.drop.RandomDropData;
 import pl.spigotplugin.objects.user.Backup;
-import pl.spigotplugin.objects.user.Ban;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.settings.Settings;
 import pl.spigotplugin.utils.*;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.bukkit.ChatColor.DARK_GREEN;
-import static org.bukkit.Color.GREEN;
 
 public class InventoryListener implements Listener {
     @EventHandler
@@ -129,7 +119,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_STONE, 1).setTitle(ChatUtil.color("&c&lStoniarka")).addEnchantment(Enchantment.THORNS, 10).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_STONE, 1).setTitle(ChatUtil.color("&c&lStoniarka")).addEnchantment(Enchantment.THORNS, 10).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles stoniarke!");
             } else {
                 p.closeInventory();
@@ -148,7 +138,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PORTAL_FRAME, 4).setTitle(ChatUtil.color("&a&lBoyFarmer")).addEnchantment(Enchantment.THORNS, 10).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PORTAL_FRAME, 4).setTitle(ChatUtil.color("&a&lBoyFarmer")).addEnchantment(Enchantment.THORNS, 10).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles boyfarmer!");
             } else {
                 p.closeInventory();
@@ -167,7 +157,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_CHEST, 1).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_CHEST, 1).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles enderchest!");
             } else {
                 p.closeInventory();
@@ -186,7 +176,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.NAME_TAG, 1).setTitle(ChatUtil.color("&6&lAnty Nogi")).addLore(ChatUtil.color("")).addLore(ChatUtil.color("&8\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!")).addEnchantment(Enchantment.DURABILITY, 2).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.NAME_TAG, 1).setTitle(ChatUtil.color("&6&lAnty Nogi")).addLore(ChatUtil.color("")).addLore(ChatUtil.color("&8\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!")).addEnchantment(Enchantment.DURABILITY, 2).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles Anty Nogi");
             } else {
                 p.closeInventory();
@@ -205,7 +195,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.POTION, 1, (short) 8227).setTitle(ChatUtil.color("&c&lPotka Fire")).addLore(ChatUtil.color("")).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.POTION, 1, (short) 8227).setTitle(ChatUtil.color("&c&lPotka Fire")).addLore(ChatUtil.color("")).build());
                 p.sendMessage("&c&lGratulacje! &7Utworzyles Potke Fire");
             } else {
                 p.closeInventory();
@@ -449,19 +439,19 @@ public class InventoryListener implements Listener {
                     p.sendMessage("&8\u00bb &7Kit vip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_vip()));
                     return;
                 }
-                u.setKit_vip(System.currentTimeMillis() + TimeUtil.DAY.getTime(2));
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.KNOCKBACK, 2).build());
-                ChatUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
-                ChatUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 12));
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchantment(Enchantment.DIG_SPEED, 5).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
-                ChatUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
-                ChatUtil.giveItems(p, new ItemStack(Material.ARROW, 30));
+                u.setKit_vip(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.KNOCKBACK, 2).build());
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 12));
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchantment(Enchantment.DIG_SPEED, 5).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
+                ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
+                ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 30));
                 p.sendMessage("&8\u00bb &cOtrzymales kit vip!");
                 KitMenu.show(p);
                 return;
@@ -479,23 +469,23 @@ public class InventoryListener implements Listener {
                     p.sendMessage("&8\u00bb &7Kit svip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_svip()));
                     return;
                 }
-                u.setKit_svip(System.currentTimeMillis() + TimeUtil.DAY.getTime(2));
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.KNOCKBACK, 2).build());
-                ChatUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 2, (short) 1));
-                ChatUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 16));
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchantment(Enchantment.DIG_SPEED, 5).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3).build());
-                ChatUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
-                ChatUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
-                ChatUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
+                u.setKit_svip(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.KNOCKBACK, 2).build());
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 2, (short) 1));
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 16));
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_PICKAXE).addEnchantment(Enchantment.DIG_SPEED, 5).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
+                ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
+                ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
                 p.sendMessage("&8\u00bb &cOtrzymales kit svip!");
                 KitMenu.show(p);
                 return;
@@ -506,10 +496,10 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 u.setKit_start(System.currentTimeMillis() + TimeUtil.HOUR.getTime(1));
-                ChatUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
-                ChatUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
-                ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
-                ChatUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
+                ItemUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
+                ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
+                ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
+                ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
                 p.sendMessage("&8\u00bb &cOtrzymales kit start!");
                 KitMenu.show(p);
                 return;
@@ -520,8 +510,35 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 u.setKit_mieso(System.currentTimeMillis() + TimeUtil.SECOND.getTime(60));
-                ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
+                ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
                 p.sendMessage("&8\u00bb &cOtrzymales kit mieso!");
+                KitMenu.show(p);
+            }
+            if (slot == 4) {
+                if (u.isKitTest() && !p.hasPermission("")) {
+                    p.sendMessage("&8\u00bb &7Kit test mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
+                    return;
+                }
+                u.setKit_test(System.currentTimeMillis() + TimeUtil.SECOND.getTime(30));
+                ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_HELMET).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_LEGGINGS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_BOOTS).addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.DURABILITY, 3).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.DIAMOND_SWORD).addEnchantment(Enchantment.KNOCKBACK, 2).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
+                ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
+                ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
+                ItemUtil.giveItems(p, new ItemStack(Material.PUMPKIN_PIE, 8));
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
+                ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 12));
+                ItemUtil.giveItems(p, new ItemStack(Material.WATER_BUCKET, 1));
+                p.sendMessage("&8\u00bb &cOtrzymales kit test!");
                 KitMenu.show(p);
             }
             return;
@@ -675,7 +692,7 @@ public class InventoryListener implements Listener {
                 if (u.getkoxy() <= Config.LIMIT_KOX) {
                     schowek_koxy = u.getkoxy();
                     u.removeKoxy(schowek_koxy);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
                     SchowekMenu.show(p);
                     return;
@@ -684,7 +701,7 @@ public class InventoryListener implements Listener {
                     int koxy= k1 - Config.LIMIT_KOX;
                     schowek_koxy = koxy * -1;
                     u.removeKoxy(schowek_koxy);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
                     SchowekMenu.show(p);
                     return;
@@ -702,7 +719,7 @@ public class InventoryListener implements Listener {
                 if (u.getRefile() <= Config.LIMIT_REFILE) {
                     schowek_refile = u.getRefile();
                     u.removeRefile(schowek_refile);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_refile + " refile");
                     SchowekMenu.show(p);
                     return;
@@ -711,7 +728,7 @@ public class InventoryListener implements Listener {
                     int ref = k2 - Config.LIMIT_REFILE;
                     schowek_refile = ref * -1;
                     u.removeRefile(schowek_refile);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_refile + " refile");
                     SchowekMenu.show(p);
                     return;
@@ -729,7 +746,7 @@ public class InventoryListener implements Listener {
                 if (u.getPerly() <= Config.LIMIT_PEARL) {
                     schowek_perly = u.getPerly();
                     u.removePerly(schowek_perly);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
                     SchowekMenu.show(p);
                     return;
@@ -738,7 +755,7 @@ public class InventoryListener implements Listener {
                     int ref = k3 - Config.LIMIT_PEARL;
                     schowek_perly = ref * -1;
                     u.removePerly(schowek_perly);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
                     SchowekMenu.show(p);
                     return;
@@ -757,7 +774,7 @@ public class InventoryListener implements Listener {
                 if (u.getStrzaly() <= Config.LIMIT_STRZAL) {
                     schowek_strzaly = u.getStrzaly();
                     u.removeStrzaly(schowek_strzaly);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
                     SchowekMenu.show(p);
                     return;
@@ -766,11 +783,78 @@ public class InventoryListener implements Listener {
                     int strzaly = k4 - Config.LIMIT_STRZAL;
                     schowek_strzaly = strzaly * -1;
                     u.removeStrzaly(schowek_strzaly);
-                    ChatUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
+                    ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
                     p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
                     SchowekMenu.show(p);
                     return;
                 }
+            }
+            return;
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lManage"))) {
+            e.setCancelled(true);
+            if(e.getSlot()==0){
+                Config.MANAGE_GUILDCREATE = !Config.MANAGE_GUILDCREATE;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Gildie zostaly "+(Config.MANAGE_GUILDCREATE ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==1){
+                Config.MANAGE_KIT = !Config.MANAGE_KIT;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Kity zostaly "+(Config.MANAGE_KIT ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==2){
+                Config.MANAGE_DIAMOND = !Config.MANAGE_DIAMOND;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Diamentowe Itemy zostaly "+(Config.MANAGE_DIAMOND ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==3){
+                Config.MANAGE_PANEL = !Config.MANAGE_PANEL;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Panel Gildyjny zostal "+(Config.MANAGE_PANEL ? "&aWlaczony":"&cWylaczony"));
+                return;
+            }
+            if(e.getSlot()==4){
+                Config.MANAGE_SHOP = !Config.MANAGE_SHOP;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Sklep zostal "+(Config.MANAGE_SHOP ? "&aWlaczony":"&cWylaczony"));
+                return;
+            }
+            if(e.getSlot()==5){
+                Config.MANAGE_BEACON = !Config.MANAGE_BEACON;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Beacony zostaly "+(Config.MANAGE_BEACON ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==6){
+                Config.MANAGE_DROPHEAD = !Config.MANAGE_DROPHEAD;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Drop glow z graczy zostal "+(Config.MANAGE_DROPHEAD ? "&aWlaczony":"&cWylaczony"));
+                return;
+            }
+            if(e.getSlot()==7){
+                Config.MANAGE_TPA = !Config.MANAGE_TPA;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Tpa zostalo "+(Config.MANAGE_TPA ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==8){
+                Config.MANAGE_SPAWN = !Config.MANAGE_SPAWN;
+                Config.saveConfig();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Teleportowanie na spawna zostalo "+(Config.MANAGE_SPAWN ? "&aWlaczone":"&cWylaczone"));
+                return;
             }
             return;
         }
@@ -841,7 +925,7 @@ public class InventoryListener implements Listener {
             if (u.getkoxy() <= Config.LIMIT_KOX) {
                 schowek_koxy = u.getkoxy();
                 u.removeKoxy(schowek_koxy);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
                 SchowekMenu.show(p);
                 return;
@@ -850,7 +934,7 @@ public class InventoryListener implements Listener {
                 int ref = k1 - Config.LIMIT_KOX;
                 schowek_koxy = ref * -1;
                 u.removeKoxy(schowek_koxy);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
                 SchowekMenu.show(p);
             }
@@ -869,7 +953,7 @@ public class InventoryListener implements Listener {
             if (u.getRefile() <= Config.LIMIT_REFILE) {
                 schowek_strzaly = u.getRefile();
                 u.removeRefile(schowek_strzaly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " refile");
                 SchowekMenu.show(p);
                 return;
@@ -878,7 +962,7 @@ public class InventoryListener implements Listener {
                 int ref = k2 - Config.LIMIT_REFILE;
                 schowek_strzaly = ref * -1;
                 u.removeRefile(schowek_strzaly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " refile");
                 SchowekMenu.show(p);
             }
@@ -897,7 +981,7 @@ public class InventoryListener implements Listener {
             if (u.getPerly() <= Config.LIMIT_PEARL) {
                 schowek_perly = u.getPerly();
                 u.removePerly(schowek_perly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
                 SchowekMenu.show(p);
                 return;
@@ -906,7 +990,7 @@ public class InventoryListener implements Listener {
                 int ref = k3 - Config.LIMIT_PEARL;
                 schowek_perly = ref * -1;
                 u.removePerly(schowek_perly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
                 SchowekMenu.show(p);
             }
@@ -926,7 +1010,7 @@ public class InventoryListener implements Listener {
             if (u.getStrzaly() <= Config.LIMIT_STRZAL) {
                 schowek_strzaly = u.getStrzaly();
                 u.removeStrzaly(schowek_strzaly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " perly");
                 SchowekMenu.show(p);
                 return;
@@ -935,7 +1019,7 @@ public class InventoryListener implements Listener {
                 int ref = k4 - Config.LIMIT_STRZAL;
                 schowek_strzaly = ref * -1;
                 u.removeStrzaly(schowek_strzaly);
-                ChatUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
+                ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
                 p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
                 SchowekMenu.show(p);
             }

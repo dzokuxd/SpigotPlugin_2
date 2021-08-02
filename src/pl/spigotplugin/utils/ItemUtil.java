@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
 
@@ -40,6 +41,7 @@ public class ItemUtil {
         }
         return amount;
     }
+
     public static boolean checkItems(Player p, String it, int mod) {
         List<ItemStack> items = ItemUtil.getItems(it, mod);
         for (ItemStack is : items) {
@@ -50,6 +52,7 @@ public class ItemUtil {
         }
         return true;
     }
+
     public static void getItem(Player p, String it, int mod) {
         List<ItemStack> items = ItemUtil.getItems(it, mod);
         p.sendMessage("&6Brakuje ci:");
@@ -59,6 +62,7 @@ public class ItemUtil {
         }
         p.openInventory(inventory);
     }
+
     public static int remove(ItemStack base, Player player, int amount) {
         int actual = 0;
         int remaining = amount;
@@ -86,6 +90,41 @@ public class ItemUtil {
         }
         return actual;
     }
+
+    public static void giveItems(Player p, ItemStack... items) {
+        Inventory i = p.getInventory();
+        HashMap<Integer, ItemStack> notStored = i.addItem(items);
+        for (Map.Entry<Integer, ItemStack> e : notStored.entrySet()) {
+            p.getWorld().dropItemNaturally(p.getLocation(), e.getValue());
+        }
+    }
+
+    public static void removeItems(Player p, ItemStack... items) {
+        Inventory i = p.getInventory();
+        HashMap<Integer, ItemStack> notStored = i.removeItem(items);
+        for (Map.Entry<Integer, ItemStack> e : notStored.entrySet()) {
+        }
+    }
+
+    public static ItemStack getItemStackFromString(String itemstack) {
+        String[] splits = itemstack.split("@");
+        String type = splits[0];
+        String data = (splits.length == 2) ? splits[1] : null;
+        if (data == null) {
+            return new ItemStack(Material.getMaterial(type), 1);
+        }
+        return new ItemStack(Material.getMaterial(type), 1, (short) Integer.parseInt(data));
+    }
+
+    public static ItemStack getPlayerHead(String name) {
+        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        meta.setOwner(name);
+        meta.setDisplayName(name);
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
+
     public static List<ItemStack> getItems(String string, int modifier) {
         List<ItemStack> items = new ArrayList<ItemStack>();
         for (String s : string.split(";")) {
@@ -102,6 +141,18 @@ public class ItemUtil {
         }
         return items;
     }
+
+    public static Material getMaterial(String materialName) {
+        Material returnMaterial = null;
+        if (ChatUtil.isInteger(materialName)) {
+            int id = Integer.parseInt(materialName);
+            returnMaterial = Material.getMaterial(id);
+        } else {
+            returnMaterial = Material.matchMaterial(materialName);
+        }
+        return returnMaterial;
+    }
+
     public static void removeItems(Player p, String it, int mod) {
         List<ItemStack> items = getItems(it, mod);
         for (ItemStack is : items) {
@@ -111,6 +162,7 @@ public class ItemUtil {
             }
         }
     }
+
     public static int getItemAmount(Material material, Player player, short durability) {
         int amount = 0;
         ItemStack[] contents;

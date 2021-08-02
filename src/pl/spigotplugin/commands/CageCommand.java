@@ -8,14 +8,15 @@ import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.managers.CageManager;
 
 public class CageCommand extends PlayerCommand {
+
     public CageCommand() { super("cage", "cage nick-nick diamond/iron", ""); }
-    private Location cage1;
-    private Location cage2;
+
+
+    private final Location cage1 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
+    private final Location cage2 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
 
     @Override
     public void onCommand(Player p, String[] args) {
-        this.cage1 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
-        this.cage2 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
         if (args.length < 2) {
             GlobalMessage.usage(p, getUsage());
             return;

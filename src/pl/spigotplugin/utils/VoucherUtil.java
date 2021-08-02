@@ -48,6 +48,6 @@ public class VoucherUtil {
             }
         }
         if (toGive != null)
-            ChatUtil.giveItems(sender, toGive);
+            ItemUtil.giveItems(sender, toGive);
     }
 }

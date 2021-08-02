@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.ItemUtil;
 
 public class GiveCommand extends PlayerCommand {
     public GiveCommand() { super("give", "give <gracz> <id[:base]> [ilosc]", ""); }
@@ -19,7 +20,7 @@ public class GiveCommand extends PlayerCommand {
         }
         Player p = Bukkit.getPlayer(args[0]);
         String[] datas = args[1].split(":");
-        Material m = ChatUtil.getMaterial(datas[0]);
+        Material m = ItemUtil.getMaterial(datas[0]);
         short data = 0;
         if (datas.length > 1) {
             data = Short.valueOf(datas[1]);
@@ -42,7 +43,7 @@ public class GiveCommand extends PlayerCommand {
             sender.sendMessage("&4Blad: &cWystapil blad podczas dawania przedmiotu!");
             return;
         }
-        ChatUtil.giveItems(p, item);
+        ItemUtil.giveItems(p, item);
         p.updateInventory();
         sender.sendMessage("&7\u00bb &6Dales &c" + m.name() + "&7:&c" + data + " &7(&c" + item.getAmount() + "&7) &6graczowi &c" + p.getName() + "&7!");
         sender.sendMessage("&7\u00bb &6Otrzymales &c" + m.name() + "&7:&c" + data + " &7(&c" + item.getAmount() + "&7)!");

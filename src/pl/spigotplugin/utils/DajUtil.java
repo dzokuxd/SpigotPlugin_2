@@ -28,7 +28,7 @@ public class DajUtil {
             Material.CHEST)
             .setTitle("&c&lSkrzynia "+ Config.IP)
             .build();
-    public static ItemStack case633 = new ItemBuilder(
+    public static ItemStack case611 = new ItemBuilder(
             Material.CHEST)
             .setTitle("&c&lSkrzynia Easy6/1/1")
             .build();
@@ -57,7 +57,7 @@ public class DajUtil {
                 break;
             }
             case "case611":{
-                toGive = case633.clone();
+                toGive = case611.clone();
                 toGive.setAmount(amount);
                 break;
             }
@@ -67,6 +67,6 @@ public class DajUtil {
             }
         }
         if (toGive != null)
-            ChatUtil.giveItems(sender, toGive);
+            ItemUtil.giveItems(sender, toGive);
     }
 }

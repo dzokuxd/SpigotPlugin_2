@@ -11,9 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Teleporter {
     private static final String PENDING_MESSAGE = "Teleport nastapi za 10 sekund";
-    private static final String ERROR_MESSAGE = "error";
-    private static final String SUCCESS_MESSAGE = "success";
-    private static final String SUCCESSSPAWN_MESSAGE = "success";
+    private static final String ERROR_MESSAGE = "&cCos nie pyklo";
+    private static final String SUCCESS_MESSAGE = "&aPrzeteleportowano!";
 
     public static void sendRequest(Player p, Location location) {
         User u = UserManager.getUser(p);
@@ -45,11 +44,6 @@ public class Teleporter {
 
             if (atomicInteger.getAndIncrement() >= 10) {
                 p.sendMessage(SUCCESS_MESSAGE);
-                u.getCurrentTeleport().cancel();
-                u.setCurrentTeleport(null);
-            }
-            if (atomicInteger.getAndIncrement() >= 10) {
-                p.sendMessage(SUCCESSSPAWN_MESSAGE);
                 u.getCurrentTeleport().cancel();
                 u.setCurrentTeleport(null);
             }

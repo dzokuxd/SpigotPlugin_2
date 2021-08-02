@@ -6,14 +6,13 @@ import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.component.Teleporter;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.holder.LocationHolder;
 
 public class SpawnCommand extends PlayerCommand {
 
     public SpawnCommand() {
         super("spawn", "spawn", "");
     }
-
-    private final Location loc = new Location(Bukkit.getWorld("world"), 0, 90, 0);
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -22,7 +21,7 @@ public class SpawnCommand extends PlayerCommand {
                 p.sendMessage("&4Blad: &cAktualnie teleport na spawn jest wylaczony!");
                 return;
             }
-            Teleporter.sendRequest(p, loc);
+            Teleporter.sendRequest(p, LocationHolder.SPAWN);
             return;
         }
         if (!p.hasPermission("df")) {
@@ -34,6 +33,6 @@ public class SpawnCommand extends PlayerCommand {
             p.sendMessage("&4Blad: &cGracz offline!");
             return;
         }
-        target.teleport(loc);
+        target.teleport(LocationHolder.SPAWN);
     }
 }

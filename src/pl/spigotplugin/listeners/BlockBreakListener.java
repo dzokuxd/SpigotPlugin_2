@@ -39,6 +39,10 @@ public class BlockBreakListener implements Listener {
                 }
             }
         }
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp")) {
+            e.setCancelled(true);
+            p.sendMessage("&cNie mozesz niszczyc na tym swiecie!");
+        }
         if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
             e.setCancelled(true);
             p.sendMessage("&cTa interakcja jest zablokowana!");
@@ -56,7 +60,7 @@ public class BlockBreakListener implements Listener {
             Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_CASE) + " &c/event");
             p.sendMessage("&6Trafiles na: &cSkrzynie &7(1szt) &c+20");
             u.setExp(u.getExp() + 20);
-            ChatUtil.giveItems(p, d);
+            ItemUtil.giveItems(p, d);
         }
         int exp = DropManager.getExp(b.getType(), p);
         p.giveExp(exp);

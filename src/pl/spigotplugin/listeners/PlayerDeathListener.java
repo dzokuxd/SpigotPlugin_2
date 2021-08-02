@@ -15,6 +15,7 @@ import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.Backup;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.ItemUtil;
 
 public class PlayerDeathListener implements Listener {
     @EventHandler
@@ -33,10 +34,10 @@ public class PlayerDeathListener implements Listener {
                     p.leaveVehicle();
                 }
                 p.spigot().respawn();
-                ChatUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
-                ChatUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
-                ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
-                ChatUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
+                ItemUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
+                ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
+                ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
+                ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
                 p.updateInventory();
             }
         }.runTaskLater(SpigotPlugin.getPlugin(),5L);

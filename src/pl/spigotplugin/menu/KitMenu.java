@@ -60,9 +60,20 @@ public class KitMenu {
                 .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
                 .setGlow(!u.isKitMieso())
                 .build();
+        ItemStack kittest = new ItemBuilder(
+                Material.PUMPKIN_PIE)
+                .setTitle("&c&lKit test")
+                .addLore("&6Status: "
+                        + (u.isKitTest() ? "&cNiedostepny &7(&c"
+                        + DataUtil.secondsToString(u.getKit_Test()) + "&7)" : "&aDostepny"))
+                .addLore("")
+                .addLore("&7\u00bb &6Kliknij na przedmiot, aby odebrac itemy!")
+                .setGlow(!u.isKitMieso())
+                .build();
         inv.setItem(2, kitvip);
         inv.setItem(1, kitstart);
         inv.setItem(3, kitsvip);
+        inv.setItem(4, kittest);
         inv.setItem(0, kitmieso);
         p.openInventory(inv);
     }

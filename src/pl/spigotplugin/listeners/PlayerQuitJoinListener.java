@@ -31,11 +31,11 @@ public class PlayerQuitJoinListener implements Listener {
         if (u == null) {
             u = UserManager.createrUser(p);
             ChatUtil.sendTitleMessage(p, "&c" + Config.IP, "&7Witaj, &c" + p.getName() + "!", 30, 70, 40);
-            ChatUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
-            ChatUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
-            ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
-            ChatUtil.giveItems(p, new ItemStack(Material.SUGAR_CANE, 1));
-            ChatUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
+            ItemUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
+            ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
+            ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
+            ItemUtil.giveItems(p, new ItemStack(Material.SUGAR_CANE, 1));
+            ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
             int x = RandomUtil.getRandInt(-Config.BORDER_WORLD -20, Config.BORDER_WORLD -20);
             int z = RandomUtil.getRandInt(-Config.BORDER_WORLD -20, Config.BORDER_WORLD -20);
             double y = p.getWorld().getHighestBlockYAt(x, z) + 1.5f;
@@ -47,10 +47,10 @@ public class PlayerQuitJoinListener implements Listener {
             new BukkitRunnable() {
                 public void run() {
                     p.spigot().respawn();
-                    ChatUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
-                    ChatUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
-                    ChatUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
-                    ChatUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
+                    ItemUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
+                    ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
+                    ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
+                    ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
                 }
             }.runTaskLater(SpigotPlugin.getPlugin(), 1L);
         }

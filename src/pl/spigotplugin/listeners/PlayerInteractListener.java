@@ -34,6 +34,7 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         ItemStack s = e.getItem();
+        Action ea = e.getAction();
         User u = UserManager.getUser(p);
         Block clickedBlock = e.getClickedBlock();
         if (p.getItemInHand().isSimilar(VoucherUtil.vip)) {
@@ -42,7 +43,7 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na range &cVIP!");
-            ChatUtil.removeItems(p, VoucherUtil.vip);
+            ItemUtil.removeItems(p, VoucherUtil.vip);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user" + p.getName() + " group set vip");
             return;
         }
@@ -52,7 +53,7 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na range &cSVIP!");
-            ChatUtil.removeItems(p, VoucherUtil.svip);
+            ItemUtil.removeItems(p, VoucherUtil.svip);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user" + p.getName() + " group set svip");
             return;
         }
@@ -61,7 +62,7 @@ public class PlayerInteractListener implements Listener {
         }
         if (p.getItemInHand().isSimilar(VoucherUtil.turbo)) {
             Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na &cTURBODROP 10M!");
-            ChatUtil.removeItems(p, VoucherUtil.turbo);
+            ItemUtil.removeItems(p, VoucherUtil.turbo);
             long turboDropHave = 0L;
             long currentTurboDrop = u.getTurboDrop();
             if(currentTurboDrop >System.currentTimeMillis()){
@@ -126,6 +127,12 @@ public class PlayerInteractListener implements Listener {
                 u.addPerly(added);
                 u.addpearlThrown(1);
                 p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_PEARL + " &6perel! &7(&c" + added + " &6perly zostaja odlozone do twojego schowka&7)");
+            }
+        }
+        if ((ea.equals(Action.RIGHT_CLICK_AIR)) || (ea.equals(Action.RIGHT_CLICK_BLOCK))) {
+            if (e.getMaterial().equals(Material.PUMPKIN_PIE)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 4, 3));
+                p.getInventory().removeItem(new ItemStack(Material.PUMPKIN_PIE, 1));
             }
         }
         ItemStack k = e.getPlayer().getItemInHand();
@@ -202,15 +209,15 @@ public class PlayerInteractListener implements Listener {
 
             p.removePotionEffect(PotionEffectType.REGENERATION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 4));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 80, 0));
             u.addkoxEaten(1);
 
         } else {
             p.removePotionEffect(PotionEffectType.REGENERATION);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 80, 2));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 3, 2));
 
             p.removePotionEffect(PotionEffectType.ABSORPTION);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 0));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 20 * 3, 0));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 1));
             u.addrefilEaten(1);
 
         }

@@ -30,6 +30,7 @@ public class User implements Comparable<User> {
     private final List<Player> tpa = new ArrayList<>();
     private BukkitTask currentTeleport;
     private long kit_mieso = 0;
+    private long kit_test = 0;
     private long kit_start = 0;
     private long kit_vip = 0;
     private long kit_svip = 0;
@@ -120,7 +121,11 @@ public class User implements Comparable<User> {
 
     public long getKit_mieso() { return kit_mieso; }
 
+    public long getKit_Test() { return kit_test; }
+
     public void setKit_mieso(long kit_mieso) { this.kit_mieso = kit_mieso; }
+
+    public void setKit_test(long kit_test) { this.kit_test = kit_test; }
 
     public long getKit_start() { return kit_start; }
 
@@ -129,6 +134,8 @@ public class User implements Comparable<User> {
     public long getKit_svip() { return kit_svip;}
 
     public boolean isKitMieso() { return this.getKit_mieso() > System.currentTimeMillis(); }
+
+    public boolean isKitTest() { return this.getKit_Test() > System.currentTimeMillis(); }
 
     public boolean isKitStart() { return kit_start > System.currentTimeMillis(); }
 

@@ -41,6 +41,7 @@ public class TpaCommand extends PlayerCommand {
         }
         if (u.isIgnoreTpa(p) && !p.hasPermission("spigotplugin.ignore")) {
             p.sendMessage("&4Blad: &cTen gracz zablokowal od Ciebie prosby o teleportacje!");
+            return;
         }
         u.getTpa().add(p);
         p.sendMessage("&7\u00bb &6Wyslales zaproszenie o teleport do gracza &c" + o.getName() + "&7!");

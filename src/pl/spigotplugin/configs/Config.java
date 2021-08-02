@@ -9,9 +9,9 @@ import java.lang.reflect.Field;
 public class Config
 {
     public static String host = "mysql.titanaxe.com";
-    public static String dataBase = "srv155087";
-    public static String user = "srv155087";
-    public static String password = "DkUxXtrk";
+    public static String dataBase = "srv171912";
+    public static String user = "srv171912";
+    public static String password = "JxjuWRbh";
     public static int LIMIT_STRZAL = 24;
     public static int LIMIT_PEARL = 4;
     public static int LIMIT_REFILE = 12;
@@ -31,8 +31,11 @@ public class Config
     public static boolean MANAGE_TPA = false;
     public static boolean MANAGE_SPAWN = false;
     public static boolean MANAGE_KIT = false;
-    public static boolean MANAGE_DIAX = false;
+    public static boolean MANAGE_DIAMOND = false;
     public static boolean MANAGE_SHOP = false;
+    public static boolean MANAGE_PANEL = false;
+    public static boolean MANAGE_BEACON = false;
+    public static boolean MANAGE_DROPHEAD = false;
     public static boolean MANAGE_GUILDCREATE = false;
     public static String IP = "easyage.pl";
 

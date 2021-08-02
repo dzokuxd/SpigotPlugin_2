@@ -17,55 +17,35 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ChatUtil {
+
+    private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]*$");
+
+
     public static String color(String s) {
         if (s == null) {
             return "";
         }
         return ChatColor.translateAlternateColorCodes('&', s);
     }
-    public static ItemStack getItemStackFromString(String itemstack) {
-        String[] splits = itemstack.split("@");
-        String type = splits[0];
-        String data = (splits.length == 2) ? splits[1] : null;
-        if (data == null) {
-            return new ItemStack(Material.getMaterial(type), 1);
-        }
-        return new ItemStack(Material.getMaterial(type), 1, (short) Integer.parseInt(data));
-    }
+
+
     public static void sendHoverMessageCommand(Player p, String s1, String s2, String cmd) {
         IChatBaseComponent msg = IChatBaseComponent.ChatSerializer.a(color("{\"text\":\"" + s1 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + s2 + "\"}]}},\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + cmd + "\"}}"));
         PacketPlayOutChat hover = new PacketPlayOutChat(msg);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(hover);
     }
+
     public static void sendHoverMessage(CommandSender p, String s1, String s2) {
         IChatBaseComponent msg = IChatBaseComponent.ChatSerializer.a(color("{\"text\":\"" + s1 + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + s2 + "\"}]}},\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"\"}}"));
         PacketPlayOutChat hover = new PacketPlayOutChat(msg);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(hover);
     }
-    public static void giveItems(Player p, ItemStack... items) {
-        Inventory i = p.getInventory();
-        HashMap<Integer, ItemStack> notStored = i.addItem(items);
-        for (Map.Entry<Integer, ItemStack> e : notStored.entrySet()) {
-            p.getWorld().dropItemNaturally(p.getLocation(), e.getValue());
-        }
-    }
-    public static void removeItems(Player p, ItemStack... items) {
-        Inventory i = p.getInventory();
-        HashMap<Integer, ItemStack> notStored = i.removeItem(items);
-        for (Map.Entry<Integer, ItemStack> e : notStored.entrySet()) {
-        }
-    }
+
     public static boolean isInteger(String string) {
         return Pattern.matches("-?[0-9]+", string.subSequence(0, string.length()));
     }
-    public static ItemStack getPlayerHead(String name) {
-        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
-        meta.setOwner(name);
-        meta.setDisplayName(name);
-        itemStack.setItemMeta(meta);
-        return itemStack;
-    }
+
+
     public static void sendTitleMessage(Player player, String title, String subtitle, int fadeIn, int stay, int fadeOut) {
         if (title == null) {
             title = "";
@@ -93,18 +73,14 @@ public class ChatUtil {
         PacketPlayOutChat bar = new PacketPlayOutChat(icbc, (byte) 2);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(bar);
     }
-    public static Material getMaterial(String materialName) {
-        Material returnMaterial = null;
-        if (isInteger(materialName)) {
-            int id = Integer.parseInt(materialName);
-            returnMaterial = Material.getMaterial(id);
-        } else {
-            returnMaterial = Material.matchMaterial(materialName);
-        }
-        return returnMaterial;
-    }
+
+
     public static double round(double value, int decimals) {
         double p = Math.pow(10, decimals);
         return Math.round(value * p) / p;
+    }
+
+    public static boolean isAlphaNumeric(String s) {
+        return pattern.matcher(s).matches();
     }
 }
