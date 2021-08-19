@@ -8,9 +8,6 @@ public class Region {
     private int z;
     private int size;
 
-    public Region() {
-    }
-
     Region(int x, int z, int size) {
         this.x = x;
         this.z = z;

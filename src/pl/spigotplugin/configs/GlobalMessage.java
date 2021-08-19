@@ -43,6 +43,9 @@ public class GlobalMessage
             "\n&7 vip";
     public static String MESSAGES_SVIP = "&7SVIP" +
             "\n&7 svip";
+    public static String CHAT_FORMAT_GLOBAL = "{GUILD}{PREFIX}{PLAYER}&8: &r{SUFFIX}{MESSAGE}";
+    public static String CHAT_FORMAT_ADMIN = "{PREFIX}{PLAYER} &8\u2192 &r{SUFFIX}{MESSAGE}";
+    public static String CHAT_FORMAT_GUILD = "&8[&c{TAG}&8] ";
     public static List<String> MESSAGES_AUTOMSG = new ArrayList<>();
     public static String TOP = "Przeteleportowano na najwyzszy blok!";
     public static String FLY_POPRAW = "Predkosc speed musi wynosic 1-10!";

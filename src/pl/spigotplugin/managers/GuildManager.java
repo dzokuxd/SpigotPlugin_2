@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.GuildConfig;
 import pl.spigotplugin.objects.guild.Guild;
+import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.SpaceUtil;
 
 import java.sql.ResultSet;
@@ -65,6 +66,12 @@ public class GuildManager {
     public static void deleteGuild(Guild g) {
         //RankingManager.removeRanking(g);
         Bukkit.getScheduler().runTask(SpigotPlugin.getPlugin(), () -> deleteRoom(g));
+
+        for (String memberName : g.getMembers()) {
+            User memberUser = UserManager.getUser(memberName);
+            memberUser.setGuild("");
+        }
+
         guilds.remove(g.getTag());
         SpigotPlugin.getMySQL().update("DELETE FROM `{P}guilds` WHERE `tag` = '" + g.getTag() + "'");
         //SpigotPlugin.getMySQL().update("DELETE FROM `{P}savedGuilds` WHERE `tag` = '" + g.getTag() + "'");

@@ -21,7 +21,7 @@ public class GuildUtil {
             if(p.getInventory().containsAtLeast(item,amount))
                 return true;
         }
-
+        p.sendMessage("brak itemow");//TODO dodac ze otwiera sie gui itemow na gildie
         return false;
     }
     public static void removeItems(Player p){
@@ -37,7 +37,6 @@ public class GuildUtil {
     }
     public static void openInv(Player p,boolean premium){
         Inventory inventory = Bukkit.createInventory(null,9,ChatUtil.color("&7&lItemy na gildie"));
-
         List<ItemStack> items = GuildConfig.COST_CREATE;
         for (ItemStack item : items) {
             int amount = (int)(premium ? item.getAmount() * .5 : item.getAmount());

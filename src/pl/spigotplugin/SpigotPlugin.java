@@ -7,7 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.spigotplugin.api.*;
-import pl.spigotplugin.commands.*;
+import pl.spigotplugin.commands.admin.*;
+import pl.spigotplugin.commands.player.*;
+import pl.spigotplugin.commands.premium.IncognitoCommand;
+import pl.spigotplugin.commands.premium.RepairCommand;
 import pl.spigotplugin.configs.*;
 import pl.spigotplugin.handler.CreateWorldHandler;
 import pl.spigotplugin.holder.ItemHolder;
@@ -98,12 +101,15 @@ public class SpigotPlugin extends JavaPlugin {
         pm.registerEvents(new PlayerMoveListener(), this);
         pm.registerEvents(new CommandListener(), this);
         pm.registerEvents(new TradeListener(), this);
+        pm.registerEvents(new ChatListener(), this);
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);
         new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
         new CombatTask().runTaskTimer(this, 40L, 20L);
         new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
+        new CheckValidityTask().runTaskTimerAsynchronously(this, 20 * 60 * 60, 20 * 60 * 60);
+        new BarTask().runTaskTimerAsynchronously(this, 20, 20);
         this.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(), 1200, 1200);
     }
 
@@ -168,6 +174,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new OdbierzCommand());
         registerCommand(new LiveTpsCommand());
         registerCommand(new GameplayCommand());
+        registerCommand(new IncognitoCommand());
         registerCommand(new TpCommand());
         registerCommand(new LevelCommand());
         registerCommand(new TopkiCommand());

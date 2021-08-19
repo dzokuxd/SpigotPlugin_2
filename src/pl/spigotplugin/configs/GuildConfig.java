@@ -22,4 +22,10 @@ public class GuildConfig {
     public static ItemStack COST_INVITE = new ItemStack(Material.DIAMOND,8);
     public static ItemStack COST_DEPUTY = new ItemStack(Material.DIAMOND,8);
     public static ItemStack COST_LEADER = new ItemStack(Material.DIAMOND,8);
+    public static ItemStack COST_PROLONG = new ItemStack(Material.DIAMOND,8);
+    public static int CUBOID_TNT_OD = 14;
+    public static int CUBOID_TNT_DO = 22;
+    public static int CUBOID_PROLONG_ADD = 1;
+    public static int CUBOID_PROLONG_MAX = 4;
+    public static int CUBOID_PROLONG_START = 5;
 }

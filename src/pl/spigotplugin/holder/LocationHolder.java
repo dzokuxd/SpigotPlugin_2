@@ -5,6 +5,6 @@ import org.bukkit.Location;
 
 public class LocationHolder {
 
-    public static final Location SPAWN = new Location(Bukkit.getWorld("world"), 0, 90, 0);
+    public static final Location SPAWN = new Location(Bukkit.getWorld("world"), 0, 80, 0);
 
 }

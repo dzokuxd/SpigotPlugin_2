@@ -7,14 +7,14 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.managers.DropManager;
+import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
+import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.settings.Settings;
 import pl.spigotplugin.utils.*;
@@ -29,6 +29,37 @@ public class BlockBreakListener implements Listener {
         Player p = e.getPlayer();
         Block b = e.getBlock();
         User u = UserManager.getUser(p);
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp")) {
+            e.setCancelled(true);
+            p.sendMessage("&cNie mozesz niszczyc na tym swiecie!");
+            return;
+        }
+        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
+            e.setCancelled(true);
+            p.sendMessage("&cTa interakcja jest zablokowana!");
+            return;
+        }
+        if (CheckUtil.checkedPlayers.contains(e.getPlayer())) {
+            e.setCancelled(true);
+            return;
+        }
+        final Guild guild = GuildManager.getGuild(b.getLocation());
+
+        if (guild != null) {
+            final User user = UserManager.getUser(p);
+
+            if (user == null) {
+                e.setCancelled(true);
+                p.sendMessage("&cNie mozesz niszczyc na terenie wrogiej gildii!");
+                return;
+            }
+
+            if (!user.getGuild().equals(guild.getTag())) {
+                e.setCancelled(true);
+                p.sendMessage("&cNie mozesz niszczyc na terenie wrogiej gildii!");
+                return;
+            }
+        }
         if (playerSet.contains(p)) {
             if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
                 int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
@@ -38,18 +69,6 @@ public class BlockBreakListener implements Listener {
                     p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
                 }
             }
-        }
-        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp")) {
-            e.setCancelled(true);
-            p.sendMessage("&cNie mozesz niszczyc na tym swiecie!");
-        }
-        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
-            e.setCancelled(true);
-            p.sendMessage("&cTa interakcja jest zablokowana!");
-        }
-        if (CheckUtil.checkedPlayers.contains(e.getPlayer())) {
-            e.setCancelled(true);
-            return;
         }
         if (!p.getGameMode().equals(GameMode.SURVIVAL)) {
             return;

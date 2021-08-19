@@ -599,30 +599,24 @@ public class InventoryListener implements Listener {
                         groupToGive = "EASY";
                         break;
                     case 4:
-                        groupToGive = "YOUTUBE";
-                        break;
-                    case 5:
                         groupToGive = "HELPER";
                         break;
-                    case 6:
+                    case 5:
                         groupToGive = "MOD";
                         break;
-                    case 7:
+                    case 6:
                         groupToGive = "ADMIN";
                         break;
-                    case 8:
+                    case 7:
                         groupToGive = "H@";
-                        break;
-                    case 9:
-                        groupToGive = "PREZES";
                         break;
                     default:
                         break;
                 }
 
                 String name = e.getInventory().getName().replace("Grupa dla: ", "");
-
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
+                TagUtil.updateBoard(p);
             }
             return;
         }

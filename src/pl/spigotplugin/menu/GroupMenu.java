@@ -14,12 +14,10 @@ public class GroupMenu {
         inv.addItem(getSkull(target, "VIP"));
         inv.addItem(getSkull(target, "SVIP"));
         inv.addItem(getSkull(target, "EASY"));
-        inv.addItem(getSkull(target, "YOUTUBE"));
         inv.addItem(getSkull(target, "HELPER"));
         inv.addItem(getSkull(target, "MOD"));
         inv.addItem(getSkull(target, "ADMIN"));
         inv.addItem(getSkull(target, "H@"));
-        inv.addItem(getSkull(target, "PREZES"));
         p.openInventory(inv);
     }
 

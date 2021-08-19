@@ -43,6 +43,8 @@ public class PlayerQuitJoinListener implements Listener {
             p.teleport(location);
         }
         CombatManager.getCombats().putIfAbsent(p, new CombatUtil(p));
+        TagUtil.createBoard(p);
+        TagUtil.updateBoard(p);
         if (p.isDead()) {
             new BukkitRunnable() {
                 public void run() {
@@ -88,6 +90,7 @@ public class PlayerQuitJoinListener implements Listener {
         if (CheckUtil.checkedPlayers.contains(player)) {
             CheckUtil.checkedPlayers.remove(player);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + player.getName() + " logout podzcas sprasdzadnia");
+            TagUtil.removeBoard(e.getPlayer());
         }
     }
     private void quitGame(Player p) {

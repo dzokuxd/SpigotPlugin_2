@@ -17,9 +17,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class User implements Comparable<User> {
-    public ConcurrentHashMap<Material, Integer> getDrops() {
-        return drops;
-    }
 
     private String name;
     private long turboDrop = 0;
@@ -51,16 +48,13 @@ public class User implements Comparable<User> {
     private int case611 = 0;
     private int kills = 0;
     private int asysty = 0;
+    private long lastChat;
+    private String guild = "";
     private String achievments = "0@0@0@0@0@0@0";
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
     private long time;
-
+    private boolean incognito = false;
     private boolean inBeingChecked = false;
-
+    private boolean isOnCuboid = false;
     private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
 
     public User(Player p) {
@@ -92,7 +86,13 @@ public class User implements Comparable<User> {
         this.case611 = rs.getInt("case611");
         this.kills = rs.getInt("kills");
         this.asysty = rs.getInt("asysty");
+        this.lastChat = 0L;
+        this.guild = rs.getString("guild");
         this.time = rs.getLong("time");//TODO napraw osiagniecia
+    }
+
+    public ConcurrentHashMap<Material, Integer> getDrops() {
+        return drops;
     }
 
     public String getName() {
@@ -104,12 +104,20 @@ public class User implements Comparable<User> {
     }
 
     public Player getPlayer() {
+        if (name == null) {
+            return null;
+        }
+
         return Bukkit.getPlayer(name);
     }
 
     public long getTurboDrop() { return turboDrop; }
 
     public void setTurboDrop(long turboDrop) { this.turboDrop = turboDrop; }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public boolean isAutoMessages() { return this.autoMessages; }
 
@@ -132,6 +140,16 @@ public class User implements Comparable<User> {
     public long getKit_vip() { return kit_vip; }
 
     public long getKit_svip() { return kit_svip;}
+
+    public boolean isChat() {
+        return System.currentTimeMillis() > this.lastChat;
+    }
+
+    public long getLastChat() { return lastChat; }
+
+    public void setLastChat(long lastChat) {
+        this.lastChat = lastChat;
+    }
 
     public boolean isKitMieso() { return this.getKit_mieso() > System.currentTimeMillis(); }
 
@@ -241,6 +259,18 @@ public class User implements Comparable<User> {
 
     public void setCase611(int case611) { this.case611 = case611; }
 
+    public String getGuild() {return guild;}
+
+    public void setGuild(String guild) {this.guild = guild;}
+
+    public boolean isIncognito() {
+        return incognito;
+    }
+
+    public void setIncognito(boolean incognito) {
+        this.incognito = incognito;
+    }
+
     private void insert() {
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("name", name);
@@ -268,6 +298,7 @@ public class User implements Comparable<User> {
         data.put("asysty", asysty);
         data.put("time", time);
         data.put("os", achievments);
+        data.put("guild", guild);
         MySQLUtil.insert("users", data);
     }
 
@@ -297,6 +328,7 @@ public class User implements Comparable<User> {
         data.put("asysty", asysty);
         data.put("time", time);
         data.put("os", achievments);
+        data.put("guild", guild);
         MySQLUtil.save("users", "name", name, data);
     }
 
@@ -326,6 +358,7 @@ public class User implements Comparable<User> {
         data.put("asysty", asysty);
         data.put("time", time);
         data.put("os", achievments);
+        data.put("guild", guild);
         MySQLUtil.saveSync("users", "name", name, data);
     }
     public int getAchLvl(AchievmentTypeName type) {
@@ -410,5 +443,13 @@ public class User implements Comparable<User> {
     @Override
     public int compareTo(User o) {
         return this.name.compareTo(o.name);
+    }
+
+    public boolean isOnCuboid() {
+        return isOnCuboid;
+    }
+
+    public void setOnCuboid(boolean onCuboid) {
+        isOnCuboid = onCuboid;
     }
 }
