@@ -31,7 +31,7 @@ public class BanCommand extends Command {
         }
         String nick = args[0];
         if (nick.equalsIgnoreCase(sender.getName())) {
-            sender.sendMessage("&4Blad: &cNie mozesz zbanowac sam siebie!");
+            sender.sendMessage("&cNie mozesz zbanowac sam siebie!");
             return;
         }
         String dzokv = args[0];

@@ -14,7 +14,7 @@ public class TpacceptCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz jest offline!");
+            p.sendMessage("&cGracz jest offline!");
             return;
         }
         User u = UserManager.getUser(p);
@@ -28,6 +28,6 @@ public class TpacceptCommand extends PlayerCommand {
             o.sendMessage("&6Gracz &c" + p.getName() + " &6zaakceptowal twoja prosbe o teleport do niego!");
             return;
         }
-        p.sendMessage("&4Blad: &cNie masz zaproszenia do teleportacji od gracza " + o.getName() + "&7!");
+        p.sendMessage("&cNie masz zaproszenia do teleportacji od gracza " + o.getName() + "&7!");
     }
 }

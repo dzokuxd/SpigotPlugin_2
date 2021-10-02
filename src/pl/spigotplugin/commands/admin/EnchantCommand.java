@@ -22,7 +22,7 @@ public class EnchantCommand extends PlayerCommand {
         String enchantmentName = args[0];
         Enchantment enchant = EnchantManager.get(enchantmentName);
         if (enchant == null) {
-            p.sendMessage("&4Blad: &cNie znaleziono podanego enchantu!");
+            p.sendMessage("&cNie znaleziono podanego enchantu!");
             return;
         }
         int level = enchant.getMaxLevel();

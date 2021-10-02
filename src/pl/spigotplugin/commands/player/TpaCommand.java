@@ -19,7 +19,7 @@ public class TpaCommand extends PlayerCommand {
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz offline!");
+            p.sendMessage("&cGracz offline!");
             return;
         }
         User u = UserManager.getUser(o);
@@ -28,19 +28,19 @@ public class TpaCommand extends PlayerCommand {
         }
         String nickja = args[0];
         if (nickja.equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&4Blad: &cNie mozesz teleportowac sie sam do siebie! ;(");
+            p.sendMessage("&cNie mozesz teleportowac sie sam do siebie! ;(");
             return;
         }
         if (!Config.MANAGE_TPA) {
-            p.sendMessage("&4Blad: &cAktualnie tpa jest wylaczone");
+            p.sendMessage("&cAktualnie tpa jest wylaczone");
             return;
         }
         if (u.getTpa().contains(p)) {
-            p.sendMessage("&4Blad: &cWyslales juz zaproszenie o teleport do gracza " + o.getName() + "!");
+            p.sendMessage("&cWyslales juz zaproszenie o teleport do gracza " + o.getName() + "!");
             return;
         }
         if (u.isIgnoreTpa(p) && !p.hasPermission("spigotplugin.ignore")) {
-            p.sendMessage("&4Blad: &cTen gracz zablokowal od Ciebie prosby o teleportacje!");
+            p.sendMessage("&cTen gracz zablokowal od Ciebie prosby o teleportacje!");
             return;
         }
         u.getTpa().add(p);

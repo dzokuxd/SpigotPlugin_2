@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.helper.JSONHelper;
+import pl.spigotplugin.holder.SaveHolder;
 import pl.spigotplugin.mysql.MySQLUtil;
 
 import java.sql.ResultSet;
@@ -48,6 +49,10 @@ public class User implements Comparable<User> {
     private int case611 = 0;
     private int kills = 0;
     private int asysty = 0;
+    private int points = 1000;
+    private int deaths = 0;
+    private int ks = 0;
+    private int maxks = 0;
     private long lastChat;
     private String guild = "";
     private String achievments = "0@0@0@0@0@0@0";
@@ -55,6 +60,7 @@ public class User implements Comparable<User> {
     private boolean incognito = false;
     private boolean inBeingChecked = false;
     private boolean isOnCuboid = false;
+    private final Map<User, Long> lastKillers = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
 
     public User(Player p) {
@@ -86,9 +92,13 @@ public class User implements Comparable<User> {
         this.case611 = rs.getInt("case611");
         this.kills = rs.getInt("kills");
         this.asysty = rs.getInt("asysty");
+        this.points = rs.getInt("points");
+        this.deaths = rs.getInt("deaths");
+        this.ks = rs.getInt("ks");
+        this.maxks = rs.getInt("maxks");
         this.lastChat = 0L;
         this.guild = rs.getString("guild");
-        this.time = rs.getLong("time");//TODO napraw osiagniecia
+        this.time = rs.getLong("time");
     }
 
     public ConcurrentHashMap<Material, Integer> getDrops() {
@@ -109,6 +119,10 @@ public class User implements Comparable<User> {
         }
 
         return Bukkit.getPlayer(name);
+    }
+
+    public Map<User, Long> getLastKillers() {
+        return this.lastKillers;
     }
 
     public long getTurboDrop() { return turboDrop; }
@@ -191,6 +205,8 @@ public class User implements Comparable<User> {
 
     public int getCoins() { return coins; }
 
+    public void setCoins(int coins) {this.coins = coins;}
+
     public int getkoxy() { return koxy; }
 
     public int getKoxEaten() { return koxEaten; }
@@ -212,6 +228,8 @@ public class User implements Comparable<User> {
     public int getCase611() { return case611; }
 
     public int getKills() { return kills; }
+
+    public void setKills(int kills) {this.kills = kills;}
 
     public int getAsysty() { return asysty; }
 
@@ -296,6 +314,10 @@ public class User implements Comparable<User> {
         data.put("case611", case611);
         data.put("kills", kills);
         data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
@@ -326,6 +348,10 @@ public class User implements Comparable<User> {
         data.put("case611", case611);
         data.put("kills", kills);
         data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
@@ -356,6 +382,10 @@ public class User implements Comparable<User> {
         data.put("case611", case611);
         data.put("kills", kills);
         data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
@@ -424,6 +454,10 @@ public class User implements Comparable<User> {
         }
     }
 
+    public void putForSave() {
+        SaveHolder.USERS.putIfAbsent(this.name, this);
+    }
+
     public BukkitTask getCurrentTeleport() {
         return currentTeleport;
     }
@@ -452,4 +486,25 @@ public class User implements Comparable<User> {
     public void setOnCuboid(boolean onCuboid) {
         isOnCuboid = onCuboid;
     }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void setDeaths(int deaths) {this.deaths = deaths;}
+
+    public int getKs() {return ks;}
+
+    public void setKs(int ks) {this.ks = ks;}
+
+    public int getMaxks() {
+        return maxks;
+    }
+
+    public void setMaxks(int maxks) {this.maxks = maxks;}
+
+    public void setPoints(int points) {this.points = points;}
+
+    public int getPoints() {return this.points;}
+
 }

@@ -17,6 +17,10 @@ public class RandomUtil {
         return RandomUtil.rand.nextDouble() * (max - min) + min;
     }
 
+    public static int getRandInteger(final int min, final int max) throws IllegalArgumentException {
+        return RandomUtil.rand.nextInt(max - min + 1) + min;
+    }
+
     public static boolean getChance(double chance) {
         return chance >= 100.0 || chance >= getRandDouble(0.0, 100.0);
     }

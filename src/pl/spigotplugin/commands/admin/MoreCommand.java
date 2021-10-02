@@ -12,7 +12,7 @@ public class MoreCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         ItemStack is = p.getItemInHand();
         if (is == null || is.getType() == null || is.getType() == Material.AIR) {
-            p.sendMessage("&4Blad: &cMuszisz miec cos w rece!");
+            p.sendMessage("&cMuszisz miec cos w rece!");
             return;
         }
         is.setAmount(is.getMaxStackSize());

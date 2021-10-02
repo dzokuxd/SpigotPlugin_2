@@ -19,7 +19,7 @@ public class BroadcastCommand extends Command {
             return;
         }
         if (args[0].equalsIgnoreCase("chat")) {
-            Bukkit.broadcastMessage("&c&lUWAGA &7\u00bb " + StringUtils.join(args, " ",1,args.length));
+            Bukkit.broadcastMessage("" + StringUtils.join(args, " ",1,args.length));
         } else if (args[0].equalsIgnoreCase("title")) {
             for (Player pb : Bukkit.getOnlinePlayers()) {
                 ChatUtil.sendTitleMessage(pb, "&c&lUWAGA", StringUtils.join(args, " ",1,args.length), 30, 70, 40);

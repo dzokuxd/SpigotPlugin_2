@@ -4,6 +4,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
+import pl.spigotplugin.managers.GuildManager;
+import pl.spigotplugin.objects.guild.Guild;
 
 import java.util.LinkedList;
 import java.util.List;

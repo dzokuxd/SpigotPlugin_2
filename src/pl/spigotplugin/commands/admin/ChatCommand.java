@@ -22,7 +22,7 @@ public class ChatCommand extends Command {
         switch (args[0]) {
             case "off": {
                 if (!ChatManager.enable) {
-                    sender.sendMessage("&4Blad: &7cChat jest wylaczony!");
+                    sender.sendMessage("&7cChat jest wylaczony!");
                     return;
                 }
                 ChatManager.enable = false;
@@ -38,7 +38,7 @@ public class ChatCommand extends Command {
             }
             case "on": {
                 if (ChatManager.enable) {
-                    sender.sendMessage("&4Blad: &cChat jest juz wlaczony!");
+                    sender.sendMessage("&cChat jest juz wlaczony!");
                 }
                 ChatManager.enable = true;
                 Bukkit.broadcastMessage("");
@@ -69,7 +69,7 @@ public class ChatCommand extends Command {
                     return;
                 }
                 if (!ChatUtil.isInteger(args[1])) {
-                    sender.sendMessage("&4Blad: &cTo nie jest liczba");
+                    sender.sendMessage("&cTo nie jest liczba");
                     return;
                 }
                 int slow = Integer.parseInt(args[1]);
@@ -100,7 +100,7 @@ public class ChatCommand extends Command {
                     return;
                 }
                 if (!ChatUtil.isInteger(args[1])) {
-                    sender.sendMessage("&4Blad: &cTo nie liczba!");
+                    sender.sendMessage("&cTo nie liczba!");
                     return;
                 }
                 int i = Integer.parseInt(args[1]);

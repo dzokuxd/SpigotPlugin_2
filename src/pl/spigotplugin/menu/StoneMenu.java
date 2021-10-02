@@ -2,7 +2,6 @@ package pl.spigotplugin.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,9 +12,8 @@ import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.drop.Drop;
 import pl.spigotplugin.objects.drop.RandomDropData;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.settings.Settings;
+import pl.spigotplugin.configs.Settings;
 import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.DataUtil;
 import pl.spigotplugin.utils.ItemBuilder;
 
 import java.util.List;
@@ -48,8 +46,8 @@ public class StoneMenu {
             inv.addItem(b.build());
         }
         ItemBuilder cbl = new ItemBuilder(Material.COBBLESTONE,1).setTitle("&7&lCobblestone").addLore(" &7\u00bb &7Drop: &"+(RandomDropData.isNoCobble(p.getUniqueId()) ? "cNie" : "aTak"));
-        ItemBuilder on = new ItemBuilder(Material.WOOL, (short) 5).setTitle("&aWlacz Wszystkie Dropy");
-        ItemBuilder off = new ItemBuilder(Material.WOOL, (short) 14).setTitle("&cWylacz Wszystkie Dropy");
+        ItemBuilder on = new ItemBuilder(Material.STAINED_CLAY, (short) 5).setTitle("&aWlacz Wszystkie Dropy");
+        ItemBuilder off = new ItemBuilder(Material.STAINED_CLAY, (short) 14).setTitle("&cWylacz Wszystkie Dropy");
         ItemBuilder itemBuilder = new ItemBuilder(Material.EXP_BOTTLE).setTitle("&7&lDoswiadczenie");
         for (Map.Entry<Material, Integer> en : DropManager.getExps().entrySet()) {
             int exp = en.getValue();
@@ -58,9 +56,8 @@ public class StoneMenu {
         inv.setItem(28, off.build());
         inv.setItem(27, on.build());
         inv.setItem(34, cbl.build());
-        inv.setItem(29, itemBuilder.build());
+        inv.setItem(31, itemBuilder.build());
         inv.setItem(35, ItemHolder.get("gui.back"));
-
         p.openInventory(inv);
     }
     public static void inventory(Player player) {

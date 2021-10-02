@@ -5,6 +5,8 @@ import pl.spigotplugin.SpigotPlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 
 public class Config
 {

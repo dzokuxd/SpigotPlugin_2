@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.settings.Settings;
+import pl.spigotplugin.configs.Settings;
 
 public class CobblexCommand extends PlayerCommand {
     public CobblexCommand() { super("cobblex", "cx", "", "cx"); }

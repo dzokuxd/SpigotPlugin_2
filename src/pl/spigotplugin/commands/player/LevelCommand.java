@@ -17,7 +17,7 @@ public class LevelCommand extends PlayerCommand {
             u = UserManager.getUser(args[0]);
         }
         if (u == null) {
-            p.sendMessage("&4Blad: &cGracz nie istnieje!");
+            p.sendMessage("&cGracz nie istnieje!");
             return;
         }
         int wzor = (u.getLvl() * 100 * u.getLvl()) - u.getExp();

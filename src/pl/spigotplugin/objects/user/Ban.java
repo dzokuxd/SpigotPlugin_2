@@ -1,16 +1,18 @@
 package pl.spigotplugin.objects.user;
 
-import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.mysql.MySQLUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Ban {
     private String name;
     private String admin;
     private String reason;
     private long time;
-    private long start;
+    private final long start;
 
     public Ban(String name, String admin, String reason, long time) {
         this.name = name;
@@ -28,22 +30,28 @@ public class Ban {
         this.time = rs.getLong("time");
         this.start = rs.getLong("start");
     }
-
     private void insert() {
-        SpigotPlugin.getMySQL().update("INSERT INTO bans(name, admin, reason, time, start) VALUES (NULL, '" + this.getName() + "','" + this.getAdmin() + "','" + this.getReason() + "','" + this.getTime() + "','" + this.getStart() + "');");
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("name", name);
+        data.put("admin", admin);
+        data.put("reason", reason);
+        data.put("time", time);
+        data.put("start", start);
+        MySQLUtil.insert("bans", data);
     }
-
-    public long getStart() {
-        return start;
+    public String getAdmin() {
+        return admin;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public long getStart() {
+        return start;
     }
+
+    public void setName(String name) {this.name = name;}
 
     public long getTime() {
         return time;
@@ -59,10 +67,6 @@ public class Ban {
 
     public void setReason(String reason) {
         this.reason = reason;
-    }
-
-    public String getAdmin() {
-        return admin;
     }
 
     public void setAdmin(String admin) {

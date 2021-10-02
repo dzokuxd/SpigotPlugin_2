@@ -8,7 +8,6 @@ import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.CombatUtil;
 
 public class KickAllCommand extends Command {
     public KickAllCommand() { super("kickall", "/kickall powod", ""); }
@@ -22,10 +21,7 @@ public class KickAllCommand extends Command {
         String kick = "\n&cZostales wyrzocony z serwera przez: " + sender.getName() + "\n&cPowod: " + StringUtils.join(args, " ");
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.hasPermission("core.cmd.mod")) {
-                CombatUtil combat = CombatManager.getCombat(p);
-                combat.setLastAttactTime(0L);
-                combat.setLastAttactkPlayer(null);
-                combat.setLastAsystPlayer(null);
+                CombatManager.getFightMap().clear();
                 p.kickPlayer(ChatUtil.color(kick));
             }
         }

@@ -1,20 +1,22 @@
 package pl.spigotplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import pl.spigotplugin.api.BossBarApi;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.Settings;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.CheckUtil;
+import pl.spigotplugin.utils.DataUtil;
 import pl.spigotplugin.utils.LocationUtil;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class PlayerMoveListener implements Listener {
 
@@ -33,7 +35,7 @@ public class PlayerMoveListener implements Listener {
         if (GuildManager.getGuild(p.getLocation()) == null) {
             if (u.isOnCuboid()) {
                 u.setOnCuboid(false);
-                p.sendMessage("&aOpusciles teren wrogiej gildii");
+                p.sendMessage("&cOpusciles teren gildii!");
                 BossBarApi.removeBar(e.getPlayer());
             }
         } else {
@@ -47,24 +49,62 @@ public class PlayerMoveListener implements Listener {
                 return;
             }
 
-            p.sendMessage("&cWkroczyles na teren wrogiej gildii "+ guild.getTag());
-            BossBarApi.setBar(e.getPlayer(), ChatColor.RED + "Znajdujesz sie na terenie wrogiej gildii!", 100);
-            u.setOnCuboid(true);
+            String text = ChatColor.RED + "Znajdujesz sie na terenie wrogiej gildii!";
 
+            if (!u.getGuild().isEmpty()) {
+                if (u.getGuild().equals(guild.getTag())) {
+                    text = ChatColor.GREEN + "Znajdujesz sie na terenie swojej gildii!";
+                } else {
+                    Guild guild1 = GuildManager.getGuild(u.getGuild());
+
+                    if (guild1 != null && guild1.getAlly().contains(guild.getTag())) {
+                        text = ChatColor.BLUE + "Znajdujesz sie na terenie sojuszniczej gildii!";
+                    }
+                }
+
+            }
+
+            BossBarApi.setBar(e.getPlayer(), text, 100);
+            p.sendMessage(text);
+            if (guild.isProtected()){
+                p.sendMessage("&6Ta gildia posiada ochrone jeszcze przez &c" + DataUtil.secondsToString(guild.getprottime()));
+            }
+            u.setOnCuboid(true);
             if (p.hasPermission("spigotplugin.hide")) {
                 return;
             }
-
             if (guild.getMembers().contains(p.getName())) {
                 return;
             }
-
             for (Player onlineMember : guild.getOnlineMembers()) {
                 if (onlineMember == null) {
                     continue;
                 }
-
                 onlineMember.sendMessage("&4Wrog wkroczyl na teren twojej gildii "+p.getName());
+            }
+        }
+    }
+    @EventHandler
+    public static void isCheck(Player player, Location from, Location to){
+        Guild g = GuildManager.getGuild(player);
+        if (g == null) {
+            return;
+        }
+        if(to.getBlock().isEmpty()||to.clone().add(0.0, 1.0, 0.0).getBlock().isEmpty()){
+            return;
+        }
+        if(!Settings.isContains(to.getBlock().getType())&&
+                !Settings.isContains(to.clone().add(0.0, 1.0, 0.0).getBlock().getType())){
+            return;
+        }
+        Location teleport=new Location(Bukkit.getWorld("world"), from.getBlockX(), from.getBlockY(), from.getBlockZ());
+        teleport.setYaw(player.getLocation().getYaw());
+        teleport.setPitch(player.getLocation().getPitch());
+        teleport.subtract(-0.5, 0.0, -0.5);
+        player.teleport(teleport);
+        for (Player admins : Bukkit.getOnlinePlayers()) {
+            if (admins.hasPermission("vanish")) {
+                admins.sendMessage("shadowblock" + player);
             }
         }
     }

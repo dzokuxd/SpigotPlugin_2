@@ -17,7 +17,7 @@ public class SpawnCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         if (args.length == 0) {
             if (!Config.MANAGE_SPAWN) {
-                p.sendMessage("&4Blad: &cAktualnie teleport na spawn jest wylaczony!");
+                p.sendMessage("&cAktualnie teleport na spawn jest wylaczony!");
                 return;
             }
             Teleporter.sendRequest(p, LocationHolder.SPAWN);
@@ -29,7 +29,7 @@ public class SpawnCommand extends PlayerCommand {
         }
         Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) {
-            p.sendMessage("&4Blad: &cGracz offline!");
+            p.sendMessage("&cGracz offline!");
             return;
         }
         target.teleport(LocationHolder.SPAWN);

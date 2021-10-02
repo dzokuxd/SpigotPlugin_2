@@ -5,41 +5,106 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.managers.CombatManager;
+import pl.spigotplugin.managers.GuildManager;
+import pl.spigotplugin.objects.guild.Fight;
+import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.utils.CheckUtil;
 import pl.spigotplugin.utils.CuboidUtil;
+import pl.spigotplugin.utils.EntityUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class EnityDamageListener implements Listener {
     @EventHandler
     public void damage(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player && e.getEntity() instanceof Player) {
+
+        if (!(e.getEntity() instanceof Player)) {
+            return;
+        }
+       if (e.getDamager() instanceof Player) {
             Player player = (Player) e.getEntity();
             Player damager = (Player) e.getDamager();
             if (CheckUtil.checkedPlayers.contains(player) || CheckUtil.checkedPlayers.contains(damager)) {
                 e.setCancelled(true);
+                return;
             }
         }
-        if (e.getEntity() instanceof Player && e.getDamager() instanceof Player && e.getEntity().getWorld().getName().equals("world")) {
+
+        if (e.getDamager() instanceof Player && e.getEntity().getWorld().getName().equals("world")) {
             if (CuboidUtil.isSpawn(e.getEntity().getLocation())) {
                 if (e.getEntity().getLocation().getBlockY() <= (Config.REGION_BYPASSY)) {
                     return;
                 }
                 e.setCancelled(true);
+                return;
             }
             else if (CuboidUtil.isSpawn(e.getDamager().getLocation()) && CuboidUtil.isOutsideSpawn(e.getEntity().getLocation())) {
                 if (e.getEntity().getLocation().getBlockY() <= (Config.REGION_BYPASSY)) {
                     return;
                 }
                 e.setCancelled(true);
-            }
-        }
-        if (e.getEntity() instanceof Player) {
-            final Player p = (Player)e.getEntity();
-            if (p.getLocation().getBlockY() <= (Config.REGION_BYPASSY)) {
                 return;
             }
-            if (CuboidUtil.isOutsideSpawn(p.getLocation())) {
-                e.setCancelled(true);
+        }
+        Player p = (Player) e.getEntity();
+        Player playerDamager = EntityUtil.getDamager(e);
+        if (playerDamager != null) {
+            if (p.getLocation().getBlockY() > Config.REGION_BYPASSY) {
+                if (CuboidUtil.isOutsideSpawn(p.getLocation())) {
+                    e.setCancelled(true);
+                    return;
+                }
+                if (this.is(p, playerDamager,e)) {
+                    return;
+                }
+            }
+            if (p != playerDamager) {
+                Fight playerFight2 = CombatManager.get(p);
+                Fight damagerFight2 = CombatManager.get(playerDamager);
+
+                if (playerFight2.getFightTime() < System.currentTimeMillis()) {
+                    p.sendMessage("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!");
+                }
+                if (damagerFight2.getFightTime() < System.currentTimeMillis()) {
+                    playerDamager.sendMessage("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!");
+                }
+
+                long fightTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
+
+                playerFight2.setFightTime(fightTime);
+                playerFight2.setAttacked(playerDamager);
+                damagerFight2.setFightTime(fightTime);
+                damagerFight2.setAttacked(p);
             }
         }
+    }
+    private boolean is(Player p, Player d, EntityDamageByEntityEvent e) {
+        Guild g = GuildManager.getGuild(p);
+        Guild o = GuildManager.getGuild(d);
+        if (g == null || o == null) {
+            return false;
+        }
+        if (g.equals(o)) {
+            if (g.isPvp()) {
+                e.setDamage(0.0);
+            }
+            else {
+                e.setCancelled(true);
+                d.sendMessage("&cWalka w gildii wylaczona!");
+            }
+            return true;
+        }
+        if (g.getAlly().contains(o.getTag())) {
+            if (!g.isPvpAlly() || !o.isPvpAlly()) {
+                e.setCancelled(true);
+                d.sendMessage("&cWalka w sojuszu wylaczona!");
+            }
+            else {
+                e.setDamage(0.0);
+            }
+            return true;
+        }
+        return false;
     }
 }

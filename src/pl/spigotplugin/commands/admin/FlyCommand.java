@@ -6,7 +6,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.GlobalMessage;
 
 public class FlyCommand extends PlayerCommand {
-    public FlyCommand() { super("fly", "/ly <gracz>", ""); }
+    public FlyCommand() { super("fly", "/fly <gracz>", ""); }
 
     @Override
     public void onCommand(Player p, String[] args) {

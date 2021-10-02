@@ -10,6 +10,7 @@ import pl.spigotplugin.managers.ChatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.MuteManager;
 import pl.spigotplugin.managers.UserManager;
+import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.Mute;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
@@ -19,7 +20,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.regex.Pattern;
 
-public class ChatListener implements Listener {
+public class PlayerChatListener implements Listener {
     public static Pattern URL_PATTERN = Pattern.compile("((?:(?:https?)://)?[\\a-_\\.]{2,})\\.([a-zA-Z]{2,3}(?:/\\S+)?)");
     public static Pattern BANNED_WORDS = Pattern.compile(".*(.ench|.pl|.tasrv|.crsv|.eu|.com|.aternos|aternos sie pali|Kopacz By|Buzkaa <3|Skrypt|Skrypt do kopania|By gizaar|gizaar+).*");
     public static Pattern IPPATTERN = Pattern.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
@@ -31,6 +32,7 @@ public class ChatListener implements Listener {
         }
         Player p = e.getPlayer();
         User u = UserManager.getUser(p);
+        String message = e.getMessage();
         if (u == null) {
             e.setCancelled(true);
             return;
@@ -43,10 +45,11 @@ public class ChatListener implements Listener {
             if (!p.hasPermission("spigotplugin.bypass")) {
                 p.sendMessage("&6Zostales wyciszony przez &c" + mute.getAdmin() + "&c, wygasa: &6" + ((mute.getTime() == 0L) ? "nigdy" : ("&cza &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
                 e.setCancelled(true);
+                return;
             }
         }
-        if ((!p.hasPermission("spigotplugin.bypass") && ChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && ChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && ChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
-            p.sendMessage("&4Blad: &cTwoja wiadomosc zawiera niedozwolone tresci!");
+        if ((!p.hasPermission("spigotplugin.bypass") && PlayerChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
+            p.sendMessage("&cTwoja wiadomosc zawiera niedozwolone tresci!");
             e.setCancelled(true);
             return;
         }
@@ -56,7 +59,7 @@ public class ChatListener implements Listener {
             return;
         }
         if (!p.hasPermission("spigotplugin.chatvip") && ChatManager.vipChat) {
-            p.sendMessage("&cChat jest dostepny tylko dla rangi vip");
+            p.sendMessage("&cChat jest dostepny tylko dla rang premium");
             e.setCancelled(true);
             return;
         }
@@ -69,6 +72,40 @@ public class ChatListener implements Listener {
             p.sendMessage("&7Na czacie bedziesz mogl pisac dopiero za &c" + DataUtil.secondsToString(u.getLastChat()));
             e.setCancelled(true);
             return;
+        }
+        if (message.startsWith("!!")) {
+            e.setCancelled(true);
+            Guild g = GuildManager.getGuild(p);
+            if (g == null) {
+                p.sendMessage("&cNie posiadasz gildii!");
+                return;
+            }
+            String msg = message.replaceFirst("!!", "").replace("&", "");
+            g.message("&8[&9DO SOJUSZY&8] &8[&9" + g.getTag() + "&8] &6" + p.getName() + "&8: &7" + msg);
+            for (String s : g.getAlly()) {
+                Guild o = GuildManager.getGuild(s);
+                if (o != null) {
+                    o.message("&8[&9DO SOJUSZY&8] &8[&9" + g.getTag() + "&8] &6" + p.getName() + "&8: &7" + msg);
+                }
+            }
+        } else if (message.startsWith("!")) {
+            e.setCancelled(true);
+            Guild g = GuildManager.getGuild(p);
+            if (g == null) {
+                p.sendMessage("&cNie posiadasz gildii!");
+                return;
+            }
+            String msg = message.replaceFirst("!", "").replace("&", "");
+            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7" + msg);
+        } else if (message.startsWith("@")) {
+            e.setCancelled(true);
+            Guild g = GuildManager.getGuild(p);
+            if (g == null) {
+                p.sendMessage("&cNie posiadasz gildii!");
+                return;
+            }
+            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Potrzebuje pomocy!");
+            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Moje kordy to X: " + (int) p.getLocation().getX() + " Z: " + (int) p.getLocation().getZ() + " Y: " + (int) p.getLocation().getY());
         }
         String globalFormat = GlobalMessage.CHAT_FORMAT_GLOBAL;
         if (p.hasPermission("spigotplugin.admin")) {

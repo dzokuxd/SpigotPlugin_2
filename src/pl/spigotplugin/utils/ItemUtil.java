@@ -1,6 +1,5 @@
 package pl.spigotplugin.utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,13 +14,22 @@ public class ItemUtil {
     private static final Random random = new Random();
 
     public static ItemStack getDefaultCobbleXItem() {
-        ItemStack item = new ItemStack(Material.COBBLESTONE);
+        ItemStack item = new ItemStack(Material.MOSSY_COBBLESTONE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatUtil.color("&bCobblex"));
-        meta.setLore(Collections.singletonList(ChatUtil.color("&bPoloz na ziemi, aby otrzymac item")));
+        meta.setDisplayName(ChatUtil.color("&7&lCobble&2&lX"));
+        meta.setLore(Collections.singletonList(ChatUtil.color("&cPoloz na ziemi, aby otrzymac item")));
         item.setItemMeta(meta);
         return item;
     }
+    public static ItemStack getGoldenHead() {
+        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        meta.setOwner("StackedGold");
+        meta.setDisplayName(ChatUtil.color("&6Golden Head"));
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
+
 
     public static void giveDrop(Location location, List<ItemStack> dropList) {
         ItemStack item = dropList.get(random.nextInt(dropList.size()));
@@ -51,16 +59,6 @@ public class ItemUtil {
             }
         }
         return true;
-    }
-
-    public static void getItem(Player p, String it, int mod) {
-        List<ItemStack> items = ItemUtil.getItems(it, mod);
-        p.sendMessage("&6Brakuje ci:");
-        Inventory inventory = Bukkit.createInventory(p, 9, ChatUtil.color("&cBrakuje Ci"));
-        for (ItemStack is : items) {
-            inventory.addItem(is);
-        }
-        p.openInventory(inventory);
     }
 
     public static int remove(ItemStack base, Player player, int amount) {

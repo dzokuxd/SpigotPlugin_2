@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
+import pl.spigotplugin.configs.GlobalMessage;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
@@ -12,7 +13,7 @@ public class DajCommand extends Command {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("&7\u00bb &6Poprawne uzycie: &c" + getUsage());
+            GlobalMessage.usage(sender, getUsage());
             return;
         }
         if (args[1].equalsIgnoreCase("boyfarmer")) {
@@ -24,7 +25,7 @@ public class DajCommand extends Command {
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    sender.sendMessage("&4Blad: &cGracz jest offline");
+                    sender.sendMessage("&cGracz jest offline");
                     return;
                 }
                 int size = Integer.parseInt(args[2]);
@@ -41,7 +42,7 @@ public class DajCommand extends Command {
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    sender.sendMessage("&4Blad: &cGracz jest offline");
+                    sender.sendMessage("&cGracz jest offline");
                     return;
                 }
                 int size = Integer.parseInt(args[2]);
@@ -58,7 +59,7 @@ public class DajCommand extends Command {
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    sender.sendMessage("&4Blad: &cGracz jest offline");
+                    sender.sendMessage("&cGracz jest offline");
                     return;
                 }
                 int size = Integer.parseInt(args[2]);
@@ -75,7 +76,7 @@ public class DajCommand extends Command {
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    sender.sendMessage("&4Blad: &cGracz jest offline");
+                    sender.sendMessage("&cGracz jest offline");
                     return;
                 }
                 int size = Integer.parseInt(args[2]);
@@ -92,7 +93,7 @@ public class DajCommand extends Command {
             } else {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    sender.sendMessage("&4Blad: &cGracz jest offline");
+                    sender.sendMessage("&cGracz jest offline");
                     return;
                 }
                 int size = Integer.parseInt(args[2]);

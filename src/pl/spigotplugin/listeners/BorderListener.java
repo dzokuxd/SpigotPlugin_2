@@ -25,11 +25,11 @@ public class BorderListener implements Listener {
         Player player = event.getPlayer();
         if (event.getTo().getBlockX() > Config.BORDER_WORLD || event.getTo().getBlockX() < -Config.BORDER_WORLD || event.getTo().getBlockZ() > Config.BORDER_WORLD || event.getTo().getBlockZ() < -Config.BORDER_WORLD) {
             event.setTo(event.getFrom());
-            player.sendMessage("&4Blad: &cOsiagnales granice swiata!" + " (" + Config.BORDER_WORLD + " kratek)");
+            player.sendMessage("&cOsiagnales granice swiata!" + " (" + Config.BORDER_WORLD + " kratek)");
         }
         if (player.getWorld().getName().equals("gtp") && (event.getTo().getBlockX() > Config.BORDER_GTP || event.getTo().getBlockX() < -Config.BORDER_GTP || event.getTo().getBlockZ() > Config.BORDER_GTP || event.getTo().getBlockZ() < -Config.BORDER_GTP)) {
             event.setTo(event.getFrom());
-            player.sendMessage("&4Blad: &cOsiagnales granice swiata!" + " (" + Config.BORDER_GTP + " kratek)");
+            player.sendMessage("&cOsiagnales granice swiata!" + " (" + Config.BORDER_GTP + " kratek)");
         }
     }
 
@@ -38,11 +38,11 @@ public class BorderListener implements Listener {
         Player p = e.getPlayer();
         if (p.getWorld().getName().equals("world") && e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && (e.getTo().getX() > Config.BORDER_WORLD || e.getTo().getX() < -Config.BORDER_WORLD || e.getTo().getZ() > Config.BORDER_WORLD || e.getTo().getZ() < -Config.BORDER_WORLD)) {
             e.setCancelled(true);
-            p.sendMessage("&4Blad: &cOsiagnales granice swiata!" + " (" + Config.BORDER_WORLD + " kratek)");
+            p.sendMessage("&cOsiagnales granice swiata!" + " (" + Config.BORDER_WORLD + " kratek)");
         }
         if (p.getWorld().getName().equals("gtp") && e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && (e.getTo().getX() > Config.BORDER_GTP - 10.0 || e.getTo().getX() < -Config.BORDER_GTP - 10.0 || e.getTo().getZ() > Config.BORDER_GTP - 10.0 || e.getTo().getZ() < -Config.BORDER_GTP - 10.0)) {
             e.setCancelled(true);
-            p.sendMessage("&4Blad: &cOsiagnales granice netheru!" + " (" + Config.BORDER_GTP + " kratek)");
+            p.sendMessage("&cOsiagnales granice netheru!" + " (" + Config.BORDER_GTP + " kratek)");
         }
     }
 }

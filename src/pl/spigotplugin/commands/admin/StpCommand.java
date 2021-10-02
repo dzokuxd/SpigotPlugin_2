@@ -16,12 +16,12 @@ public class StpCommand extends PlayerCommand {
         }
         String nickja = args[0];
         if (nickja.equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&4Blad: &cNie mozesz przeteleportowac sie sam do siebie! ;(");
+            p.sendMessage("&cNie mozesz przeteleportowac sie sam do siebie! ;(");
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz jest offline!");
+            p.sendMessage("&cGracz jest offline!");
             return;
         }
         o.teleport(p.getLocation());

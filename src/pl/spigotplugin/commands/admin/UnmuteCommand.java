@@ -25,7 +25,7 @@ public class UnmuteCommand extends Command {
         }
         Mute m = MuteManager.getMute(args[0]);
         if (m == null) {
-            sender.sendMessage("&4Blad: &cTen gracz nie jest wyciszony!");
+            sender.sendMessage("&cTen gracz nie jest wyciszony!");
             return;
         }
         if (!sender.hasPermission("core.cmd.admin") && !m.getAdmin().equalsIgnoreCase(sender.getName())) {

@@ -40,25 +40,25 @@ public class MsgCommand extends PlayerCommand {
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz nie jest online!");
+            p.sendMessage("&cGracz nie jest online!");
             return;
         }
         User user = UserManager.getUser(args[0]);
         if (user != null) {
             if (!user.isPrivateMessages()) {
-                p.sendMessage("&4Blad: &cTen gracz ma wylaczone prywatne wiadomosci.");
+                p.sendMessage("&cTen gracz ma wylaczone prywatne wiadomosci.");
                 return;
             }
         }
         if (user != null) {
             if (user.isIgnoreTell(p) && !p.hasPermission("core.tell.ignore")) {
-                p.sendMessage("&4Blad: &cTen gracz zablokowal od Ciebie prywatne wiadomosci!");
+                p.sendMessage("&cTen gracz zablokowal od Ciebie prywatne wiadomosci!");
                 return;
             }
         }
         String nickja = args[0];
         if (nickja.equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&4Blad: &cNie mozesz pisac sam do siebie! ;(");
+            p.sendMessage("&cNie mozesz pisac sam do siebie! ;(");
             return;
         }
         Long t = MsgCommand.times.get(p.getUniqueId());

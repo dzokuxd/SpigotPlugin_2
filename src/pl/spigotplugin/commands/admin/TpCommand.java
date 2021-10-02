@@ -15,7 +15,7 @@ public class TpCommand extends PlayerCommand {
             case 1: {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    p.sendMessage("&4Blad: &cGracz jest offline!");
+                    p.sendMessage("&cGracz jest offline!");
                     return;
                 }
                 p.teleport(o.getLocation());
@@ -31,7 +31,7 @@ public class TpCommand extends PlayerCommand {
                 Double y = Double.parseDouble(args[1]);
                 Double z = Double.parseDouble(args[2]);
                 if (x.isNaN() && y.isNaN() && z.isNaN()) {
-                    p.sendMessage("&4Blad: &cKoordynaty musza byc liczbami!");
+                    p.sendMessage("&cKoordynaty musza byc liczbami!");//TODO wgl nie dziala
                     return;
                 }
                 p.teleport(new Location(p.getWorld(), x, y, z));
@@ -45,14 +45,14 @@ public class TpCommand extends PlayerCommand {
                 }
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
-                    p.sendMessage("&4Blad: &cGracz jest offline!");
+                    p.sendMessage("&cGracz jest offline!");
                     return;
                 }
                 Double x = Double.parseDouble(args[1]);
                 Double y = Double.parseDouble(args[2]);
                 Double z = Double.parseDouble(args[3]);
                 if (x.isNaN() && y.isNaN() && z.isNaN()) {
-                    p.sendMessage("&4Blad: &cKoordynaty musza byc liczbami!");
+                    p.sendMessage("&cKoordynaty musza byc liczbami!");
                     return;
                 }
                 o.teleport(new Location(o.getWorld(), x, y, z));

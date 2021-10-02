@@ -10,7 +10,7 @@ public class CheckValidityTask extends BukkitRunnable {
         for (Guild g : GuildManager.getGuilds().values()) {
             if (g.getProlong() < System.currentTimeMillis()) {
                 GuildManager.deleteGuild(g);
-                Bukkit.broadcastMessage("&6Gildia &c" +g.getTag()+ " &7- &c" +g.getName()+ "&6wygasla! Ich kordy to x: &c" +g.getRegion().getX()+ "&7z: &c " +g.getRegion().getZ());
+                Bukkit.broadcastMessage("&6Gildia &c" +g.getTag()+ " &7- &c" +g.getName()+ " &6wygasla! Ich kordy to x: &c" +g.getRegion().getX()+ "&7z: &c " +g.getRegion().getZ());
             }
         }
     }

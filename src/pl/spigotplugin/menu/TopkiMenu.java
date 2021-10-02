@@ -135,9 +135,9 @@ public class TopkiMenu {
             ItemBuilder zgony = new ItemBuilder(Material.WOOD_SWORD);
             ItemStack head = new ItemBuilder(Material.SKULL_ITEM).setTitle("&7&lTwoje Statystyki")
                     .addLore("")
-                    .addLore(" &7\u00bb &6Zabojstwa:")
-                    .addLore(" &7\u00bb &6Asysty:")
-                    .addLore(" &7\u00bb &6Smierci:")
+                    .addLore(" &7\u00bb &6Zabojstwa: &c"+u.getKills())
+                    .addLore(" &7\u00bb &6Asysty: &c"+u.getAsysty())
+                    .addLore(" &7\u00bb &6Smierci: &c"+u.getDeaths())
                     .addLore(" &7\u00bb &6Twoj lvl: &c" + u.getLvl())
                     .addLore(" &7\u00bb &6Coinsy: &c" + u.getCoins())
                     .addLore(" &7\u00bb &6Zjedzone koxy: &c" + u.getKoxEaten())

@@ -9,7 +9,7 @@ public class EnchantManager {
     private static HashMap<String, Enchantment> enchants;
 
     static {
-        (enchants = new HashMap<String, Enchantment>()).put("alldamage", Enchantment.DAMAGE_ALL);
+        (enchants = new HashMap<>()).put("alldamage", Enchantment.DAMAGE_ALL);
         EnchantManager.enchants.put("alldmg", Enchantment.DAMAGE_ALL);
         EnchantManager.enchants.put("sharpness", Enchantment.DAMAGE_ALL);
         EnchantManager.enchants.put("sharp", Enchantment.DAMAGE_ALL);
@@ -29,6 +29,7 @@ public class EnchantManager {
         EnchantManager.enchants.put("ds", Enchantment.DIG_SPEED);
         EnchantManager.enchants.put("eff", Enchantment.DIG_SPEED);
         EnchantManager.enchants.put("durability", Enchantment.DURABILITY);
+        EnchantManager.enchants.put("unb", Enchantment.DURABILITY);
         EnchantManager.enchants.put("dura", Enchantment.DURABILITY);
         EnchantManager.enchants.put("unbreaking", Enchantment.DURABILITY);
         EnchantManager.enchants.put("d", Enchantment.DURABILITY);

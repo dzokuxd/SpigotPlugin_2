@@ -1,6 +1,7 @@
 package pl.spigotplugin;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -17,6 +18,8 @@ import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.listeners.*;
 import pl.spigotplugin.managers.*;
 import pl.spigotplugin.mysql.MySQL;
+import pl.spigotplugin.objects.guild.Guild;
+import pl.spigotplugin.protocoltab.manager.ProtocolTabManager;
 import pl.spigotplugin.tasks.*;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.CraftingUtil;
@@ -30,16 +33,21 @@ public class SpigotPlugin extends JavaPlugin {
         return SpigotPlugin.plugin;
     }
     public static MySQL getMySQL() { return mySQL; }
+    private ProtocolTabManager manager;
 
     @Override
     public void onLoad() {
         plugin = this;
     }
 
+    @Override
     public void onEnable(){
+        CitizensAPI.getNPCRegistry().deregisterAll();
         GlobalMessage.reloadLang();
         Config.reloadConfig();
+        guild.reloadLang();
         DropFile.reloadConfig();
+        Settings.loadMaterials();
         try {
             mySQL = new MySQL();
         } catch (SQLException e) {
@@ -49,6 +57,7 @@ public class SpigotPlugin extends JavaPlugin {
         registerListeners(getServer().getPluginManager());
         registerCommands();
         registerTasks();
+        manager = new ProtocolTabManager(1);
         CraftingUtil.registerRecipe();
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
@@ -78,11 +87,17 @@ public class SpigotPlugin extends JavaPlugin {
         }
     }
 
+    @Override
     public void onDisable(){
-        CombatManager.getCombats().clear();
+        CitizensAPI.getNPCRegistry().deregisterAll();
+        CombatManager.getFightMap().clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
             UserManager.getUser(p).saveSync();
-            p.kickPlayer(ChatUtil.color("&cSerwer zostal wylaczony!"));
+            p.kickPlayer(ChatUtil.color("&cRestart serwera! Zaraz wracamy :)"));
+        }
+        for (Guild value : GuildManager.getGuilds().values()) {
+            value.saveGold(value.getGold());
+            value.saveSync();
         }
     }
 
@@ -101,21 +116,27 @@ public class SpigotPlugin extends JavaPlugin {
         pm.registerEvents(new PlayerMoveListener(), this);
         pm.registerEvents(new CommandListener(), this);
         pm.registerEvents(new TradeListener(), this);
-        pm.registerEvents(new ChatListener(), this);
+        pm.registerEvents(new PlayerChatListener(), this);
+        pm.registerEvents(new DamageShowListener(), this);
+        pm.registerEvents(new EntityExplodeListener(), this);
+        pm.registerEvents(new PlayerBucketFillListener(), this);
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);
         new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
         new CombatTask().runTaskTimer(this, 40L, 20L);
+        new TabUpdate().runTaskTimerAsynchronously(this, 40L, 20 * 10);
         new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
-        new CheckValidityTask().runTaskTimerAsynchronously(this, 20 * 60 * 60, 20 * 60 * 60);
+        new CheckValidityTask().runTaskTimer(this, 20, 20);
         new BarTask().runTaskTimerAsynchronously(this, 20, 20);
         this.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(), 1200, 1200);
     }
 
     private void registerCommands() {
+        registerCommand(new testCommand());
         registerCommand(new HelpCommand());
         registerCommand(new GuildCommand());
+        registerCommand(new GuildInfoCommand());
         registerCommand(new YouTubeCommand());
         registerCommand(new WorkbenchCommand());
         registerCommand(new VipCommand());
@@ -184,8 +205,11 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new ShopCommand());
         registerCommand(new PayCommand());
         registerCommand(new ManageCommand());
+        registerCommand(new RankingCommand());
     }
-
+    public ProtocolTabManager getManager() {
+        return manager;
+    }
     private void registerCommand(Command command){
         CommandManager.register(command);
     }

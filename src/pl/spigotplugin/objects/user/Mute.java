@@ -12,7 +12,7 @@ public class Mute {
     private String admin;
     private String reason;
     private long time;
-    private long start;
+    private final long start;
 
     public Mute(String name, String admin, String reason, long time) {
         this.name = name;
@@ -38,10 +38,8 @@ public class Mute {
         data.put("reason",reason);
         data.put("time",time);
         data.put("start",start);
-
-        MySQLUtil.insert("bans",data);
+        MySQLUtil.insert("mutes",data);
     }
-
     public long getStart() {
         return this.start;
     }

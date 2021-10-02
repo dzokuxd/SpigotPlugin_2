@@ -11,6 +11,7 @@ import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.DataUtil;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,13 +22,11 @@ public class AchievmentMenu {
 
     public static void open(Player player) {
         Inventory inventory = Bukkit.createInventory(null,27,"Osiagniecia:");
-        inventory.setItem(9,new ItemStack(Material.STONE));
-        inventory.setItem(10,new ItemStack(Material.OBSIDIAN));
-        inventory.setItem(11,new ItemStack(Material.DIAMOND_SWORD));
-        inventory.setItem(12,new ItemStack(Material.IRON_SWORD));
-        inventory.setItem(13,new ItemStack(Material.GOLDEN_APPLE, (short) 1));
-        inventory.setItem(14,new ItemStack(Material.GOLDEN_APPLE, (short) 0));
-        inventory.setItem(15,new ItemStack(Material.WATCH));
+
+        for (final AchievmentTypeName value : AchievmentTypeName.values()) {
+            inventory.setItem(value.getSlot(), value.getItemStack());
+        }
+
         player.openInventory(inventory);
     }
 
@@ -37,17 +36,15 @@ public class AchievmentMenu {
         Collections.addAll(list, split);
         return list;
     }
+
     public static void openSub(Player player, AchievmentTypeName type) {
         User user = UserManager.getUser(player);
-
         Inventory inventory = null;
         switch (type) {
             case STONE:{
-                inventory = Bukkit.createInventory(null,27,"stone");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cStone")));
 
-                for (int i = 0; i < 27; i++) {
-                    inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
-                }
+
                 AtomicInteger atomicInteger = new AtomicInteger(9);
                 for (AchievmentType value : AchievmentType.values()) {
                     if(value.getType() == type) {
@@ -79,7 +76,7 @@ public class AchievmentMenu {
                 break;
             }
             case OBSIDIAN:{
-                inventory = Bukkit.createInventory(null,27,"obsidian");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cObsidian")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -117,7 +114,7 @@ public class AchievmentMenu {
                 break;
             }
             case KOX:{
-                inventory = Bukkit.createInventory(null,27,"kox");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cZjedzone koxy")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -155,7 +152,7 @@ public class AchievmentMenu {
                 break;
             }
             case REF:{
-                inventory = Bukkit.createInventory(null,27,"ref");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cZjedzone refile")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -193,7 +190,7 @@ public class AchievmentMenu {
                 break;
             }
             case TIME:{
-                inventory = Bukkit.createInventory(null,27,"time");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cCzas gry")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -214,14 +211,7 @@ public class AchievmentMenu {
                         itemMeta.setDisplayName(ChatUtil.color(value.getDisplayName()));
 
                         List<String> thisIsVeryShit = new LinkedList<>();
-                        long now = System.currentTimeMillis();
-                        long join = user.getTime();
-                        long date = now - join;
-                        long seconds = date / 1000 % 60;
-                        long minutes = date / (60 * 1000) % 60;
-                        long hours = date / (60 * 60 * 1000) % 24;
-                        long days = date / (24 * 60 * 60 * 1000);
-                        String spedzonyczas = days + "d" + hours + "h" + minutes + "m" + seconds + "s";
+                        String spedzonyczas = DataUtil.secondsToStringNoMinus(user.getTime());
                         for (String s : convert(value.getGuiLore())) {
                             thisIsVeryShit.add(ChatUtil.color(s.replace("%time", spedzonyczas)));
                         }
@@ -238,7 +228,7 @@ public class AchievmentMenu {
                 break;
             }
             case KILLS:{
-                inventory = Bukkit.createInventory(null,27,"kills");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cZabojstwa")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -275,7 +265,7 @@ public class AchievmentMenu {
                 break;
             }
             case ASYSTY:{
-                inventory = Bukkit.createInventory(null,27,"asysty");
+                inventory = Bukkit.createInventory(null,27,(ChatUtil.color("&7&lOsiagniecia - &cAsysty")));
 
                 for (int i = 0; i < 27; i++) {
                     inventory.setItem(i,new ItemStack(Material.STAINED_GLASS_PANE,1,(short)15));
@@ -314,7 +304,7 @@ public class AchievmentMenu {
         }
 
         if(inventory == null) {
-            System.out.println(ChatUtil.color("&4Blad: &cCos poszlo nie tak!"));
+            System.out.println(ChatUtil.color("&cCos poszlo nie tak!"));
             return;
         }
         player.openInventory(inventory);

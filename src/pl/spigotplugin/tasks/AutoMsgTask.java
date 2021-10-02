@@ -15,7 +15,6 @@ public class AutoMsgTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        TopsManager.sortUser();
         for (Player p : Bukkit.getOnlinePlayers()) {
             User u = UserManager.getUser(p);
             u.setTime(u.getTime() + TimeUnit.MINUTES.toMillis(1));

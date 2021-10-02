@@ -9,6 +9,10 @@ public class GroupCommand extends PlayerCommand {
 
     @Override
     public void onCommand(Player p, String[] args) {
+        if (args.length == 0) {
+            GroupMenu.show(p, p.getName());
+            return;
+        }
         GroupMenu.show(p, args[0]);
     }
 }

@@ -23,15 +23,15 @@ public class GiveCommand extends PlayerCommand {
         Material m = ItemUtil.getMaterial(datas[0]);
         short data = 0;
         if (datas.length > 1) {
-            data = Short.valueOf(datas[1]);
+            data = Short.parseShort(datas[1]);
         }
         ItemStack item = null;
         if (p == null) {
-            sender.sendMessage("&4Blad: &cGracz jest offline");
+            sender.sendMessage("&cGracz jest offline");
             return;
         }
         if (m == null) {
-            sender.sendMessage("&4Blad: &cNazwa lub ID przedmiotu jest bledne!");
+            sender.sendMessage("&cNazwa lub ID przedmiotu jest bledne!");
             return;
         }
         if (args.length == 2) {
@@ -40,7 +40,7 @@ public class GiveCommand extends PlayerCommand {
             item = new ItemStack(m, ChatUtil.isInteger(args[2]) ? Integer.parseInt(args[2]) : 1, data);
         }
         if (item == null) {
-            sender.sendMessage("&4Blad: &cWystapil blad podczas dawania przedmiotu!");
+            sender.sendMessage("&cWystapil blad podczas dawania przedmiotu!");
             return;
         }
         ItemUtil.giveItems(p, item);

@@ -35,7 +35,7 @@ public class Teleporter {
                 return;
             }
 
-            if (first.distance(p.getLocation()) > .8) {
+            if (first.distance(p.getLocation()) > 8) {
                 u.getCurrentTeleport().cancel();
                 u.setCurrentTeleport(null);
                 p.sendMessage(ERROR_MESSAGE);
@@ -46,6 +46,7 @@ public class Teleporter {
                 p.sendMessage(SUCCESS_MESSAGE);
                 u.getCurrentTeleport().cancel();
                 u.setCurrentTeleport(null);
+                p.teleport(location);
             }
         }, 0, 20));
     }

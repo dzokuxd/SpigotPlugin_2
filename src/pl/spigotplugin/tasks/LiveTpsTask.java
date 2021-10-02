@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.commands.admin.LiveTpsCommand;
+import pl.spigotplugin.commands.admin.VanishCommand;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class LiveTpsTask extends BukkitRunnable {
@@ -14,6 +15,9 @@ public class LiveTpsTask extends BukkitRunnable {
         double tps = ChatUtil.round(MinecraftServer.getServer().recentTps[0], 2);
         for (Player p : LiveTpsCommand.using){
             ChatUtil.sendActionBar(p,"&6Online: &c" +online+" &6TPS: &c"+ tps);
+        }
+        for (Player p : VanishCommand.using) {
+            ChatUtil.sendActionBar(p, "&b&lAktualnie jestes niewidzialny!");
         }
     }
 }

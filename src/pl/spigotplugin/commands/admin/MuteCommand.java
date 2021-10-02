@@ -24,7 +24,7 @@ public class MuteCommand extends Command {
         }
         Mute m = MuteManager.getMute(args[0]);
         if (m != null) {
-            sender.sendMessage("&4Blad: &cTen gracz jest juz wyciszony!");
+            sender.sendMessage("&cTen gracz jest juz wyciszony!");
             return;
         }
         User u = UserManager.getUser(sender.getName());
@@ -33,7 +33,7 @@ public class MuteCommand extends Command {
         }
         String dzokv = args[0];
         if (dzokv.equalsIgnoreCase("dzokv")) {
-            sender.sendMessage("&4Blad: &cNie mozesz zmutowac dzoka");
+            sender.sendMessage("&cNie mozesz zmutowac dzoka");
             return;
         }
         String admin = sender.getName().equals("CONSOLE") ? "konsola" : sender.getName();

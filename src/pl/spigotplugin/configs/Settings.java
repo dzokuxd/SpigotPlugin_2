@@ -1,15 +1,35 @@
-package pl.spigotplugin.settings;
+package pl.spigotplugin.configs;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.utils.ItemUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Settings {
     public static ItemStack cobblexItem = ItemUtil.getDefaultCobbleXItem();
     public static String inventoryName = "&7&lDrop z CobbleX";
+
+    public static List<Material> materialList=new ArrayList<>();
+    public static boolean isContains(Material material){
+        if(materialList.isEmpty()){
+            return false;
+        }
+        return materialList.contains(material);
+    }
+    public static void loadMaterials(){
+        SpigotPlugin.getPlugin().getConfig().getStringList("shadow-block.blocks").forEach(value->{
+            try {
+                materialList.add(Material.matchMaterial(value));
+            }catch (Exception ex){
+                System.out.println("Problem z materialem :="+value);
+            }
+        });
+    }
 
     public static List<ItemStack> normalDropList = Arrays.asList(
             new ItemStack(Material.ENCHANTMENT_TABLE, 1),

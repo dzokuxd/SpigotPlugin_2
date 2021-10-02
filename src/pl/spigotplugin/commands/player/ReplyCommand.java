@@ -27,12 +27,12 @@ public class ReplyCommand extends PlayerCommand {
         }
         UUID last = MsgCommand.getLastMsg().get(p.getUniqueId());
         if (last == null) {
-            p.sendMessage("&4Blad: &cNie masz komu odpisac!");
+            p.sendMessage("&cNie masz komu odpisac!");
             return;
         }
         Player o = Bukkit.getPlayer(last);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz nie jest online!");
+            p.sendMessage("&cGracz nie jest online!");
             return;
         }
         Long t = ReplyCommand.times.get(p.getUniqueId());

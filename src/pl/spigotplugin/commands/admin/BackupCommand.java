@@ -19,7 +19,7 @@ public class BackupCommand extends PlayerCommand {
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &c" + args[0] + " &7nie istnieje!");
+            p.sendMessage("&c" + args[0] + " &7nie istnieje!");
             return;
         }
         try {

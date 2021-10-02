@@ -30,29 +30,20 @@ public class IncognitoCommand extends PlayerCommand {
 
         gameProfile.getProperties().put("textures", new Property("textures", value, signature));
 
-        Bukkit.getScheduler().runTaskLater(SpigotPlugin.getPlugin(), new Runnable() {
-
-            @Override
-            public void run() {
-                for (Player pl : Bukkit.getOnlinePlayers()) {
-                    pl.hidePlayer(p);
-                }
-
+        Bukkit.getScheduler().runTaskLater(SpigotPlugin.getPlugin(), () -> {
+            for (Player pl : Bukkit.getOnlinePlayers()) {
+                pl.hidePlayer(p);
             }
+
         }, 1);
 
-        Bukkit.getScheduler().runTaskLater(SpigotPlugin.getPlugin(), new Runnable() {
-
-            @Override
-            public void run() {
-                for (Player pl : Bukkit.getOnlinePlayers()) {
-                    pl.showPlayer(p);
-                }
-
+        Bukkit.getScheduler().runTaskLater(SpigotPlugin.getPlugin(), () -> {
+            for (Player pl : Bukkit.getOnlinePlayers()) {
+                pl.showPlayer(p);
             }
+
         }, 20);
 
-        p.sendMessage(ChatUtil.color((u.isIncognito() ? "&7\u00bb &6Tryb incognito zostal: &aWlaczony" : "&7\u00bb &6Tryb incognito zostal: &cWylaczony")));
-        return;
+        p.sendMessage((u.isIncognito() ? "&7\u00bb &6Tryb incognito zostal: &aWlaczony" : "&7\u00bb &6Tryb incognito zostal: &cWylaczony"));
     }
 }

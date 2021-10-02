@@ -15,9 +15,9 @@ import pl.spigotplugin.utils.*;
 import java.util.*;
 
 public class RandomDropData implements DropData{
-    private static List<Drop> drops = new ArrayList<>();
-    private static Set<UUID> noCobble = new HashSet<>();
-    private static Set<UUID> noMsg = new HashSet<>();
+    private static final List<Drop> drops = new ArrayList<>();
+    private static final Set<UUID> noCobble = new HashSet<>();
+    private static final Set<UUID> noMsg = new HashSet<>();
 
     public RandomDropData() {
         super();
@@ -97,13 +97,10 @@ public class RandomDropData implements DropData{
             } else if (player.hasPermission("core.drop.svip")) {
                 chance += 0.50;
             }
-            if (Config.EVENTS_TURBO > System.currentTimeMillis() || u != null && (u.getTurboDrop() > System.currentTimeMillis())) {
+            if (Config.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
                 chance += 2;
             }
-            double bonus = 0.0;
-            if (u != null) {
-                bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
-            }
+            double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
             chance += bonus;
             if (!RandomUtil.getChance(chance)) {
                 continue;
@@ -124,19 +121,19 @@ public class RandomDropData implements DropData{
             player.giveExp(expDrop);
             u.setExp(u.getExp() + expDrop);
             LevelUtil.checkLevel(u);
-            if (d.getMessage().equalsIgnoreCase("")) {
+
+            if (d.getMessage().isEmpty()) {
                 continue;
             }
-            CombatUtil c = CombatManager.getCombat(player);
-            if (c != null && c.hasFight()) {
-                return;
+            if (!CombatManager.isFighting(player)) {
+                String msg = d.getMessage();
+                msg = msg.replace("{AMOUNT}", Integer.toString(itemDrop.getAmount()));
+                msg = msg.replace("{EXP}", expDrop + (d.getDisabled().contains(player.getUniqueId()) ? " &c(wylaczone)" : ""));
+                if (!RandomDropData.isNoMsg(player.getUniqueId())) {
+                    ChatUtil.sendActionBar(player, msg);
+                }
             }
-            String msg = d.getMessage();
-            msg = msg.replace("{AMOUNT}", Integer.toString(itemDrop.getAmount()));
-            msg = msg.replace("{EXP}", expDrop + (d.getDisabled().contains(player.getUniqueId()) ? " &c(wylaczone)" : ""));
-            if (!RandomDropData.isNoMsg(player.getUniqueId())) {
-                ChatUtil.sendActionBar(player, msg);
-            }
+
         }
         if (!RandomDropData.noCobble.contains(player.getUniqueId())) {
             drop.add(new ItemStack(item.containsEnchantment(Enchantment.SILK_TOUCH) ? Material.STONE : Material.COBBLESTONE, 1));

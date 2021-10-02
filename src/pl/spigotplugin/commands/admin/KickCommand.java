@@ -21,15 +21,15 @@ public class KickCommand extends Command {
         }
         Player p = Bukkit.getPlayer(args[0]);
         if (p == null) {
-            sender.sendMessage("&4Blad: &cGracz nie jest online!");
+            sender.sendMessage("&cGracz nie jest online!");
             return;
         }
         if (p.hasPermission("core.cmd.admin")) {
-            sender.sendMessage("&4Blad: &cNie mozesz wyrzucic tego gracza!");
+            sender.sendMessage("&cNie mozesz wyrzucic tego gracza!");
             return;
         }
         if (sender.getName().equalsIgnoreCase(p.getName())) {
-            sender.sendMessage("&4Blad: &cNie mozesz wyrzucic sam siebie!");
+            sender.sendMessage("&cNie mozesz wyrzucic sam siebie!");
             return;
         }
         String reason = "Brak!";
@@ -40,10 +40,7 @@ public class KickCommand extends Command {
                 "\n&7Zostales wyrzocony z serwera przez &c" + sender.getName() +
                 "\n&7Powod: &c" + reason +
                 "\n&8&m------===------";
-        CombatUtil combat = CombatManager.getCombat(p);
-        combat.setLastAsystTime(0L);
-        combat.setPlayer(null);
-        combat.setLastAsystPlayer(null);
+        CombatManager.clear(p.getPlayer());
         p.kickPlayer(ChatUtil.color(kick));
         Bukkit.broadcastMessage("&cGracz " + args[0] + " &czostal wyrzucony z serwera przez " + sender.getName() + " &cz powodem " + reason);
     }

@@ -17,7 +17,7 @@ public class OpenCommand extends PlayerCommand {
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz nie jest online!");
+            p.sendMessage("&cGracz nie jest online!");
             return;
         }
         switch (args[1].toLowerCase()) {

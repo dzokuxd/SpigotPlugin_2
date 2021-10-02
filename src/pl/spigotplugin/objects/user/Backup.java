@@ -1,11 +1,14 @@
 package pl.spigotplugin.objects.user;
 
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.mysql.MySQLUtil;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.DataUtil;
 import pl.spigotplugin.utils.ItemBuilder;
@@ -13,11 +16,14 @@ import pl.spigotplugin.utils.ItemSerializer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Backup {
     private String name;
     private long time;
-    private int ping;
+    private final int ping;
+    private final double tps;
     private final String killer;
     private ItemStack[] inventory;
     private final ItemStack[] armor;
@@ -26,11 +32,12 @@ public class Backup {
     public Backup(Player player, String killer) {
         this.name = player.getName();
         this.time = System.currentTimeMillis();
+        this.ping = ((CraftPlayer)player).getHandle().ping;
+        this.tps = ChatUtil.round(MinecraftServer.getServer().recentTps[0], 2);
         this.killer = killer;
         this.inventory = player.getInventory().getContents();
         this.armor = player.getInventory().getArmorContents();
         this.enderchest = player.getEnderChest().getContents();
-        this.insert();
     }
 
     public static void getList(Player p, Player o) throws SQLException {
@@ -40,10 +47,12 @@ public class Backup {
             String player = rs.getString("name");
             long time = rs.getLong("time");
             int ping = rs.getInt("ping");
+            double tps = rs.getInt("tps");
             String killer = rs.getString("killer");
             ItemBuilder i = new ItemBuilder(Material.WRITTEN_BOOK).setTitle(ChatUtil.color("ID: " + time));
             i.addLore(ChatUtil.color("&6Gracz: &c" + player));
             i.addLore(ChatUtil.color("&6Ping: &c" + ping));
+            i.addLore(ChatUtil.color("&6Tps: &c" + tps));
             i.addLore(ChatUtil.color("&6Killer: &c" + killer));
             i.addLore(ChatUtil.color("&6Data: &c" + DataUtil.getDate(time)));
             inventory.addItem(i.build());
@@ -81,11 +90,18 @@ public class Backup {
         }
         rs.close();
     }
-
-    private void insert() {
-        SpigotPlugin.getMySQL().update("INSERT INTO backups(name, time, killer, ping, inventory, armor, enderchest) VALUES ('" + name + "','" + time + "','" + killer + "','" + ping + "','" + ItemSerializer.itemsToString(this.getInventory()) + "','" + ItemSerializer.itemsToString(this.getArmor()) + "','" + ItemSerializer.itemsToString(this.getEnderchest()) + "');");
+    public void save() {
+        Map<String, Object> data = new ConcurrentHashMap<>();
+        data.put("name", name);
+        data.put("time", time);
+        data.put("ping", ping);
+        data.put("tps", tps);
+        data.put("killer", killer);
+        data.put("inventory", inventory);
+        data.put("armor", armor);
+        data.put("enderchest", enderchest);
+        MySQLUtil.insert("backups", data);
     }
-
     public String getName() {
         return name;
     }

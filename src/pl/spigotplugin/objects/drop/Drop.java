@@ -10,20 +10,20 @@ import pl.spigotplugin.utils.ItemUtil;
 import java.util.*;
 
 public class Drop {
-    private String name;
-    private double chance;
-    private int exp;
-    private String message;
-    private boolean fortune;
-    private List<Biome> biomes;
-    private List<Material> tools;
-    private int minHeight;
-    private int maxHeight;
-    private int minAmount;
-    private int maxAmount;
-    private ItemStack what;
-    private Material from;
-    private Set<UUID> disabled;
+    private final String name;
+    private final double chance;
+    private final int exp;
+    private final String message;
+    private final boolean fortune;
+    private final List<Biome> biomes;
+    private final List<Material> tools;
+    private final int minHeight;
+    private final int maxHeight;
+    private final int minAmount;
+    private final int maxAmount;
+    private final ItemStack what;
+    private final Material from;
+    private final Set<UUID> disabled;
 
     public Drop(String name) {
         super();
@@ -39,8 +39,7 @@ public class Drop {
         this.maxHeight = DropFile.getConfig().getInt("random-drops." + name + ".height.max");
         this.minAmount = DropFile.getConfig().getInt("random-drops." + name + ".amount.min");
         this.maxAmount = DropFile.getConfig().getInt("random-drops." + name + ".amount.max");
-        ItemStack what = ItemUtil.getItemStackFromString(DropFile.getConfig().getString("random-drops." + name + ".drop.what"));
-        this.what = what;
+        this.what = ItemUtil.getItemStackFromString(DropFile.getConfig().getString("random-drops." + name + ".drop.what"));
         this.from = Material.getMaterial(DropFile.getConfig().getString("random-drops." + name + ".drop.from"));
         for (String s : DropFile.getConfig().getStringList("random-drops." + name + ".biome")) {
             this.biomes.add(Biome.valueOf(s));

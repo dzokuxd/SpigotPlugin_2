@@ -24,7 +24,7 @@ public class UnbanCommand extends Command {
         }
         Ban b = BanManager.getBan(args[0]);
         if (b == null) {
-            sender.sendMessage("&4Blad: &cTen gracz nie ma bana!");
+            sender.sendMessage("&cTen gracz nie ma bana!");
             return;
         }
         if (!sender.hasPermission("core.cmd.admin") && !b.getAdmin().equalsIgnoreCase(sender.getName())) {

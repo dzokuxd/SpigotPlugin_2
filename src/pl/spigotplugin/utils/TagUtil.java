@@ -3,6 +3,7 @@ package pl.spigotplugin.utils;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import net.minecraft.server.v1_8_R3.Scoreboard;
 import net.minecraft.server.v1_8_R3.ScoreboardTeam;
+import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class TagUtil {
         if (scoreboard.getPlayerTeam(Bukkit.getPlayer(p.getName()).getName()) == null) {
             team = scoreboard.createTeam(p.getName());
         }
+        assert team != null;
         scoreboard.addPlayerToTeam(p.getName(), team.getName());
 
         team.setPrefix("");
@@ -45,7 +47,6 @@ public class TagUtil {
             team.setDisplayName("");
             Bukkit.getOnlinePlayers().forEach(player -> {
                 team.setPrefix(getValidPrefix(p, player));
-
                 String suffix = "";
                 PermissionUser uu = PermissionsEx.getUser(p);
                 if (uu.inGroup("Prezes")) {
@@ -118,11 +119,11 @@ public class TagUtil {
 
         if (shouldAddQuestionMark && !chuj) {
             if (!send.hasPermission("spigotplugin.bypass")) {
-                tag1234 = "\uFFFD8[\uFFFDc?\uFFFD8] \uFFFDk";
+                ChatUtil.color(tag1234 = "&8[&c?&8] &c&k ");
             }
         }
 
-        return (u.isIncognito() ? tag1234 : ChatUtil.color(tag));
+        return (u.isIncognito() ? ChatUtil.color(tag1234) : ChatUtil.color(tag));
     }
 
     public static void removeBoard(Player p) {

@@ -26,7 +26,7 @@ public class HealCommand extends PlayerCommand {
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&4Blad: &cGracz jest offline!");
+            p.sendMessage("&cGracz jest offline!");
             return;
         }
         o.setFireTicks(0);

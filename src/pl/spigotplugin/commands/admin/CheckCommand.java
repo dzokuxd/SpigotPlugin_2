@@ -32,11 +32,11 @@ public class CheckCommand extends PlayerCommand {
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                p.sendMessage("&4Blad: &cGracz jest offline");
+                p.sendMessage("&cGracz jest offline");
                 return;
             }
             if (!CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&4Blad: &cTen gracz jest czysty");
+                p.sendMessage("&cTen gracz jest czysty");
                 return;
             }
             CheckUtil.checkedPlayers.remove(target);
@@ -51,11 +51,11 @@ public class CheckCommand extends PlayerCommand {
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                p.sendMessage("&4Blad: &cPodana osoba jest offline.");
+                p.sendMessage("&cPodana osoba jest offline.");
                 return;
             }
             if (!CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&4Blad: &cOsoba nie jest sprawdzany.");
+                p.sendMessage("&cOsoba nie jest sprawdzany.");
                 return;
             }
             CheckUtil.checkedPlayers.remove(target);
@@ -67,11 +67,11 @@ public class CheckCommand extends PlayerCommand {
             }
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                p.sendMessage("&4Blad &cPodana osoba jest offline.");
+                p.sendMessage("&cPodana osoba jest offline.");
                 return;
             }
             if (CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&4Blad: &cOsoba jest juz sprawdzana.");
+                p.sendMessage("&cOsoba jest juz sprawdzana.");
                 return;
             }
             CheckUtil.checkedPlayers.add(target);
@@ -81,7 +81,7 @@ public class CheckCommand extends PlayerCommand {
             Bukkit.broadcastMessage("&7Cheaty: &cban");
             Bukkit.broadcastMessage("&7Logout: &cban");
             target.sendMessage("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (Config.IP));
-            CheckMenu.show(p);
+            CheckMenu.show(target);
         }
     }
 }

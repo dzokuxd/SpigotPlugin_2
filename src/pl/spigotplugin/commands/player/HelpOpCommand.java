@@ -26,7 +26,7 @@ public class HelpOpCommand extends PlayerCommand {
         }
         Long t = HelpOpCommand.times.get(p.getUniqueId());
         if (t != null && System.currentTimeMillis() - t < 30000L) {
-            p.sendMessage("&4Blad: &cNa Helpop mozesz pisac co 30 sekund!");
+            p.sendMessage("&cNa Helpop mozesz pisac co 30 sekund!");
             return;
         }
         String message = ChatColor.stripColor(ChatUtil.color(StringUtils.join(args, " ")));

@@ -14,9 +14,12 @@ import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.Config;
 import pl.spigotplugin.configs.DropFile;
 import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.guild;
+import pl.spigotplugin.managers.BanManager;
+import pl.spigotplugin.managers.GuildManager;
+import pl.spigotplugin.managers.MuteManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.ItemUtil;
 
 import java.util.ArrayList;
 
@@ -35,20 +38,35 @@ public class ConfigCommand extends Command {
                 ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
                 BookMeta bookMeta = (BookMeta)book.getItemMeta();
                 int uamount = UserManager.getUsers1().size();
-                /*int gamount = GuildManager.getguilds().size();*/
+                int gamount = GuildManager.getGuilds().size();
+                int bamount = BanManager.getBans().size();
+                int mamount = MuteManager.getMutes().size();
                 bookMeta.setAuthor("dzokv");
                 bookMeta.setTitle(ChatUtil.color("&7&lSpigotPlugin"));
                 ArrayList<String> pages = new ArrayList<>();
-                pages.add(ChatUtil.color("&6Statystyki\n &8» &6Gracze: &c" + uamount + "\n &8» &6Gildie: &c" + uamount));
+                pages.add(ChatUtil.color("&6Statystyki" +
+                        "\n &8» &6Gracze: &c" + uamount +
+                        "\n &8» &6Gildie: &c" + gamount+
+                        "\n &8» &6Bany: &c"+bamount+
+                        "\n &8» &6Muty: &c"+mamount+
+                        "\n &8» &6Stoniarki: &c"+
+                        "\n \n&6Zlimitowane bloki" +
+                        "\n &8» &6Enchanty: &c"+
+                        "\n &8» &6Pistony: &c"+
+                        "\n &8» &6Plytki naciskowe: &c"+
+                        "\n &8» &6Craftingi: &c"+
+                        "\n &8» &6Guziki: &c"+
+                        "\n &8» &6Piece: &c"));
                 bookMeta.setPages(pages);
                 book.setItemMeta(bookMeta);
                 this.openBook(book, (Player) sender);
                 return;
-            }//TODO widac
+            }
             case "reload": {
                 Config.reloadConfig();
                 GlobalMessage.reloadLang();
                 DropFile.reloadConfig();
+                guild.reloadLang();
                 sender.sendMessage("&8\u00bb &aConfig save!");
                 return;
             }

@@ -8,13 +8,9 @@ import pl.spigotplugin.objects.drop.*;
 import java.util.HashMap;
 
 public class DropManager {
-    private static HashMap<Material, DropData> drops;
-    private static HashMap<Material, Integer> exps;
+    private static final HashMap<Material, DropData> drops = new HashMap<>();
+    private static final HashMap<Material, Integer> exps = new HashMap<>();
 
-    static {
-        drops = new HashMap<Material, DropData>();
-        exps = new HashMap<Material, Integer>();
-    }
 
     public static void setup() {
         DropManager.drops.clear();

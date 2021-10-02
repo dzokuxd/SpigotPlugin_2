@@ -20,24 +20,24 @@ public class MySQL {
         this.password = Config.password;
         connect();
 
-        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT NOT NULL, koxy int(11) NOT NULL, refile int(11) NOT NULL, perly int(11) NOT NULL, strzaly int(11) NOT NULL, koxEaten int(11) NOT NULL, refilEaten int(11) NOT NULL, pearlThrown int(11) NOT NULL, arrowsShoten int(11) NOT NULL, coins int(11) NOT NULL, easycase int(11) NOT NULL, case611 int(11) NOT NULL, kills int(11) NOT NULL, asysty int(11) NOT NULL, time bigint(22) NOT NULL, `os` text NOT NULL, `guild` TEXT)");
-        update("CREATE TABLE IF NOT EXISTS guilds (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, tag TEXT, name TEXT, leader TEXT, region TEXT, members TEXT, deputy TEXT, home TEXT, prolong BIGINT, playerslimit INT(11))");
+        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT NOT NULL, koxy int NOT NULL, refile int NOT NULL, perly int NOT NULL, strzaly int NOT NULL, koxEaten int NOT NULL, refilEaten int NOT NULL, pearlThrown int NOT NULL, arrowsShoten int NOT NULL, coins int NOT NULL, easycase int NOT NULL, case611 int NOT NULL, kills int NOT NULL, asysty int NOT NULL, points int NOT NULL,deaths int NOT NULL,ks int NOT NULL,maxks int NOT NULL, time bigint(22) NOT NULL, os text NOT NULL, guild TEXT)");
+        update("CREATE TABLE IF NOT EXISTS guilds (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, tag TEXT, name TEXT, leader TEXT, deputy TEXT, members TEXT, region TEXT, home TEXT, prolong BIGINT, playerslimit INT, ally TEXT, kills int NOT NULL,deaths int NOT NULL, life int NOT NULL, points int, hp int, createTime BIGINT, gold int, regen TEXT, hpLastAttack BIGINT, GuildWar TEXT)");
 
-        update("CREATE TABLE IF NOT EXISTS backups (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+        update("CREATE TABLE IF NOT EXISTS backups (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                 "name varchar(32) NOT NULL," +
                 "time bigint(22) NOT NULL, " +
                 "killer varchar(32) NOT NULL, " +
-                "ping int(11) NOT NULL, " +
+                "ping int NOT NULL, " +
                 "inventory text NOT NULL, " +
                 "armor text NOT NULL, " +
                 "enderchest text NOT NULL);");
-        update("CREATE TABLE IF NOT EXISTS bans (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+        update("CREATE TABLE IF NOT EXISTS bans (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                 "name varchar(32) NOT NULL," +
                 "time bigint(22) NOT NULL, " +
                 "reason text NOT NULL, " +
                 "admin varchar(32) NOT NULL, " +
                 "start BIGINT(22) NOT NULL);");
-        update("CREATE TABLE IF NOT EXISTS mutes (id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
+        update("CREATE TABLE IF NOT EXISTS mutes (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                 "name varchar(32) NOT NULL," +
                 "time bigint(22) NOT NULL, " +
                 "reason text NOT NULL, " +

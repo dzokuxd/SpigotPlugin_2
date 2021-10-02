@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.spigotplugin.configs.GuildConfig;
+import pl.spigotplugin.configs.guild;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,19 +15,19 @@ public class GuildUtil {
     public static boolean hasItems(Player p){
         if (p.hasPermission("spigotplugin.itemy"))
             return true;
-        List<ItemStack> items = GuildConfig.COST_CREATE;
+        List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
             int amount = (int)(p.hasPermission("spigotplugin.premium") ? item.getAmount() * .5 : item.getAmount());
             if(p.getInventory().containsAtLeast(item,amount))
                 return true;
         }
-        p.sendMessage("brak itemow");//TODO dodac ze otwiera sie gui itemow na gildie
+        p.sendMessage("&cNie posiadasz potrzebnych itemow na gildie /g itemy");
         return false;
     }
     public static void removeItems(Player p){
         if (p.hasPermission("spigotplugin.itemy"))
             return;
-        List<ItemStack> items = GuildConfig.COST_CREATE;
+        List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
             int amount = (int)(p.hasPermission("spigotplugin.premium") ? item.getAmount() * .5 : item.getAmount());
             ItemStack cloned = item.clone();
@@ -37,7 +37,7 @@ public class GuildUtil {
     }
     public static void openInv(Player p,boolean premium){
         Inventory inventory = Bukkit.createInventory(null,9,ChatUtil.color("&7&lItemy na gildie"));
-        List<ItemStack> items = GuildConfig.COST_CREATE;
+        List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
             int amount = (int)(premium ? item.getAmount() * .5 : item.getAmount());
             ItemStack cloned = item.clone();

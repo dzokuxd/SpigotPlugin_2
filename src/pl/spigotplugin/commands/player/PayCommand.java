@@ -17,22 +17,22 @@ public class PayCommand extends PlayerCommand {
             return;
         }
         if (!ChatUtil.isInteger(args[1])) {
-            p.sendMessage("&4Blad: &cWartosc nie jest liczba!");
+            p.sendMessage("&cWartosc nie jest liczba!");
             return;
         }
         int value = Integer.parseInt(args[1]);
         if (value <= 0) {
-            p.sendMessage("&4Blad: &cWartosc musi byc wieksza od 0!");
+            p.sendMessage("&cWartosc musi byc wieksza od 0!");
             return;
         }
         User sender = UserManager.getUser(p);
         if (args[0].equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&4Blad: &cNie mozesz przelac coinsow samemu sobie!");
+            p.sendMessage("&cNie mozesz przelac coinsow samemu sobie!");
             return;
         }
         User user = UserManager.getUser(args[0]);
         if (user == null) {
-            p.sendMessage("&4Blad: &4Gracz nie ma w bazie danych!");
+            p.sendMessage("&4Gracz nie ma w bazie danych!");
             return;
         }
         if (sender.getCoins() > value) {
@@ -40,7 +40,7 @@ public class PayCommand extends PlayerCommand {
             sender.removeCoins(value);
             p.sendMessage("&6Przelales &c" + args[1] + " &6coinsow dla gracza &c" + user.getName() + "&7!");
         } else {
-            p.sendMessage("&4Blad: &cNie posiadasz wystarczajacej liczby coinsow!");
+            p.sendMessage("&cNie posiadasz wystarczajacej liczby coinsow!");
         }
     }
 }

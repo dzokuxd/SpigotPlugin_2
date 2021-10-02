@@ -127,7 +127,7 @@ public class ItemShopCommand extends Command {
             case "turbodrop": {
                 User u = UserManager.getUser(args[0]);
                 if (u == null) {
-                    sender.sendMessage("&4Blad: &cGracz nie istnieje!");
+                    sender.sendMessage("&cGracz nie istnieje!");
                     return;
                 }
                 if (args.length < 3) {
