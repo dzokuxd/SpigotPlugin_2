@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.ChatUtil;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class ReplyCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         UUID last = MsgCommand.getLastMsg().get(p.getUniqueId());

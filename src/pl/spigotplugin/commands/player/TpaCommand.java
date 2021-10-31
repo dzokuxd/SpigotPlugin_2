@@ -3,8 +3,8 @@ package pl.spigotplugin.commands.player;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.Config;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 
@@ -14,7 +14,7 @@ public class TpaCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);
@@ -31,7 +31,7 @@ public class TpaCommand extends PlayerCommand {
             p.sendMessage("&cNie mozesz teleportowac sie sam do siebie! ;(");
             return;
         }
-        if (!Config.MANAGE_TPA) {
+        if (!statues.MANAGE_TPA) {
             p.sendMessage("&cAktualnie tpa jest wylaczone");
             return;
         }

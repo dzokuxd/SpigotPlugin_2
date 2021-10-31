@@ -38,6 +38,14 @@ public class GuildManager {
         }
         return null;
     }
+    public static Guild getGuildByLoc(Location loc) {
+        for (Guild g : GuildManager.guilds.values()) {
+            if (g.getRegion().isInCuboidByLoc(loc)) {
+                return g;
+            }
+        }
+        return null;
+    }
 
     public static void loadGuilds() {
         try {
@@ -56,7 +64,7 @@ public class GuildManager {
 
     private static final Object SYNCHRONIZE = new Object();
 
-    private static void spawnNpc(final Guild guild) {
+    private static void spawnNpc(Guild guild) {
         synchronized (SYNCHRONIZE) {
             NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "&6Gildia: &c" +guild.getTag());
             npc.setProtected(true);
@@ -65,12 +73,6 @@ public class GuildManager {
             npc.spawn(location);
             guild.id = npc.getId();
         }
-    }
-
-    public static boolean canCreateGuildBySpawn(Location loc) {
-        int spawnX = loc.getWorld().getSpawnLocation().getBlockX();
-        int spawnZ = loc.getWorld().getSpawnLocation().getBlockZ();
-        return Math.abs(loc.getBlockX() - spawnX) >= 250 || Math.abs(loc.getBlockZ() - spawnZ) >= 250;
     }
 
     public static Guild createGuild(String tag, String name, Player owner, Location home) {
@@ -128,7 +130,7 @@ public class GuildManager {
         for (Location loc : SpaceUtil.getSquare(c, 1, 0)) {
             loc.getBlock().setType(Material.OBSIDIAN);
         }
-        c.getBlock().setType(Material.BEDROCK);
+        c.getBlock().setType(Material.SPONGE);
         c.setY(30.0);
         for (Location loc : SpaceUtil.getSquare(c, 1, 0)) {
             loc.getBlock().setType(Material.AIR);

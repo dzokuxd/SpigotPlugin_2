@@ -39,7 +39,7 @@ public class MuteManager {
         getMutes().put(name, mute);
         Player p = Bukkit.getPlayer(name);
         if (p != null) {
-            p.sendMessage("&8\u00bb &cZostales wyciszony przez &7" + mute.getAdmin() + "&c, " + ((mute.getTime() == 0L) ? "na zawsze" : ("&cwygasa za: &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
+            p.sendMessage("&cZostales wyciszony przez &7" + mute.getAdmin() + "&c, " + ((mute.getTime() == 0L) ? "na zawsze" : ("&cwygasa za: &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
         }
     }
 

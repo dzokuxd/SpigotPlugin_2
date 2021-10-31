@@ -12,7 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.DropManager;
 import pl.spigotplugin.managers.GuildManager;
@@ -38,7 +38,7 @@ public class BlockBreakListener implements Listener {
             p.sendMessage("&cNie mozesz niszczyc na tym swiecie!");
             return;
         }
-        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
+        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && (CuboidUtil.cuboid1(b.getLocation())) && (CuboidUtil.cuboid2(b.getLocation())) && !p.hasPermission("spigot.bypass")) {
             e.setCancelled(true);
             p.sendMessage("&cTa interakcja jest zablokowana!");
             return;
@@ -47,21 +47,43 @@ public class BlockBreakListener implements Listener {
             e.setCancelled(true);
             return;
         }
+        if (playerSet.contains(p)) {
+            if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
+                int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
+                if (amount > 64 * 9) {
+                    p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 64 * 9));
+                    p.getInventory().addItem(Settings.cobblexItem);
+                    p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
+                    return;
+                }
+            }
+        }
+        if (statues.EVENTS_CASE > System.currentTimeMillis() && RandomUtil.getChance(1.10)) {
+            ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + statues.IP)).build();
+            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6wydropil &cSkrzynie " + statues.IP);
+            Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(statues.EVENTS_CASE) + " &c/event");
+            p.sendMessage("&6Trafiles na: &cSkrzynie &7(1szt) &c+20");
+            u.setExp(u.getExp() + 20);
+            ItemUtil.giveItems(p, d);
+            return;
+        }
         Guild guild = GuildManager.getGuild(b.getLocation());
         if (guild != null) {
-            if (p.hasPermission("regionplugin.bypass"))
-                return;
             User user = UserManager.getUser(p);
             if (user == null) {
                 e.setCancelled(true);
                 return;
             }
             if (guild.isMember(p.getName()) && guild.getRegion().isInCentrum(e.getBlock().getLocation(), 3, 2, 3)) {
+                if (p.hasPermission("spigot.bypass"))
+                    return;
                 e.setCancelled(true);
                 p.sendMessage("&cNie mozesz niszczyc w centrum gildii!");
                 return;
             }
             if (!user.getGuild().equals(guild.getTag())) {
+                if (p.hasPermission("spigot.bypass"))
+                    return;
                 e.setCancelled(true);
                 p.sendMessage("&cNie mozesz niszczyc na terenie wrogiej gildii!");
                 p.setGameMode(GameMode.ADVENTURE);
@@ -80,7 +102,8 @@ public class BlockBreakListener implements Listener {
             }
         }
         if (b.getType() == Material.STONE) {
-            final Block bb = b.getLocation().subtract(0, 1, 0).getBlock();
+            b.setData((byte) 3);
+            Block bb = b.getLocation().subtract(0, 1, 0).getBlock();
             if (bb.getType() == Material.ENDER_STONE) {
                 new BukkitRunnable() {
                     public void run() {
@@ -93,33 +116,11 @@ public class BlockBreakListener implements Listener {
                             }
                         }
                         b.setType(Material.STONE);
+                        b.setData((byte) 3);
                     }
                 }.runTaskLater(SpigotPlugin.getPlugin(), 25L);
                 return;
             }
-        }
-        if (playerSet.contains(p)) {
-            if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
-                int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
-                if (amount > 64 * 9) {
-                    p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 64 * 9));
-                    p.getInventory().addItem(Settings.cobblexItem);
-                    p.sendMessage("&aPosiadasz za duzo cobbla w eq, zamienilem go na CobbleX");
-                    return;
-                }
-            }
-        }
-        if (!p.getGameMode().equals(GameMode.SURVIVAL)) {
-            return;
-        }
-        if (Config.EVENTS_CASE > System.currentTimeMillis() && RandomUtil.getChance(1.10)) {
-            ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + Config.IP)).build();
-            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6wydropil &cSkrzynie " + Config.IP);
-            Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_CASE) + " &c/event");
-            p.sendMessage("&6Trafiles na: &cSkrzynie &7(1szt) &c+20");
-            u.setExp(u.getExp() + 20);
-            ItemUtil.giveItems(p, d);
-            return;
         }
         int exp = DropManager.getExp(b.getType(), p);
         p.giveExp(exp);

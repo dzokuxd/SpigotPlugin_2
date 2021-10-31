@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 
 public class GamemodeCommand extends PlayerCommand {
-    public GamemodeCommand() { super("gamemode", "gamemode (gracz | tryb)", "", "gm");
+    public GamemodeCommand() { super("gamemode", "gamemode (gracz | tryb)", "spigot.gamemode", "gm");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class GamemodeCommand extends PlayerCommand {
                     return;
                 }
                 p.setGameMode(mode);
-                p.sendMessage(GlobalMessage.GAMEMODE_GM.replace("{GAMEMODE}",mode.name()));
+                p.sendMessage(core.GAMEMODE_GM.replace("{GAMEMODE}",mode.name()));
                 break;
             }
             case 2:{
@@ -35,12 +35,12 @@ public class GamemodeCommand extends PlayerCommand {
                     return;
                 }
                 x.setGameMode(mode);
-                x.sendMessage(GlobalMessage.GAMEMODE_PLAYER.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",p.getName()));
-                p.sendMessage(GlobalMessage.GAMEMODE_YOU.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",x.getName()));
+                x.sendMessage(core.GAMEMODE_PLAYER.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",p.getName()));
+                p.sendMessage(core.GAMEMODE_YOU.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",x.getName()));
                 break;
             }
             default: {
-                GlobalMessage.usage(p, getUsage());
+                core.usage(p, getUsage());
                 break;
             }
         }

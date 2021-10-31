@@ -3,7 +3,7 @@ package pl.spigotplugin.managers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.objects.user.Ban;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.DataUtil;
@@ -48,7 +48,7 @@ public class BanManager {
                     "\n&cWygasa: "+ ((ban.getTime() == 0L) ? "&cNigdy!" : "&cza " + DataUtil.secondsToString(ban.getTime())) +
                     "\n" +
                     "\nMozesz kupic unbana" +
-                    "\n"+ Config.IP+"/sklep";
+                    "\n"+ statues.IP+"/sklep";
             p.kickPlayer(ChatUtil.color(reason));
         }
     }

@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VanishCommand extends PlayerCommand {
     public VanishCommand() {
-        super("vanish", "vanish", "", "v");
+        super("vanish", "vanish", "spigot.vanish", "v");
     }
 
     public static final List<Player> using = new ArrayList<>();
@@ -23,22 +23,22 @@ public class VanishCommand extends PlayerCommand {
                 using.remove(p);
                 if (p.getGameMode() == GameMode.SPECTATOR) {
                     p.setGameMode(GameMode.SURVIVAL);
-                    if (p.hasPermission("xD"))
+                    if (p.hasPermission("spigot.vanishsee"))
                         p.setGameMode(GameMode.CREATIVE);
-                    p.sendMessage(GlobalMessage.VANISH_FALSE);
+                    p.sendMessage(core.VANISH_FALSE);
                     for (Player admins : Bukkit.getOnlinePlayers()) {
                         if (admins.hasPermission("vanish")) {
-                            admins.sendMessage(GlobalMessage.VANISH_SEETRUE.replace("{VANISHPLAYER}", p.getName()));
+                            admins.sendMessage(core.VANISH_SEEFALSE.replace("{VANISHPLAYER}", p.getName()));
                         }
                     }
                 }
             } else {
                 using.add(p);
                 p.setGameMode(GameMode.SPECTATOR);
-                p.sendMessage(GlobalMessage.VANISH_TRUE);
+                p.sendMessage(core.VANISH_TRUE);
                 for (Player admins : Bukkit.getOnlinePlayers()) {
-                    if (admins.hasPermission("vanish")) {
-                        admins.sendMessage(GlobalMessage.VANISH_SEEFALSE.replace("{VANISHPLAYER}", p.getName()));
+                    if (admins.hasPermission("spigot.vanishsee")) {
+                        admins.sendMessage(core.VANISH_SEETRUE.replace("{VANISHPLAYER}", p.getName()));
                     }
                 }
             }

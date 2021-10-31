@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LiveTpsCommand extends PlayerCommand {
     public LiveTpsCommand() {
-        super("livetps", "livetps", "");
+        super("livetps", "livetps", "spigot.livetps");
     }
 
     public static final List<Player> using = new ArrayList<>();

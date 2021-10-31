@@ -25,7 +25,7 @@ public class CommandListener implements Listener {
                 }
             }
         }
-        if (!p.hasPermission("spigotplugin.bypass") && CombatManager.isFighting(p)) {
+        if (!p.hasPermission("spigot.bypass") && CombatManager.isFighting(p)) {
             for (String cmd : guild.BLOCKED_INCOMBAT) {
                 if (pcmd.toLowerCase().contains("/" + cmd)) {
                     e.setCancelled(true);
@@ -34,7 +34,7 @@ public class CommandListener implements Listener {
                 }
             }
         }
-        if (g != null && !g.isMember(p.getName()) && !p.hasPermission("spigotplugin.bypass")) {
+        if (g != null && !g.isMember(p.getName()) && !p.hasPermission("spigot.bypass")) {
             for (String cmd1 : guild.BLOCKED_INGUILD) {
                 if (pcmd.toLowerCase().contains("/" + cmd1)) {
                     e.setCancelled(true);

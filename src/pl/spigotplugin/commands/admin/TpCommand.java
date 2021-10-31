@@ -4,14 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class TpCommand extends PlayerCommand {
-    public TpCommand() { super("tp", "tp <do kogo/x,y,z>", ""); }
+    public TpCommand() { super("tp", "tp <do kogo/x,y,z>", "spigot.tp"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         switch (args.length) {
+            case 0: {
+                core.usage(p, getUsage());
+                return;
+            }
             case 1: {
                 Player o = Bukkit.getPlayer(args[0]);
                 if (o == null) {
@@ -19,28 +24,12 @@ public class TpCommand extends PlayerCommand {
                     return;
                 }
                 p.teleport(o.getLocation());
-                p.sendMessage("&6Zostales przeteleportowany do gracza &c" + o.getName());
+                p.sendMessage("&fZostales przeteleportowany do gracza &d" + o.getName());
                 return;
             }
             case 2: {
-                if (!p.hasPermission("core.cmd.admin")) {
-                    p.sendMessage("&8\u00bb &cNie masz dostepu!");
-                    return;
-                }
-                Double x = Double.parseDouble(args[0]);
-                Double y = Double.parseDouble(args[1]);
-                Double z = Double.parseDouble(args[2]);
-                if (x.isNaN() && y.isNaN() && z.isNaN()) {
-                    p.sendMessage("&cKoordynaty musza byc liczbami!");//TODO wgl nie dziala
-                    return;
-                }
-                p.teleport(new Location(p.getWorld(), x, y, z));
-                p.sendMessage("&6Zostales przeteleportowany na kordy &7X: &c" + x + " &7Y: &c" + y + " &7Z: &c" + z);
-                return;
-            }
-            case 3: {
-                if (!p.hasPermission("core.cmd.admin")) {
-                    p.sendMessage("&8\u00bb &cNie masz dostepu!");
+                if (!p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&cNie masz dostepu!");
                     return;
                 }
                 Player o = Bukkit.getPlayer(args[0]);
@@ -48,20 +37,57 @@ public class TpCommand extends PlayerCommand {
                     p.sendMessage("&cGracz jest offline!");
                     return;
                 }
-                Double x = Double.parseDouble(args[1]);
-                Double y = Double.parseDouble(args[2]);
-                Double z = Double.parseDouble(args[3]);
-                if (x.isNaN() && y.isNaN() && z.isNaN()) {
+                double x = Double.parseDouble(args[0]);
+                double y = Double.parseDouble(args[1]);
+                double z = Double.parseDouble(args[2]);
+                if (Double.isNaN(x) && Double.isNaN(y) && Double.isNaN(z)) {
+                    p.sendMessage("&fKoordynaty musza byc liczbami!");
+                    return;
+                }
+                p.teleport(new Location(p.getWorld(), x, y, z));
+                p.sendMessage("&fZostales przeteleportowany na kordy &dX: " + x + "Y: " + y + "Z: " + z);
+                return;
+            }
+            case 3: {
+                if (!p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&cNie masz dostepu!");
+                    return;
+                }
+                double x = Double.parseDouble(args[0]);
+                double y = Double.parseDouble(args[1]);
+                double z = Double.parseDouble(args[2]);
+                if (Double.isNaN(x) && Double.isNaN(y) && Double.isNaN(z)) {
+                    p.sendMessage("&cKoordynaty musza byc liczbami!");
+                    return;
+                }
+                p.teleport(new Location(p.getWorld(), x, y, z));
+                p.sendMessage("&fZostales przeteleportowany na kordy &dX: " + x + " Y: " + y + " Z: " + z);
+                return;
+            }
+            case 4: {
+                if (!p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&cNie masz dostepu!");
+                    return;
+                }
+                Player o = Bukkit.getPlayer(args[0]);
+                if (o == null) {
+                    p.sendMessage("&cGracz jest offline!");
+                    return;
+                }
+                double x = Double.parseDouble(args[1]);
+                double y = Double.parseDouble(args[2]);
+                double z = Double.parseDouble(args[3]);
+                if (Double.isNaN(x) && Double.isNaN(y) && Double.isNaN(z)) {
                     p.sendMessage("&cKoordynaty musza byc liczbami!");
                     return;
                 }
                 o.teleport(new Location(o.getWorld(), x, y, z));
-                o.sendMessage("&6Zostales przeteleportowany na kordy &7X: &c" + x + " &7Y: &c" + y + " &7Z: &c" + z + " &6przez &c" + p.getName());
-                p.sendMessage("&7\u00bb &6Przeteleportowales gracza &c" + o.getName() + " &ena kordy &7X: &c" + x + " &7Y: &c" + y + " &7Z: &c" + z);
+                o.sendMessage("&fZostales przeteleportowany na kordy &dX: " + x + " Y: " + y + " Z: " + z + " &fprzez &d" + p.getName());
+                p.sendMessage("&fPrzeteleportowales gracza &d" + o.getName() + " &fna kordy &dX: " + x + " Y: " + y + " Z: " + z);
                 return;
             }
             default: {
-                GlobalMessage.usage(p, getUsage());
+                core.usage(p, getUsage());
                 break;
             }
         }

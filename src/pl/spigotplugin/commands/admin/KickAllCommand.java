@@ -5,17 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class KickAllCommand extends Command {
-    public KickAllCommand() { super("kickall", "/kickall powod", ""); }
+    public KickAllCommand() { super("kickall", "/kickall powod", "spigot.kickall"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         String kick = "\n&cZostales wyrzocony z serwera przez: " + sender.getName() + "\n&cPowod: " + StringUtils.join(args, " ");
@@ -25,6 +25,6 @@ public class KickAllCommand extends Command {
                 p.kickPlayer(ChatUtil.color(kick));
             }
         }
-        sender.sendMessage("&7\u00bb &aWyrzucono wszystkich graczy z serwera!");
+        sender.sendMessage("&aWyrzucono wszystkich graczy z serwera!");
     }
 }

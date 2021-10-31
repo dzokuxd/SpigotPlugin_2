@@ -13,11 +13,11 @@ import java.util.List;
 public class GuildUtil {
 
     public static boolean hasItems(Player p){
-        if (p.hasPermission("spigotplugin.itemy"))
+        if (p.hasPermission("spigot.itemy"))
             return true;
         List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
-            int amount = (int)(p.hasPermission("spigotplugin.premium") ? item.getAmount() * .5 : item.getAmount());
+            int amount = (int)(p.hasPermission("spigot.premium") ? item.getAmount() * .5 : item.getAmount());
             if(p.getInventory().containsAtLeast(item,amount))
                 return true;
         }
@@ -29,7 +29,7 @@ public class GuildUtil {
             return;
         List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
-            int amount = (int)(p.hasPermission("spigotplugin.premium") ? item.getAmount() * .5 : item.getAmount());
+            int amount = (int)(p.hasPermission("spigot.premium") ? item.getAmount() * .5 : item.getAmount());
             ItemStack cloned = item.clone();
             cloned.setAmount(amount);
             p.getInventory().removeItem(cloned);
@@ -46,7 +46,7 @@ public class GuildUtil {
             int ii = ItemUtil.getItemAmount(cloned.getType(), p, cloned.getDurability());
             ItemMeta meta = cloned.getItemMeta();
             meta.setLore(Collections.singletonList(ChatUtil.color(
-                    "&7\u00bb &6Posiadasz: &c"+ii+"&7/&c"+amount+" &a"+(ii / amount * 100.0)+"%"
+                    "&fPosiadasz: &d"+ii+"&7/&c"+amount+""
             )));
             cloned.setItemMeta(meta);
 

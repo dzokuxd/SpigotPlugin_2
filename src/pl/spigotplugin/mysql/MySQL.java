@@ -2,7 +2,7 @@ package pl.spigotplugin.mysql;
 
 import org.bukkit.Bukkit;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 
 import java.sql.*;
 
@@ -14,14 +14,14 @@ public class MySQL {
     private Connection connection;
 
     public MySQL() throws SQLException {
-        this.host = Config.host;
-        this.dataBase = Config.dataBase;
-        this.user = Config.user;
-        this.password = Config.password;
+        this.host = statues.host;
+        this.dataBase = statues.dataBase;
+        this.user = statues.user;
+        this.password = statues.password;
         connect();
 
         update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT NOT NULL, koxy int NOT NULL, refile int NOT NULL, perly int NOT NULL, strzaly int NOT NULL, koxEaten int NOT NULL, refilEaten int NOT NULL, pearlThrown int NOT NULL, arrowsShoten int NOT NULL, coins int NOT NULL, easycase int NOT NULL, case611 int NOT NULL, kills int NOT NULL, asysty int NOT NULL, points int NOT NULL,deaths int NOT NULL,ks int NOT NULL,maxks int NOT NULL, time bigint(22) NOT NULL, os text NOT NULL, guild TEXT)");
-        update("CREATE TABLE IF NOT EXISTS guilds (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, tag TEXT, name TEXT, leader TEXT, deputy TEXT, members TEXT, region TEXT, home TEXT, prolong BIGINT, playerslimit INT, ally TEXT, kills int NOT NULL,deaths int NOT NULL, life int NOT NULL, points int, hp int, createTime BIGINT, gold int, regen TEXT, hpLastAttack BIGINT, GuildWar TEXT)");
+        update("CREATE TABLE IF NOT EXISTS guilds (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, tag TEXT, name TEXT, leader TEXT, deputy TEXT, members TEXT, region TEXT, home TEXT, prolong BIGINT, playerslimit INT, ally TEXT, kills int NOT NULL,deaths int NOT NULL, life int NOT NULL, points int, hp int, createTime BIGINT, gold int, regen TEXT, hpLastAttack BIGINT, wars TEXT)");
 
         update("CREATE TABLE IF NOT EXISTS backups (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, " +
                 "name varchar(32) NOT NULL," +

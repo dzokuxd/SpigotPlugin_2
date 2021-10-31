@@ -6,7 +6,7 @@ import org.bukkit.potion.PotionEffect;
 import pl.spigotplugin.api.PlayerCommand;
 
 public class HealCommand extends PlayerCommand {
-    public HealCommand() { super("heal", "heal <gracz>", ""); }
+    public HealCommand() { super("heal", "heal <gracz>", "spigot.heal"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,7 +17,7 @@ public class HealCommand extends PlayerCommand {
             for (PotionEffect effect : p.getActivePotionEffects()) {
                 p.removePotionEffect(effect.getType());
             }
-            p.sendMessage("&7\u00bb &aZostales uleczony!");
+            p.sendMessage("&aZostales uleczony!");
             return;
         }
         if (!p.hasPermission("core.cmd.admin")) {
@@ -35,7 +35,7 @@ public class HealCommand extends PlayerCommand {
         for (PotionEffect effect : o.getActivePotionEffects()) {
             o.removePotionEffect(effect.getType());
         }
-        o.sendMessage("&7\u00bb &6Zostales uleczony przez &c" + p.getName());
-        p.sendMessage("&7\u00bb &6Uleczyles &c" + o.getName());
+        o.sendMessage("&fZostales uleczony przez &d" + p.getName());
+        p.sendMessage("&fUleczyles &d" + o.getName());
     }
 }

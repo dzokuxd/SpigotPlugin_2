@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.DropFile;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.GuildManager;
@@ -24,13 +24,13 @@ import pl.spigotplugin.utils.ChatUtil;
 import java.util.ArrayList;
 
 public class ConfigCommand extends Command {
-    public ConfigCommand() { super("config", "config <reload/book>", "", "cfg");
+    public ConfigCommand() { super("config", "config <reload/book>", "spigot.config", "cfg");
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         switch (args[0]) {
@@ -42,36 +42,36 @@ public class ConfigCommand extends Command {
                 int bamount = BanManager.getBans().size();
                 int mamount = MuteManager.getMutes().size();
                 bookMeta.setAuthor("dzokv");
-                bookMeta.setTitle(ChatUtil.color("&7&lSpigotPlugin"));
+                bookMeta.setTitle(ChatUtil.color("&d&lSpigotPlugin"));
                 ArrayList<String> pages = new ArrayList<>();
                 pages.add(ChatUtil.color("&6Statystyki" +
-                        "\n &8» &6Gracze: &c" + uamount +
-                        "\n &8» &6Gildie: &c" + gamount+
-                        "\n &8» &6Bany: &c"+bamount+
-                        "\n &8» &6Muty: &c"+mamount+
-                        "\n &8» &6Stoniarki: &c"+
-                        "\n \n&6Zlimitowane bloki" +
-                        "\n &8» &6Enchanty: &c"+
-                        "\n &8» &6Pistony: &c"+
-                        "\n &8» &6Plytki naciskowe: &c"+
-                        "\n &8» &6Craftingi: &c"+
-                        "\n &8» &6Guziki: &c"+
-                        "\n &8» &6Piece: &c"));
+                        "\n &8» &fGracze: &d" + uamount +
+                        "\n &8» &fGildie: &d" + gamount+
+                        "\n &8» &fBany: &d"+bamount+
+                        "\n &8» &fMuty: &d"+mamount+
+                        "\n &8» &fStoniarki: &d"+
+                        "\n \n&dZlimitowane bloki" +
+                        "\n &8» &fEnchanty: &d"+
+                        "\n &8» &fPistony: &d"+
+                        "\n &8» &fPlytki naciskowe: &d"+
+                        "\n &8» &fCraftingi: &d"+
+                        "\n &8» &fGuziki: &d"+
+                        "\n &8» &fPiece: &d"));
                 bookMeta.setPages(pages);
                 book.setItemMeta(bookMeta);
                 this.openBook(book, (Player) sender);
                 return;
             }
             case "reload": {
-                Config.reloadConfig();
-                GlobalMessage.reloadLang();
+                statues.reloadLang();
+                core.reloadLang();
                 DropFile.reloadConfig();
                 guild.reloadLang();
                 sender.sendMessage("&8\u00bb &aConfig save!");
                 return;
             }
             default: {
-                sender.sendMessage(GlobalMessage.USAGE);
+                sender.sendMessage(core.USAGE);
             }
         }
     }

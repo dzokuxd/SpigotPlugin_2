@@ -66,7 +66,7 @@ public class GuildInfoCommand extends PlayerCommand {
         p.sendMessage("&7\u00bb &6Czlonkow: &c" + g.getMembers().size() + "&7/&c" + g.getPlayersLimit() + "&7, &6Online: &c" + g.getOnlineMembers().size());
         p.sendMessage("&7\u00bb &6Czlonkowie: " + StringUtils.join(GuildInfoCommand.getMemberList(g.getOnlineMembersNames()), "&7, "));
         p.sendMessage(g.getALlyList().replaceFirst("&6, ", "") + " &7[&c" + g.getAlly().size() + "&7/&c" + 2 + "&7]");
-        p.sendMessage("&7\u00bb &6Wojny: &c" + (g.getGuildWar().isEmpty() ? "BRAK" : g.getwojnatags()));
+        p.sendMessage("&7\u00bb &6Wojny: &c" + (g.getWars().isEmpty() ? "BRAK" : g.getWars()));
         p.sendMessage("&7&m-----------[&r &c&l" + g.getTag() + " &7&m-&r &c&l" + g.getName() + " &7]&7&m-----------");
     }
 }

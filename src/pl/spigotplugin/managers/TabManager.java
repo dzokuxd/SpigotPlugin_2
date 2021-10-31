@@ -4,15 +4,14 @@ import org.bukkit.entity.Player;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.utils.ChatUtil;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TabManager {
     public static String getReplacementR(Integer i) {
         if (TopsManager.kills.size() >= i) {
-            String s = "&6" + i + ". &c";
+            String s = "&7" + i + ". &d";
             if (i > 9) {
-                s = "&6" + i + ". &c";
+                s = "&7" + i + ". &d";
             }
             return s + TopsManager.kills.get(i - 1).getName();
         }
@@ -22,11 +21,11 @@ public class TabManager {
     public static String getReplacementG(Integer i) {
         if (TopsManager.guildRankings.size() >= i) {
             Guild guild = TopsManager.guildRankings.get(i - 1);
-            String s = "&6" + i + ". &c";
+            String s = "&7" + i + ". &d";
             if (i > 9) {
-                s = "&6" + i + ". &c";
+                s = "&7" + i + ". &d";
             }
-            return ChatUtil.color(s + "&c" + guild.getTag() + "&8~ &7" + guild.getPoints());
+            return ChatUtil.color(s + "&f" + guild.getTag() + "&8~ &d" + guild.getPoints());
         }
         return "";
     }

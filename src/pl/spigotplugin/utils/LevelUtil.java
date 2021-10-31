@@ -18,11 +18,12 @@ public class LevelUtil {
             u.save();
             Player p = u.getPlayer();
             p.playSound(p.getLocation(), Sound.LEVEL_UP, 20.0f, 20.0f);
-            ChatUtil.sendTitleMessage(p, "&6Awansowales na &c" + u.getLvl() + " &6poziom!", "&6Gratulacje &c"+u.getName(), 30, 70, 40);
-            p.sendMessage("&7*** &6Awansowales na &c" + u.getLvl() + " &6poziom! &7***");
+            ChatUtil.sendTitleMessage(p, "&fAwansowales na &d" + u.getLvl() + " &fpoziom!", "&fGratulacje &d"+u.getName(), 30, 70, 40);
+            p.sendMessage("&fAwansowales na &d" + u.getLvl() + " &fpoziom!");
             if (u.getLvl() >= 10 && u.getLvl() % 10 == 0) {
                 u.save();
-                Bukkit.broadcastMessage("&7\u00bb &6Gracz &c" + u.getName() + " &6awansowal na &c" + u.getLvl() + " &6poziom!");
+                ItemUtil.giveItems(p, VoucherUtil.turbo);
+                Bukkit.broadcastMessage("&fGracz &d" + u.getName() + " &fawansowal na &d" + u.getLvl() + " &fpoziom!");
             }
         }
     }

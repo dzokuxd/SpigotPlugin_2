@@ -6,16 +6,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class RenameCommand extends PlayerCommand {
-    public RenameCommand() { super("rename", "rename <nazwa>", ""); }
+    public RenameCommand() { super("rename", "rename <nazwa>", "spigot.rename"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         ItemStack is = p.getItemInHand();
@@ -27,6 +27,6 @@ public class RenameCommand extends PlayerCommand {
         ItemMeta meta = is.getItemMeta();
         meta.setDisplayName(ChatUtil.color(name));
         is.setItemMeta(meta);
-        p.sendMessage("&6Zmieniles nazwe przedmiotu na &c " + name);
+        p.sendMessage("&fZmieniles nazwe przedmiotu na &d" + name);
     }
 }

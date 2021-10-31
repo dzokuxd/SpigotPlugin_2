@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
 
 public class RepairCommand extends PlayerCommand {
-    public RepairCommand() { super("repair", "repair", ""); }
+    public RepairCommand() { super("repair", "repair", "spigot.repair"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -23,6 +23,6 @@ public class RepairCommand extends PlayerCommand {
         }
         is.setDurability((short) 0);
         p.playSound(p.getLocation(), Sound.ANVIL_USE, 5.0f, 3.0f);
-        p.sendMessage("&6Naprawiles przedmiot &c" + (is.getType()));
+        p.sendMessage("&fNaprawiles przedmiot &d" + (is.getType()));
     }
 }

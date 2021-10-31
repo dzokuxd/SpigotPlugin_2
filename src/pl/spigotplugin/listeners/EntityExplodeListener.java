@@ -51,14 +51,17 @@ public class EntityExplodeListener implements Listener {
     }
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        e.blockList().removeIf(block -> block.getType() == Material.SPONGE);
-
         if (e.getLocation().getBlockY() >= 60) {
             spawnEntity(e.getLocation());
             e.setCancelled(true);
             return;
         }
         if (!TNTUtil.isBetween()) {
+            e.setCancelled(true);
+            return;
+        }
+        Guild x = GuildManager.getGuildByLoc(e.getLocation());
+        if (x == null) {
             e.setCancelled(true);
             return;
         }

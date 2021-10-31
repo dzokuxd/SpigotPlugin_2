@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Guild {
 
@@ -37,16 +38,17 @@ public class Guild {
     public String regen = "";
     private int blocksToRegen = 0;
     private int gold = 0;
+    private String center;
     private boolean startedRegen = false;
     private boolean needsaveregen = false;
     private long hpLastAttack = System.currentTimeMillis() + TimeUtil.HOUR.getTime(24);
-    private Set<String> GuildWar = new HashSet<>();
     private final Set<Guild> allyInvites = new HashSet<>();
     private long createTime = System.currentTimeMillis();
     private long lastExplodeTime;
     private Set<String> ally = ConcurrentHashMap.newKeySet();
     private final Set<UUID> invites = ConcurrentHashMap.newKeySet();
     private Set<String> members = ConcurrentHashMap.newKeySet();
+    private Set<GuildWar> wars = ConcurrentHashMap.newKeySet();
 
     public String deleteCode = "";
 
@@ -66,11 +68,11 @@ public class Guild {
         this.gold = rs.getInt("gold");
         this.regen = rs.getString("regen");
         this.hpLastAttack = rs.getLong("hpLastAttack");
-        this.GuildWar = new HashSet<>();
 
         this.region = JSONHelper.GSON.fromJson(rs.getString("region"), Region.class);
         this.members = JSONHelper.GSON.fromJson(rs.getString("members"), new TypeToken<Set<String>>(){}.getType());
         this.ally = JSONHelper.GSON.fromJson(rs.getString("ally"), new TypeToken<Set<String>>(){}.getType());
+        this.wars = JSONHelper.GSON.fromJson(rs.getString("wars"), new TypeToken<Set<GuildWar>>(){}.getType());
         this.home = LocationParser.parseStringToLocation(rs.getString("home"));
     }
 
@@ -86,6 +88,20 @@ public class Guild {
         this.region = new Region(home, 20);
         this.members.add(leader.getName());
         insert();
+    }
+
+    public Set<GuildWar> getWars() {
+        return wars;
+    }
+
+    public Optional<GuildWar> get(final String tag)
+    {
+        return wars.stream().filter(guildWar -> guildWar.getTag().equalsIgnoreCase(tag)).findFirst();
+    }
+
+    public boolean hasWar(final String tag)
+    {
+        return get(tag).isPresent();
     }
 
     private void insert() {
@@ -107,10 +123,10 @@ public class Guild {
         data.put("life", life);
         data.put("gold", gold);
         data.put("regen", regen);
-        data.put("GuildWar", GuildWar);
         data.put("hpLastAttack", hpLastAttack);
         data.put("region", JSONHelper.GSON.toJson(region));
         data.put("members", JSONHelper.GSON.toJson(members));
+        data.put("wars", JSONHelper.GSON.toJson(wars));
 
         MySQLUtil.insert("guilds", data);
     }
@@ -132,10 +148,10 @@ public class Guild {
         data.put("life", life);
         data.put("gold", gold);
         data.put("regen", regen);
-        data.put("GuildWar", GuildWar);
         data.put("hpLastAttack", hpLastAttack);
         data.put("region", JSONHelper.GSON.toJson(region));
         data.put("members", JSONHelper.GSON.toJson(members));
+        data.put("wars", JSONHelper.GSON.toJson(wars));
 
         MySQLUtil.save("guilds", "tag", tag, data);
     }
@@ -157,10 +173,10 @@ public class Guild {
         data.put("life", life);
         data.put("gold", gold);
         data.put("regen", regen);
-        data.put("GuildWar", GuildWar);
         data.put("hpLastAttack", hpLastAttack);
         data.put("region", JSONHelper.GSON.toJson(region));
         data.put("members", JSONHelper.GSON.toJson(members));
+        data.put("wars", JSONHelper.GSON.toJson(wars));
 
         MySQLUtil.saveSync("guilds", "tag", tag, data);
     }
@@ -207,6 +223,7 @@ public class Guild {
         return allyInvites;
     }
 
+    public String getCenter() {return this.center;}
 
     public Location getHome() { return home; }
 
@@ -348,17 +365,6 @@ public class Guild {
             }
         }
         return online;
-    }
-
-    public Set<String> getGuildWar() { return GuildWar; }
-
-    public List<String> getwojnatags() {
-        List<String> tags = new LinkedList<>();
-        for (String s : GuildWar) {
-            String[] ss = s.split("@");
-            tags.add(ss[0]);
-        }
-        return tags;
     }
 
     public String getALlyList() {

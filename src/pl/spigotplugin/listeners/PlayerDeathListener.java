@@ -11,7 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.managers.CageManager;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.GuildManager;
@@ -20,9 +20,7 @@ import pl.spigotplugin.objects.guild.Fight;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.Backup;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.ItemUtil;
-import pl.spigotplugin.utils.RandomUtil;
+import pl.spigotplugin.utils.*;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -61,6 +59,8 @@ public class PlayerDeathListener implements Listener {
                 });
             }
         }
+        Guild g = GuildManager.getGuild(p.getPlayer());
+        Guild gg = GuildManager.getGuild(p.getKiller());
         Fight fight = CombatManager.get(p);
         Player k = p.getKiller();
         if (k == null && CombatManager.isFighting(p)) {
@@ -90,8 +90,6 @@ public class PlayerDeathListener implements Listener {
                 plusRank = RandomUtil.getRandInteger(7, 30);
             }
 
-            Guild g = GuildManager.getGuild(p.getPlayer());
-            Guild gg = GuildManager.getGuild(p.getKiller());
             int loseRank = plusRank / 7 * 3;
 
             u.setPoints(u.getPoints() - loseRank);
@@ -117,7 +115,9 @@ public class PlayerDeathListener implements Listener {
             }
             u.getLastKillers().put(uu, System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15L));
             uu.putForSave();
+            Bukkit.broadcastMessage("");
             Bukkit.broadcastMessage("&6Gracz " + (g == null ? "" : "&7[&c" + g.getTag() + "&7] ") + "&c " + p.getName() + " &7(&c-" + loseRank + "&7) &6zostal zabity przez " + (gg == null ? "" : "&7[&c" + gg.getTag() + "&7] ") + "&c" + k.getName() + " &7(&c+" + plusRank + "&7)");
+            Bukkit.broadcastMessage("");
 
             if (gg != null) {
                 gg.setPoints(gg.getPoints() + plusRank / 2);
@@ -133,8 +133,40 @@ public class PlayerDeathListener implements Listener {
         new Backup(p, desc(p));
         u.putForSave();
         u.save();
-        if (Config.MANAGE_DROPHEAD)
+        if (statues.MANAGE_DROPHEAD)
             p.getLocation().getWorld().dropItemNaturally(p.getLocation(), ItemUtil.getGoldenHead());
+        if (g != null && gg != null && !g.equals(gg) && statues.EVENTS_KILL > System.currentTimeMillis()) {
+            if (g.isLeader(p.getName())) {
+                if (RandomUtil.getChance(40.0)) {
+                    ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + statues.IP)).build();
+                    Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + statues.IP);
+                    Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(statues.EVENTS_KILL) + " &c/event");
+                    p.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
+                    ItemUtil.giveItems(k,d);
+                }
+            } else if (g.isLeader(p.getName())) {
+                if (RandomUtil.getChance(30.0)) {
+                    ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + statues.IP)).build();
+                    Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + statues.IP);
+                    Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(statues.EVENTS_KILL) + " &c/event");
+                    p.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
+                    ItemUtil.giveItems(k,d);
+                }
+            } else if (RandomUtil.getChance(15.0)) {
+                ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + statues.IP)).build();
+                Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + statues.IP);
+                Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(statues.EVENTS_KILL) + " &c/event");
+                p.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
+                ItemUtil.giveItems(k,d);
+            }
+        }
+        if (g != null && gg != null && !g.equals(gg) && statues.EVENTS_BEACON > System.currentTimeMillis() && RandomUtil.getChance(40.0)) {
+            ItemStack d = new ItemBuilder(Material.BEACON, 1).build();
+            Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &6&lBeacona!");
+            Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(statues.EVENTS_BEACON) + " &c/event");
+            p.sendMessage("&6Trafiles na: &eBeacona &7(1szt)");
+            ItemUtil.giveItems(k,d);
+        }
     }
     private String desc(Player p) {
         EntityDamageEvent e = p.getLastDamageCause();
@@ -152,37 +184,4 @@ public class PlayerDeathListener implements Listener {
         }
         return cause;
     }
-    /*if (g != null && g2 != null && !g.equals(g2) && Config.EVENTS_KILL > System.currentTimeMillis()) {
-        if (g.isOwner(p)) {
-            if (RandomUtil.getChance(40.0)) {
-                ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + Config.IP)).build();
-                Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + Config.IP);
-                Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_KILL) + " &c/event");
-                ChatUtil.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
-                ChatUtil.giveItems(k, d);
-            }
-        } else if (g.isLeader(p)) {
-            if (RandomUtil.getChance(30.0)) {
-                ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + Config.IP)).build();
-                Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + Config.IP);
-                Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_KILL) + " &c/event");
-                e.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
-                ChatUtil.giveItems(k, d);
-            }
-        } else if (RandomUtil.getChance(15.0)) {
-            ItemStack d = new ItemBuilder(Material.CHEST, 1).setTitle(ChatUtil.color("&c&lSkrzynia " + Config.IP)).build();
-            Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &cSkrzynie " + Config.IP);
-            Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_KILL) + " &c/event");
-            e.sendMessage("&6Trafiles na: &cSkrzynke &7(1szt)");
-            ChatUtil.giveItems(k, d);
-        }
-    }
-    if (g != null && g2 != null && !g.equals(g2) && Config.EVENTS_BEACON > System.currentTimeMillis() && RandomUtil.getChance(40.0)) {
-        ItemStack d = new ItemBuilder(Material.BEACON, 1).build();
-        Bukkit.broadcastMessage("&6Gracz &c" + k.getName() + " &6wydropil &6&lBeacona!"));
-        Bukkit.broadcastMessage("&6Do konca eventu pozostalo &c" + DataUtil.secondsToString(Config.EVENTS_BEACON) + " &c/event"));
-        e.sendMessage("&6Trafiles na: &eBeacona &7(1szt)");
-        ChatUtil.giveItems(k, d);
-        }
-    }*/
-}//TODO jak dodasz gildie xD
+}

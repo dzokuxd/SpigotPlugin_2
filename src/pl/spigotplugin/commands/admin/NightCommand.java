@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import pl.spigotplugin.api.Command;
 
 public class NightCommand extends Command {
-    public NightCommand() { super("night", "", ""); }
+    public NightCommand() { super("night", "", "spigot.night"); }
 
     @Override
     public void onExecute(CommandSender p, String[] args) {

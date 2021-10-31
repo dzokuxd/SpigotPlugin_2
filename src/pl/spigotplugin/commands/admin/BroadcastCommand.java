@@ -5,17 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BroadcastCommand extends Command {
-    public BroadcastCommand() { super("broadcast", "broadcast chat/title text", "permission", "bc");
+    public BroadcastCommand() { super("broadcast", "broadcast chat/title text", "spigot.broadcast", "bc");
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         if (args[0].equalsIgnoreCase("chat")) {
@@ -25,7 +25,7 @@ public class BroadcastCommand extends Command {
                 ChatUtil.sendTitleMessage(pb, "&c&lUWAGA", StringUtils.join(args, " ",1,args.length), 30, 70, 40);
             }
         } else {
-            sender.sendMessage("&7\u00bb &6Poprawne uzycie: &c/broadcast chat/title <wiadomosc>");
+            sender.sendMessage("&cPoprawne uzycie: /broadcast chat/title <wiadomosc>");
         }
     }
 }

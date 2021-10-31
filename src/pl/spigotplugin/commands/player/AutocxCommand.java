@@ -2,7 +2,7 @@ package pl.spigotplugin.commands.player;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.listeners.BlockBreakListener;
 
 public class AutocxCommand extends PlayerCommand {
@@ -12,10 +12,10 @@ public class AutocxCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         if (BlockBreakListener.playerSet.contains(p)) {
             BlockBreakListener.playerSet.remove(p);
-            p.sendMessage(GlobalMessage.COBBLEX_AUTOCX_TRUE);
+            p.sendMessage(core.COBBLEX_AUTOCX_TRUE);
         } else {
             BlockBreakListener.playerSet.add(p);
-            p.sendMessage(GlobalMessage.COBBLEX_AUTOCX_FALSE);
+            p.sendMessage(core.COBBLEX_AUTOCX_FALSE);
         }
     }
 }

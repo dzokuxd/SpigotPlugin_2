@@ -12,9 +12,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GlobalMessage
+public class core
 {
-    private static final File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "GlobalMessage.yml");
+    private static final File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "core.yml");
     private static FileConfiguration c = null;
     public static String MESSAGES_HELP = "&7&m----------&7[ &c&lPOMOC &7]&M----------" +
             "\n&c/kit &7- &6Lista dostepnych kitow" +
@@ -51,9 +51,9 @@ public class GlobalMessage
     public static String FLY_POPRAW = "Predkosc speed musi wynosic 1-10!";
     public static String FLY_SPEED = "Ustawile predkosc latania na {SPEEDFLY}";
     public static String FLY_YOU = "Latanie: {FLY}";
-    public static String FLY_PLAYER = "Latanie: {FLYPLAYER}";
-    public static String CLEAR_CI = "Wyczyszczono ekwipunek!";
-    public static String CLEAR_YOU = "Twoj ekwipunek zostal wyczyszczony przez {PLAYER}!";
+    public static String FLY_PLAYER = "Latanie dla {FLYPLAYER} {FLYSTATUS}";
+    public static String CLEAR_YOU = "Wyczyszczono ekwipunek!";
+    public static String CLEAR_OTHER = "Twoj ekwipunek zostal wyczyszczony przez {PLAYER}!";
     public static String CLEAR_PLAYER = "Wyczysciles eq gracza {PLAYER}!";
     public static String GAMEMODE_GM = "gamemode: {GAMEMODE}";
     public static String GAMEMODE_YOU = "gamemode: {GAMEMODESTATUS} dla {GAMEMODEPLAYER}";
@@ -64,27 +64,28 @@ public class GlobalMessage
     public static String VANISH_SEETRUE = "administrator {VANISHPLAYER} wlaczyl vanisha";
     public static String COBBLEX_AUTOCX_TRUE = "&6Auto CobbleX &cwylaczono";
     public static String COBBLEX_AUTOCX_FALSE = "&6Auto CobbleX &awlaczono";
+    public static String DRAGON_BROADCAST = "{PLAYER} zabil smoka gg!";
 
     public static String USAGE = "&cPoprawne uzycie: /{USAGE}";
 
     public static boolean usage(CommandSender sender, String usage) {
-        sender.sendMessage(GlobalMessage.USAGE.replace("{USAGE}", usage));
+        sender.sendMessage(core.USAGE.replace("{USAGE}", usage));
         return false;
     }
 
     public static void loadLang() {
         try {
-            if (!GlobalMessage.file.exists()) {
-                GlobalMessage.file.getParentFile().mkdirs();
-                InputStream is = SpigotPlugin.getPlugin().getResource(GlobalMessage.file.getName());
+            if (!core.file.exists()) {
+                core.file.getParentFile().mkdirs();
+                InputStream is = SpigotPlugin.getPlugin().getResource(core.file.getName());
                 if (is != null) {
-                    IOUtil.copy(is, GlobalMessage.file);
+                    IOUtil.copy(is, core.file);
                 }
             }
-            GlobalMessage.c = YamlConfiguration.loadConfiguration(GlobalMessage.file);
-            for (Field f : GlobalMessage.class.getFields()) {
-                if (GlobalMessage.c.isSet(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", "."))) {
-                    f.set(null, GlobalMessage.c.get(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", ".")));
+            core.c = YamlConfiguration.loadConfiguration(core.file);
+            for (Field f : core.class.getFields()) {
+                if (core.c.isSet(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", "."))) {
+                    f.set(null, core.c.get(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", ".")));
                 }
             }
         }
@@ -95,10 +96,10 @@ public class GlobalMessage
 
     public static void saveLang() {
         try {
-            for (Field f : GlobalMessage.class.getFields()) {
-                GlobalMessage.c.set(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", "."), f.get(null));
+            for (Field f : core.class.getFields()) {
+                core.c.set(f.getName().toLowerCase().replaceFirst("_", ",").replace(",", "."), f.get(null));
             }
-            GlobalMessage.c.save(GlobalMessage.file);
+            core.c.save(core.file);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.Ban;
@@ -13,11 +13,11 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.DataUtil;
 
 public class BanCommand extends Command {
-    public BanCommand() { super("ban", "ban nick czas/0 powod", ""); }
+    public BanCommand() { super("ban", "ban nick czas/0 powod", "spigot.ban"); }
 
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         Ban b = BanManager.getBan(args[0]);

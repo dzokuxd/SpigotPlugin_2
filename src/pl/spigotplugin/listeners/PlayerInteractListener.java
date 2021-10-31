@@ -3,27 +3,29 @@ package pl.spigotplugin.listeners;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.holder.LocationHolder;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.guild.Guild;
+import pl.spigotplugin.objects.guild.GuildWar;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.*;
 
@@ -41,12 +43,22 @@ public class PlayerInteractListener implements Listener {
         Action ea = e.getAction();
         User u = UserManager.getUser(p);
         Block clickedBlock = e.getClickedBlock();
+        if (e.getClickedBlock() != null) {
+            if (clickedBlock.getType() == Material.SPONGE) {
+                clickedBlock.setType(Material.AIR);
+                ItemStack randomDrop = BossUtil.drops.get(RandomUtil.getRandInteger(0, BossUtil.drops.size() - 1));
+                ItemUtil.giveItems(p, randomDrop);
+                Bukkit.broadcastMessage("&aGracz "+p.getName()+ " otworzyl magiczny drop i otrzymal "+randomDrop.getType()+"x"+randomDrop.getAmount());
+                clickedBlock.getWorld().playEffect(clickedBlock.getLocation(), Effect.EXPLOSION_HUGE, 10);
+                return;
+            }
+        }
         if (p.getItemInHand().isSimilar(VoucherUtil.vip)) {
             if (p.hasPermission("vip")) {
                 p.sendMessage("&cPosiadasz ta lub lepsza range!");
                 return;
             }
-            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na range &cVIP!");
+            Bukkit.broadcastMessage("&aGracz " + p.getName() + " aktywowal Voucher na range VIP!");
             ItemUtil.removeItems(p, VoucherUtil.vip);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user" + p.getName() + " group set vip");
             return;
@@ -56,7 +68,7 @@ public class PlayerInteractListener implements Listener {
                 p.sendMessage("&cPosiadasz ta lub lepsza range!");
                 return;
             }
-            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na range &cSVIP!");
+            Bukkit.broadcastMessage("Gracz " + p.getName() + " aktywowal Voucher na range SVIP!");
             ItemUtil.removeItems(p, VoucherUtil.svip);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user" + p.getName() + " group set svip");
             return;
@@ -65,7 +77,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         if (p.getItemInHand().isSimilar(VoucherUtil.turbo)) {
-            Bukkit.broadcastMessage("&6Gracz &c" + p.getName() + " &6aktywowal Voucher na &cTURBODROP 10M!");
+            Bukkit.broadcastMessage("Gracz " + p.getName() + " aktywowal Voucher na TURBODROP 10M!");
             ItemUtil.removeItems(p, VoucherUtil.turbo);
             long turboDropHave = 0L;
             long currentTurboDrop = u.getTurboDrop();
@@ -97,10 +109,10 @@ public class PlayerInteractListener implements Listener {
             int x = RandomUtil.getRandInt(-90, 90);
             int z = RandomUtil.getRandInt(-90, 90);
             int i = 0;
-            World world_nether = Bukkit.getWorld("gtp");
+            World gtp = Bukkit.getWorld("gtp");
             for (Player players : this.getPlayersInRadius(clickedBlock.getLocation(), 3)) {
                 ++i;
-                Location location = new Location(world_nether,x, world_nether.getHighestBlockYAt(x,z),z);
+                Location location = new Location(gtp,x, gtp.getHighestBlockYAt(x,z),z);
                 if (i > 2) continue;
                 p.teleport(location);
                 Location ploc =p.getLocation().clone();
@@ -116,21 +128,21 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         int strzalyw = ItemUtil.getItemAmount(Material.ARROW, p, (short) 0);
-        if (strzalyw > Config.LIMIT_STRZAL) {
-            ItemStack item = new ItemStack(Material.ARROW, (strzalyw - Config.LIMIT_STRZAL), (short) 0);
-            int added = ItemUtil.remove(item, p, Config.LIMIT_STRZAL);
+        if (strzalyw > statues.LIMIT_STRZAL) {
+            ItemStack item = new ItemStack(Material.ARROW, (strzalyw - statues.LIMIT_STRZAL), (short) 0);
+            int added = ItemUtil.remove(item, p, statues.LIMIT_STRZAL);
             u.addStrzaly(added);
             u.addarrowsShoten(1);
-            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_STRZAL + " &6strzal! &7(&c" + added + " &6strzaly zostaja odlozone do twojego schowka&7)");
+            p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_STRZAL + " strzal! (" + added + " strzaly zostaja odlozone do twojego schowka)");
         }
         if (s.getType() == Material.ENDER_PEARL) {
             int pearl = ItemUtil.getItemAmount(Material.ENDER_PEARL, p, (short) 0);
-            if (pearl > Config.LIMIT_PEARL) {
-                ItemStack item = new ItemStack(Material.ENDER_PEARL, (pearl - Config.LIMIT_PEARL), (short) 0);
-                int added = ItemUtil.remove(item, p, Config.LIMIT_PEARL);
+            if (pearl > statues.LIMIT_PEARL) {
+                ItemStack item = new ItemStack(Material.ENDER_PEARL, (pearl - statues.LIMIT_PEARL), (short) 0);
+                int added = ItemUtil.remove(item, p, statues.LIMIT_PEARL);
                 u.addPerly(added);
                 u.addpearlThrown(1);
-                p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_PEARL + " &6perel! &7(&c" + added + " &6perly zostaja odlozone do twojego schowka&7)");
+                p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_PEARL + " perel! (" + added + " perly zostaja odlozone do twojego schowka)");
             }
         }
         if ((ea.equals(Action.RIGHT_CLICK_AIR)) || (ea.equals(Action.RIGHT_CLICK_BLOCK))) {
@@ -206,6 +218,69 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
+    public void dropEvent(PlayerDropItemEvent event){
+        Item item = event.getItemDrop();
+        Player p = event.getPlayer();
+        if(event.getItemDrop().getItemStack().getType().equals(Material.GOLDEN_APPLE)) {
+            p.updateInventory();
+            p.sendMessage("&cNie możesz tego wyrzucic. (Bugowanie jedzenia w biegu zablokowane)");
+        }
+    }
+    @EventHandler
+    public void onEntityCreatePortal(EntityCreatePortalEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void NetherPortal(PlayerPortalEvent event) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            event.setCancelled(true);
+            Player p = event.getPlayer();
+            User user = UserManager.getUser(p);
+            Guild g = GuildManager.getGuild(p);
+            int x = RandomUtil.getRandInt(-90, 90);
+            int z = RandomUtil.getRandInt(-90, 90);
+            World end = Bukkit.getWorld("end");
+            if (user.getGuild().isEmpty()) {
+                p.sendMessage("&cNie posiadasz gildii!");
+                return;
+            }
+            if (g == null) {
+                return;
+            }
+            p.teleport(new Location(end, 0, 66, 0));
+        }
+    }
+    @EventHandler
+    public void EndPortal(PlayerPortalEvent event) {
+        Player p = event.getPlayer();
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+            event.setCancelled(true);
+            if (p.getWorld().getName().equals("world")) {
+                Location location = p.getLocation();
+                Guild g = GuildManager.getGuild(p);
+                User user = UserManager.getUser(p);
+                if (user.getGuild().isEmpty()) {
+                    p.sendMessage("&cNie posiadasz gildii!");
+                    p.teleport(LocationHolder.SPAWN);
+                    p.playSound(location, Sound.VILLAGER_NO, 1f, 1f);
+                    return;
+                }
+                if (g == null) {
+                    return;
+                }
+                p.playSound(location, Sound.VILLAGER_YES, 1f, 1f);
+                p.teleport(g.getHome());
+                return;
+            }
+            if (p.getWorld().getName().equals("end")) {
+                World world = Bukkit.getWorld("world");
+                p.teleport(new Location(world, 150, 65, 0));
+            }
+        }
+    }
+
+    @EventHandler
     public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
         if (event.getRightClicked() instanceof Player) {
             User user = UserManager.getUser(event.getPlayer());
@@ -215,8 +290,14 @@ public class PlayerInteractListener implements Listener {
             if (plusRank <= 0) {
                 plusRank = RandomUtil.getRandInteger(7, 30);
             }
+            Long guildclick = PlayerInteractListener.guildclick.get(clickedPlayer.getUniqueId());
+            if (guildclick != null && System.currentTimeMillis() - guildclick < 1000L) {
+                event.setCancelled(true);
+                return;
+            }
+            PlayerInteractListener.guildclick.put(clickedPlayer.getUniqueId(), System.currentTimeMillis());
             int loseRank = plusRank / 7 * 3;
-            event.getPlayer().sendMessage("&6Za zabicie tego gracza otrzymasz &a" +plusRank+ " &6a stracisz&c " +loseRank);
+            event.getPlayer().sendMessage("&fZa zabicie tego gracza otrzymasz &a" +plusRank+ " &fa stracisz &c" +loseRank);
         }
     }
     @EventHandler
@@ -245,19 +326,18 @@ public class PlayerInteractListener implements Listener {
             p.sendMessage("&cNie mozesz atakowac sojuszy!");
             return;
         }
-        boolean guildwar = false;
-        for (String s : g.getGuildWar()) {
-            String[] splitter = s.split("@");
-            guildwar = splitter[0].contains(gg.getTag());
-        }
-        if (!guildwar) {
+        if (!gg.hasWar(g.getTag())) {
             p.sendMessage("&cZeby podbic gildie musisz miec z nimi wojne! /g wojna " + g.getTag());
             return;
         }
-        if (g.getHpLastAttack() > System.currentTimeMillis()) {
+        /*if (!gg.getGuildWar().containsKey(g.getTag())) {
+            p.sendMessage("&cZeby podbic gildie musisz miec z nimi wojne! /g wojna " + g.getTag());
+            return;
+        }*/
+        /*if (g.getHpLastAttack() > System.currentTimeMillis()) {
             p.sendMessage("&cGildie mozesz podbic za " + DataUtil.secondsToString(g.getHpLastAttack()));
             return;
-        }
+        }*/
         /*if (!TNTUtil.isBetween()){
             p.sendMessage("&cGildie mozna podbic tylko gdy tnt jest wlaczone!");
             return;
@@ -274,30 +354,30 @@ public class PlayerInteractListener implements Listener {
             }
             PlayerInteractListener.guildclick.put(p.getUniqueId(), System.currentTimeMillis());
             g.setHp(g.getHp() - 1);
-            g.message("twoja gildia jest atakowana "+g.getHp());
+            g.message("&cTwoja gildia jest atakowana przez: "+gg.getTag()+ "pozostale hp to: "+g.getHp());
             gg.message("&cPozostale hp gildii "+g.getTag()+ " to " +g.getHp());
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 3));
             return;
         }
         if (g.getLife() == 1) {
-            gg.getGuildWar().remove(g.getTag());
-            g.getGuildWar().remove(gg.getTag());
+            gg.getWars().remove(new GuildWar(g.getTag(), null));
+            g.getWars().remove(new GuildWar(gg.getTag(), null));
             Bukkit.broadcastMessage("&7[&c" + g.getTag() + "&7] [&c-100&7]&c " + g.getName() + " &6zostala zniszczona przez &7[&c" + gg.getTag() + "&7] [&c+100&7]&c " + p.getName());
             ChatUtil.sendTitleMessage(p, "&c&lWOJNY", "&c"+gg.getTag()+" +100 &6Wygrala wojne z gildia&c "+g.getTag()+" -100", 30, 70, 40);
-            p.sendMessage("&6Za podbicie gildie otrzymales &7x&c8 Skrzyn " + Config.IP);
+            p.sendMessage("&aZa podbicie gildii otrzymales x8 Skrzyn " + statues.IP);
             DajUtil.giveWithAmount("easycase", 8, p);
             GuildManager.deleteGuild(g);
         }
         else {
             g.setLife(g.getLife() - 1);
             g.setHp(50);
-            gg.getGuildWar().remove(g.getTag());
-            g.getGuildWar().remove(gg.getTag());
+            gg.getWars().remove(new GuildWar(g.getTag(), null));
+            g.getWars().remove(new GuildWar(gg.getTag(), null));
             g.setHpLastAttack(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
             Bukkit.broadcastMessage("&7[&c" + g.getTag() + "&7] [&c-100&7]&c " + g.getName() + " &6zostala podbita przez &7[&c" + gg.getTag() + "&7] [&c+100&7]&c " + p.getName());
             Bukkit.broadcastMessage("&6Zostalo jej &c" + g.getLife() + " &6zyc");
             ChatUtil.sendTitleMessage(p, "&c&lWOJNY", "&c"+gg.getTag()+" +100 &6Wygrala wojne z gildia&c "+g.getTag()+" -100", 30, 70, 40);
-            p.sendMessage("&6Za podbicie gildie otrzymales &7x&c8 Skrzyn " + Config.IP);
+            p.sendMessage("&aZa podbicie gildie otrzymales x8 Skrzyn " + statues.IP);
             DajUtil.giveWithAmount("easycase", 8, p);
         }
         gg.setLife(gg.getLife() +1);
@@ -307,7 +387,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void sing(SignChangeEvent e) {
-        if (!e.getPlayer().hasPermission("spigotplugin.sign")) {
+        if (!e.getPlayer().hasPermission("spigot.sign")) {
             return;
         }
         for (int i = 0; i <= 3; ++i) {
@@ -331,32 +411,12 @@ public class PlayerInteractListener implements Listener {
             e.setResult(Event.Result.DENY);
             return;
         }
-        if (!Config.MANAGE_DIAMOND && (item.getType() == Material.DIAMOND_HELMET || item.getType() == Material.DIAMOND_CHESTPLATE || item.getType() == Material.DIAMOND_LEGGINGS || item.getType() == Material.DIAMOND_BOOTS || item.getType() == Material.DIAMOND_SWORD)) {
+        if (!statues.MANAGE_DIAMOND && (item.getType() == Material.DIAMOND_HELMET || item.getType() == Material.DIAMOND_CHESTPLATE || item.getType() == Material.DIAMOND_LEGGINGS || item.getType() == Material.DIAMOND_BOOTS || item.getType() == Material.DIAMOND_SWORD)) {
             p.sendMessage(ChatUtil.color("&cCraftowanie diamentowych itemow jest wylaczone!"));
             e.setCancelled(true);
             e.setCurrentItem(null);
             e.setResult(Event.Result.DENY);
         }
-    }
-
-    @EventHandler
-    public void EndPortal(PlayerPortalEvent event) {
-        event.setCancelled(true);
-        Player p = event.getPlayer();
-        Location location = p.getLocation();
-        Guild g = GuildManager.getGuild(p);
-        User user = UserManager.getUser(p);
-        if (user.getGuild().isEmpty()) {
-            p.sendMessage("&cNie posiadasz gildii!");
-            p.playSound(location, Sound.VILLAGER_NO, 1f, 1f);
-            return;
-        }
-        if (g == null) {
-            return;
-        }
-        p.setVelocity(location.getDirection().multiply(1));
-        p.playSound(location, Sound.VILLAGER_YES, 1f, 1f);
-        p.teleport(g.getHome());
     }
 
     @EventHandler
@@ -368,18 +428,18 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         int i = ItemUtil.getItemAmount(Material.GOLDEN_APPLE, p, (short) 1);
-        if (i > Config.LIMIT_KOX) {
-            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (i - Config.LIMIT_KOX), (short) 1);
-            int added = ItemUtil.remove(item, p, Config.LIMIT_KOX);
+        if (i > statues.LIMIT_KOX) {
+            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (i - statues.LIMIT_KOX), (short) 1);
+            int added = ItemUtil.remove(item, p, statues.LIMIT_KOX);
             u.addKoxy(added);
-            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_KOX + " &6koxy! &7(&c" + added + " &6koxy zostaja odlozone do twojego schowka&7)");
+            p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_KOX + " koxy! (" + added + " koxy zostaja odlozone do twojego schowka)");
         }
         int ii = ItemUtil.getItemAmount(Material.GOLDEN_APPLE, p, (short) 0);
-        if (ii > Config.LIMIT_REFILE) {
-            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (ii - Config.LIMIT_REFILE), (short) 0);
-            int added = ItemUtil.remove(item, p, Config.LIMIT_REFILE);
+        if (ii > statues.LIMIT_REFILE) {
+            ItemStack item = new ItemStack(Material.GOLDEN_APPLE, (ii - statues.LIMIT_REFILE), (short) 0);
+            int added = ItemUtil.remove(item, p, statues.LIMIT_REFILE);
             u.addRefile(added);
-            p.sendMessage("&6Posiadasz przy sobie wiecej niz &c" + Config.LIMIT_REFILE + " &6refile! &7(&c" + added + " &6refile zostaja odlozone do twojego schowka&7)");
+            p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_REFILE + " refile! (" + added + " refile zostaja odlozone do twojego schowka)");
         }
         if (is.getDurability() == 1) {
             e.setCancelled(true);
@@ -414,11 +474,15 @@ public class PlayerInteractListener implements Listener {
     }
 
     private void randomTP(Player player) {
-        int x = RandomUtil.getRandInt(-Config.BORDER_WORLD, Config.BORDER_WORLD);
-        int z = RandomUtil.getRandInt(-Config.BORDER_WORLD, Config.BORDER_WORLD);
+        int x = RandomUtil.getRandInt(-statues.BORDER_WORLD, statues.BORDER_WORLD);
+        int z = RandomUtil.getRandInt(-statues.BORDER_WORLD, statues.BORDER_WORLD);
         double y = player.getWorld().getHighestBlockYAt(x,z) + 1.5f;
         Location location = new Location(player.getWorld(), x,y,z);
+        Biome biome = location.getBlock().getBiome();
+        if (biome == Biome.OCEAN || biome == Biome.DEEP_OCEAN || GuildManager.getGuild(location) != null) {
+            player.sendMessage("&cTrafiles na gildie lub ocean!");
+            return;
+        }
         player.teleport(location);
-        GuildManager.getGuild(location);
     }
 }

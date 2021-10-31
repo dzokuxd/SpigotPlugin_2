@@ -2,25 +2,26 @@ package pl.spigotplugin.commands.player;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.component.Teleporter;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.holder.LocationHolder;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.PanelMenu;
 import pl.spigotplugin.objects.guild.Guild;
+import pl.spigotplugin.objects.guild.GuildWar;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.tasks.GuildRegenerationTask;
 import pl.spigotplugin.utils.*;
 
-import javax.swing.text.html.HTML;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 public class GuildCommand extends PlayerCommand {
     public GuildCommand() { super("gildie", "gildie", "","g"); }
@@ -28,17 +29,17 @@ public class GuildCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 1) {
-            usage(p);
+            p.sendMessage(guild.GUILDHELP_MESSAGE);
             return;
         }
-        final User user = UserManager.getUser(p);
+        User user = UserManager.getUser(p);
         switch (args[0].toLowerCase()){
             case "zaloz": {
                 if (args.length !=3) {
-                    p.sendMessage("&7Prawidlowe uzycie: &c/g zaloz <tag> <pelna nazwa>");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g zaloz <tag> <pelna nazwa>");
                     return;
                 }
-                if (!p.hasPermission("spigotplugin.manage") && !Config.MANAGE_GUILDCREATE) {
+                if (!p.hasPermission("spigot.manage") && !statues.MANAGE_GUILDCREATE) {
                     p.sendMessage("&cZakladanie gildii jest tymczasowo wylaczone!");
                     return;
                 }
@@ -68,10 +69,13 @@ public class GuildCommand extends PlayerCommand {
                     p.sendMessage(guild.CREATE_FULLNAMENOTALPHANUMERIC);
                     return;
                 }
-                if (!GuildManager.canCreateGuildBySpawn(p.getLocation())) {
-                    p.sendMessage(guild.CREATE_TOCLOSESPAWN);
+                if (!isValidLocation(p)) {
                     return;
                 }
+                /*if (!GuildManager.canCreateGuildBySpawn(p.getLocation())) {
+                    p.sendMessage(guild.CREATE_TOCLOSESPAWN);
+                    return;
+                }*/
                 if (!GuildUtil.hasItems(p))
                     return;
                 GuildUtil.removeItems(p);
@@ -90,15 +94,15 @@ public class GuildCommand extends PlayerCommand {
             case "zapros": {
                 Guild g = GuildManager.getGuild(p);
                 if (args.length != 2) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g zapros <gracz/*>");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g zapros <gracz/*>");
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isDeputy(p.getName())){
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 ItemStack costInvite = guild.INVITE_COST;
@@ -148,30 +152,30 @@ public class GuildCommand extends PlayerCommand {
                         return;
                     }
                     if(!p.getInventory().containsAtLeast(costInvite, costInvite.getAmount())){
-                        p.sendMessage("&cNie posiadasz " + costInvite.getType() + "x" + costInvite.getAmount());//TODO zrob to wszedzie
+                        p.sendMessage("&cNie posiadasz " + costInvite.getType() + "x" + costInvite.getAmount());
                         return;
                     }
                     g.getInvites().add(player.getUniqueId());
                     p.getInventory().removeItem(costInvite);
-                    p.sendMessage("&6Zaprosiles &c"+o.getName()+ "&6do gildii");
-                    p.sendMessage(guild.INVITE_TARGET1.replace("{TAG}",g.getTag()).replace("{PLAYER}",p.getName()));
-                    p.sendMessage(guild.INVITE_TARGET2.replace("{TAG}",g.getTag()));
+                    p.sendMessage("&fZaprosiles &d"+o.getName()+ "&fdo gildii");
+                    o.getPlayer().sendMessage(guild.INVITE_TARGET1.replace("{TAG}",g.getTag()).replace("{PLAYER}",p.getName()));
+                    o.getPlayer().sendMessage(guild.INVITE_TARGET2.replace("{TAG}",g.getTag()));
                     return;
                 }
                 break;
             }
             case "wyrzuc": {
                 if (args.length != 2) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g wyrzuc <gracz>");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g wyrzuc <gracz>");
                     return;
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 User o = UserManager.getUser(args[1]);
@@ -205,17 +209,17 @@ public class GuildCommand extends PlayerCommand {
                 }
             }
             case "itemy": {
-                GuildUtil.openInv(p,p.hasPermission("spigotplugin.premium"));
+                GuildUtil.openInv(p,p.hasPermission("spigot.premium"));
                 return;
             }
             case "usun": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 if (args.length < 2) {
@@ -249,12 +253,12 @@ public class GuildCommand extends PlayerCommand {
             }
             case "dolacz": {
                 if (args.length != 2) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g dolacz <tag>");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g dolacz <tag>");
                     return;
                 }
                 Guild gl = GuildManager.getGuild(p);
                 if (gl != null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 Guild g = GuildManager.getGuild(args[1]);
@@ -278,12 +282,12 @@ public class GuildCommand extends PlayerCommand {
             }
             case "dom": {
                 if (args.length != 1) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g dom");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g dom");
                     return;
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 Guild o = GuildManager.getGuild(p.getLocation());
@@ -297,16 +301,16 @@ public class GuildCommand extends PlayerCommand {
             }
             case "ustawdom": {
                 if (args.length != 1) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g ustawdom");
+                    p.sendMessage("&fPrawidlowe uzycie: &d/g ustawdom");
                     return;
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isDeputy(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 Guild o = GuildManager.getGuild(p.getLocation());
@@ -325,11 +329,11 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 User u = UserManager.getUser(args[1]);
@@ -341,11 +345,12 @@ public class GuildCommand extends PlayerCommand {
                     p.sendMessage(guild.PLAYER_DONTHAVEAGUILD);
                     return;
                 }
-                if(!p.getInventory().containsAtLeast(guild.COST_LEADER, guild.COST_LEADER.getAmount())){
-                    p.sendMessage("&cNie Posiadasz x"+ guild.COST_LEADER);
+                ItemStack costLeader = guild.LEADER_COST;
+                if(!p.getInventory().containsAtLeast(costLeader, costLeader.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costLeader.getType() + "x" + costLeader.getAmount());
                     return;
                 }
-                p.getInventory().removeItem(guild.COST_LEADER);
+                p.getInventory().removeItem(guild.LEADER_COST);
                 g.setLeader(u.getName());
                 g.putForSave();
                 Bukkit.broadcastMessage(guild.LIDER_BROADCAST.replace("{TARGET}",u.getName()).replace("{TAG}",g.getTag()));
@@ -358,11 +363,11 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 User u = UserManager.getUser(args[1]);
@@ -382,11 +387,12 @@ public class GuildCommand extends PlayerCommand {
                     g.setDeputy("Brak");
                     Bukkit.broadcastMessage(guild.DEPUTY_BROADCAST.replace("{TARGET}",u.getName()).replace("{TAG}",g.getTag()));
                 }
-                if(!p.getInventory().containsAtLeast(guild.COST_DEPUTY, guild.COST_DEPUTY.getAmount())){
-                    p.sendMessage("&cNie Posiadasz x"+ guild.COST_DEPUTY);
+                ItemStack costDeputy = guild.DEPUTY_COST;
+                if(!p.getInventory().containsAtLeast(costDeputy, costDeputy.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costDeputy.getType() + "x" + costDeputy.getAmount());
                     return;
                 }
-                p.getInventory().removeItem(guild.COST_DEPUTY);
+                p.getInventory().removeItem(guild.DEPUTY_COST);
                 g.setDeputy(u.getName());
                 Bukkit.broadcastMessage(guild.DEPUTY_CHANGE.replace("{TARGET}",u.getName()).replace("{TAG}",g.getTag()));
                 break;
@@ -398,22 +404,23 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 if (g.getProlong() + TimeUtil.DAY.getTime(guild.CUBOID_PROLONG_ADD) > System.currentTimeMillis() + TimeUtil.DAY.getTime(guild.CUBOID_PROLONG_MAX)) {
                     p.sendMessage(guild.RENEW_MAX);
                     return;
                 }
-                if(!p.getInventory().containsAtLeast(guild.COST_PROLONG, guild.COST_PROLONG.getAmount())){
-                    p.sendMessage("&cNie Posiadasz x"+ guild.COST_PROLONG);
+                ItemStack costRenew = guild.RENEW_COST;
+                if(!p.getInventory().containsAtLeast(costRenew, costRenew.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costRenew.getType() + "x" + costRenew.getAmount());
                     return;
                 }
-                p.getInventory().removeItem(guild.COST_PROLONG);
+                p.getInventory().removeItem(guild.RENEW_COST);
                 g.setProlong(g.getProlong() + TimeUtil.DAY.getTime(guild.CUBOID_PROLONG_ADD));
                 //p.sendMessage(guild.RENEW_SEND.replace("{RENEWADD}",guild.CUBOID_PROLONG_ADD));
                 p.sendMessage("" + guild.CUBOID_PROLONG_ADD + " &6dni!");
@@ -426,11 +433,11 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 if (g.isLeader(p.getName())) {
@@ -449,11 +456,11 @@ public class GuildCommand extends PlayerCommand {
             case "pvp": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
-                    p.sendMessage(guild.INVITE_NOPERMISSION);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 if (args.length == 1) {
@@ -474,7 +481,7 @@ public class GuildCommand extends PlayerCommand {
             case "panel": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
                 PanelMenu.show(p,g);
@@ -484,7 +491,7 @@ public class GuildCommand extends PlayerCommand {
             case "regen": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
                     return;
                 }
                 if (!g.getRegen().contains("!")) {
@@ -510,48 +517,72 @@ public class GuildCommand extends PlayerCommand {
             }
             case "wojna": {
                 Guild g = GuildManager.getGuild(p);
-                if (args.length != 2) {
-                    p.sendMessage("&6Prawidlowe uzycie: &c/g wojna <tag>");
+                if (args.length != 3) {
+                    p.sendMessage("&6Prawidlowe uzycie: &c/g wojna wypowiedz/ustawwypadowa/wypadowa <tag>");
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
-                Guild gg = GuildManager.getGuild(args[1]);
-                if (gg == null) {
-                    p.sendMessage(guild.JOIN_GUILDNOTFOUND);
+                if (!g.isLeader(p.getName())) {
+                    p.sendMessage("&4Blad: &cNie jest wlascicielem gildii!");
                     return;
                 }
-                if (g == gg) {
-                    p.sendMessage(guild.WAR_MYGUILD);
-                    return;
-                }
-                if (g.getAlly().contains(g.getTag())) {
-                    p.sendMessage(guild.WAR_ALLY);
-                    return;
-                }
-                /*if (TNTUtil.isBetween()){
-                    p.sendMessage(guild.WAR_BETWEEN);
-                    return;
-                }*/
-                boolean czydzokumamalego = true;
-                for (String s : gg.getGuildWar()) {
-                    String[] splitter = s.split("@");
-                    if (splitter[0].contains(g.getTag())) {
-                        czydzokumamalego = false;
+                switch (args[1].toLowerCase()) {
+                    case "wypowiedz":{
+                        Guild o = GuildManager.getGuild(args[2]);
+                        if (o == null) {
+                            p.sendMessage(guild.JOIN_GUILDNOTFOUND);
+                            return;
+                        }
+                        if (g.getAlly().contains(o.getTag())) {
+                            p.sendMessage(guild.WAR_ALLY);
+                            return;
+                        }
+                        /*if (TNTUtil.isBetween()){
+                            p.sendMessage(guild.WAR_BETWEEN);
+                            return;
+                        }*/
+                        if (g.equals(o)) {
+                            p.sendMessage(guild.WAR_MYGUILD);
+                            return;
+                        }
+                        if (g.hasWar(o.getTag())) {
+                            p.sendMessage(guild.WAR_ISSET.replace("{TARGETGUILD}",o.getTag()));
+                            return;
+                        }
+                        g.getWars().add(new GuildWar(o.getTag(), null));
+                        o.getWars().add(new GuildWar(g.getTag(), null));
+                        Bukkit.broadcastMessage(guild.WAR_BROADCAST.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}", o.getTag()));
+                        ChatUtil.sendTitleMessage(p, guild.WAR_TITLE, guild.WAR_SUBTITLE.replace("{TARGETGUILD}",o.getTag()), 30,70, 40);
+                        o.putForSave();
+                        g.putForSave();
+                        break;
+                    }
+                    case "ustawypadowa": {
+                        if (!g.isDeputy(p.getName())) {
+                            p.sendMessage(guild.PLAYER_NOPERMISSION);
+                            return;
+                        }
+                        Guild o = GuildManager.getGuild(p.getLocation());
+                        if (!g.equals(o)) {
+                            p.sendMessage(guild.SETHOME_WRONGTERRAIN);
+                            return;
+                        }
+                        Optional<GuildWar> optional = o.get(g.getTag());
+
+                        if (!optional.isPresent()) {
+                            p.sendMessage(guild.SETHOME_WRONGTERRAIN);
+                            return;
+                        }
+
+                        g.setHome(p.getLocation());
+                        g.putForSave();
+                        p.sendMessage(guild.SETHOME_SUCCESS);
+                        break;
                     }
                 }
-                if (!czydzokumamalego) {
-                    p.sendMessage(guild.WAR_ISSET.replace("{TARGETGUILD}",gg.getTag()));
-                    return;
-                }
-                gg.getGuildWar().add(g.getTag() + "@" + System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24));
-                g.getGuildWar().add(gg.getTag() + "@" + System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24));
-                Bukkit.broadcastMessage(guild.WAR_BROADCAST.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}", gg.getTag()));
-                ChatUtil.sendTitleMessage(p, guild.WAR_TITLE, guild.WAR_SUBTITLE.replace("{TARGETGUILD}",gg.getTag()), 30,70, 40);
-                g.putForSave();
-                gg.putForSave();
                 break;
             }
             case "sojusz": {
@@ -561,51 +592,54 @@ public class GuildCommand extends PlayerCommand {
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.INVITE_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
                     return;
                 }
-                //if (!g.isLeader()) {
-                    //p.sendMessage(guild.INVITE_NOPERMISSION);
-                    //return;
-                //}
+                if (!g.isLeader(p.getName())) {
+                    p.sendMessage(guild.PLAYER_NOPERMISSION);
+                    return;
+                }
                 Guild o = GuildManager.getGuild(args[2]);
                 if (o == null) {
                     p.sendMessage(guild.JOIN_GUILDNOTFOUND);
                     return;
                 }
                 if (g.equals(o)) {
-                    p.sendMessage(guild.ALYY_MYGUILD);
+                    p.sendMessage(guild.ALLY_MYGUILD);
                     return;
                 }
                 switch (args[1].toLowerCase()) {
                     case "zerwij": {
                         if (!g.getAlly().contains(o.getTag())) {
-                            p.sendMessage(guild.ALYY_NOTALLY.replace("{TARGETGUILD}",o.getTag()));
+                            p.sendMessage(guild.ALLY_NOTALLY.replace("{TARGETGUILD}",o.getTag()));
                             return;
                         }
                         g.removeAlly(o.getTag());
                         o.removeAlly(g.getTag());
+                        for (Player o2 : g.getOnlineMembers()) {
+                            TagUtil.updateBoard(o2);
+                        }
                         TagUtil.updateBoard(p);
-                        Bukkit.broadcastMessage(guild.ALYY_BREAKBROADCAST.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}", o.getTag()));
+                        Bukkit.broadcastMessage(guild.ALLY_BREAKBROADCAST.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}", o.getTag()));
                         break;
                     }
                     case "zawrzyj": {
                         if (g.getAlly().contains(o.getTag())) {
-                            p.sendMessage(guild.ALYY_ALLREADYALLY.replace("{TARGETGUILD}",o.getTag()));
+                            p.sendMessage(guild.ALLY_ALLREADYALLY.replace("{TARGETGUILD}",o.getTag()));
                             return;
                         }
                         if (g.getAllyinvites().contains(o)) {
                             g.getAllyinvites().remove(o);
-                            p.sendMessage(guild.ALYY_CHUJ.replace("{TARGETGUILD}",o.getTag()));
+                            p.sendMessage(guild.ALLY_CHUJ.replace("{TARGETGUILD}",o.getTag()));
                             Player op = Bukkit.getPlayer(o.getLeader());
                             if (op == null) {
                                 return;
                             }
-                            op.sendMessage(guild.ALYY_CHUJ1.replace("{TAG}",g.getTag()));
+                            op.sendMessage(guild.ALLY_CHUJ1.replace("{TAG}",g.getTag()));
                             return;
                         }
                         if (g.getAlly().size() >= 2) {
-                            //p.sendMessage(guild.ALYY_MAX.replace("{MAXALLY}",2));
+                            //p.sendMessage(guild.ALLY_MAX.replace("{MAXALLY}",2));
                             p.sendMessage("&&cGildia posiada maksymalna liczbe sojuszy! (" + 2 + ")");
                             return;
                         }
@@ -615,15 +649,16 @@ public class GuildCommand extends PlayerCommand {
                         }
                         Player op = Bukkit.getPlayer(o.getLeader());
                         if (op == null) {
-                            p.sendMessage(guild.ALYY_LEADER.replace("{LEADER}",o.getTag()));
+                            p.sendMessage(guild.ALLY_LEADER.replace("{LEADER}",o.getTag()));
                             return;
                         }
                         if (o.getAllyinvites().contains(g)) {
-                            if (!p.getInventory().containsAtLeast(guild.COST_ALLY, guild.COST_ALLY.getAmount())) {
-                                p.sendMessage("&cNie posiadasz iemow!");//TODO dodac <
+                            ItemStack costAlly = guild.ALLY_COST;
+                            if(!p.getInventory().containsAtLeast(costAlly, costAlly.getAmount())){
+                                p.sendMessage("&cNie posiadasz " + costAlly.getType() + "x" + costAlly.getAmount());
                                 return;
                             }
-                            p.getInventory().removeItem(guild.COST_ALLY);
+                            p.getInventory().removeItem(guild.ALLY_COST);
                             g.addAlly(o.getTag());
                             o.addAlly(g.getTag());
                             g.getAllyinvites().remove(o);
@@ -631,14 +666,13 @@ public class GuildCommand extends PlayerCommand {
                             for (Player o2 : g.getOnlineMembers()) {
                                 TagUtil.updateBoard(o2);
                             }
-                            Bukkit.broadcastMessage(guild.ALYY_SUCCESS.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}",o.getTag()));
+                            Bukkit.broadcastMessage(guild.ALLY_SUCCESS.replace("{TAG}",g.getTag()).replace("{TARGETGUILD}",o.getTag()));
                             return;
                         }
                         g.getAllyinvites().add(o);
-                        TagUtil.updateBoard(p);
-                        p.sendMessage(guild.ALYY_INVITED.replace("{TARGETGUILD}",o.getTag()));
-                        op.sendMessage(guild.ALYY_MESSAGETOMEMBERS1.replace("{TAG}",g.getTag()));
-                        op.sendMessage(guild.ALYY_MESSAGETOMEMBERS2.replace("{TAG}",g.getTag()));
+                        p.sendMessage(guild.ALLY_INVITED.replace("{TARGETGUILD}",o.getTag()));
+                        op.sendMessage(guild.ALLY_MESSAGETOMEMBERS1.replace("{TAG}",g.getTag()));
+                        op.sendMessage(guild.ALLY_MESSAGETOMEMBERS2.replace("{TAG}",g.getTag()));
                         break;
                     }
                 }
@@ -646,29 +680,37 @@ public class GuildCommand extends PlayerCommand {
             break;
         }
     }
-    private void usage(CommandSender p) {
-        p.sendMessage(guild.GUILDHELP_MESSAGE);
-        p.sendMessage("&7&m-------------&r&7[  &c&lKomendy gildii  &7]&7&m-------------");
-        p.sendMessage("&c/g zaloz <tag> <pelna_nazwa> &7- &6zalozenie gildii");
-        p.sendMessage("&c/g dolacz <tag/nazwa> &7- &6dolaczasz do gildii");
-        p.sendMessage("&c/g opusc &7- &6opuszczasz gildie");
-        p.sendMessage("&c/g dom &7- &6teleportacja do gildii");
-        p.sendMessage("&c/g odnow &7- &6oplaca gildie na \" + Config.CUBOID_PROLONG_ADD + \" dni");
-        p.sendMessage("&c/g ustawdom &7- &6ustawia baze gildii");
-        p.sendMessage("&c/g wyrzuc <nick> &7- &6wyrzuca gracza z gildii");
-        p.sendMessage("&c/g zapros <nick/all> &7- &6zaprasza gracza do gildii");
-        p.sendMessage("&c/g lider <nick> &7- &6przekazuje wlasciciela gildii");
-        p.sendMessage("&c/g zastepca <nick> &7- &6zmienia zastepce gildii");
-        p.sendMessage("&c/g wojna &7- &6wywolywanie wojen gildyjnych");
-        p.sendMessage("&c/g pvp &7- &6wlacza/wylacza pvp w gildii");
-        p.sendMessage("&c/g pvp sojusz &7- &6wlacza/wylacza pvp w sojuszu");
-        p.sendMessage("&c/g zapisz &7- &6zapisuje gildie na event");
-        p.sendMessage("&c/g lista &7- &6wyswitla wszystkie gildie na serwerze");
-        p.sendMessage("&c/gildia <gildia> &7- &6informacje o gildii");
-        p.sendMessage("");
-        p.sendMessage("&c! &8- &6Wiadomosc do gildii");
-        p.sendMessage("&c!! &8- &6Wiadomosc do sojuszy");
-        p.sendMessage("&c@ &8- &6Wiadomosc o pomoc do gildii");
-        p.sendMessage("&7&m-------------&r&7[  &c&lKomendy gildii  &7]&7&m-------------");
+    private static boolean isValidLocation(Player player) {
+        Location location = player.getLocation();
+        if (!checkSpawn(location)) {
+            player.sendMessage("za blisko spawnu");
+            return false;
+        }
+        if (LocationUtil.getDistanceFromBorder(location) <= 50) {
+            player.sendMessage("za blisko borderu");
+            return false;
+        }
+        if (!checkGuild(location)) {
+            player.sendMessage("za blisko gildii");
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkGuild(Location location) {
+        int distance = 130;
+        for (Guild value : GuildManager.getGuilds().values()) {
+            Location valueLocation = LocationParser.parseStringToLocation(value.getCenter());
+            if (Math.abs(valueLocation.getX() - location.getBlockX()) <= distance && Math.abs(valueLocation.getZ() - location.getBlockZ()) <= distance) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean checkSpawn(Location location) {
+        int x = 0;
+        int z = 0;
+        return Math.abs(location.getBlockX() - x) >= 350 || Math.abs(location.getBlockZ() - z) >= 350;
     }
 }

@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.enums.AchievmentType;
 import pl.spigotplugin.enums.AchievmentTypeName;
@@ -536,16 +536,16 @@ public class InventoryListener implements Listener {
             e.setResult(Event.Result.DENY);
             int slot = e.getSlot();
             if (slot == 2) {
-                if (!p.hasPermission("") && !Config.MANAGE_KIT) {
-                    p.sendMessage("&8\u00bb &cKity sa tymczasowo wylaczone!");
+                if (!p.hasPermission("spigot.admin") && !statues.MANAGE_KIT) {
+                    p.sendMessage("&cKity sa tymczasowo wylaczone!");
                     return;
                 }
-                if (!p.hasPermission("") && !p.hasPermission("")) {
-                    p.sendMessage("&8\u00bb &cAby posiadasz dostepu! Zakup range!");
+                if (!p.hasPermission("spigot.admin") && !p.hasPermission("spigot.vip")) {
+                    p.sendMessage("&cNie posiadasz dostepu! Zakup range premium!");
                     return;
                 }
-                if (u.isKitVip() && !p.hasPermission("")) {
-                    p.sendMessage("&8\u00bb &7Kit vip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_vip()));
+                if (u.isKitVip() && !p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&7Kit vip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_vip()));
                     return;
                 }
                 u.setKit_vip(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
@@ -561,20 +561,20 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 30));
-                p.sendMessage("&8\u00bb &cOtrzymales kit vip!");
+                p.sendMessage("&aOtrzymales kit vip!");
                 KitMenu.show(p);
                 return;
             }
             if (slot == 3) {
-                if (!p.hasPermission("") && !Config.MANAGE_KIT) {
+                if (!p.hasPermission("spigot.admin") && !statues.MANAGE_KIT) {
                     p.sendMessage("&8\u00bb &cKity sa tymczasowo wylaczone!");
                     return;
                 }
-                if (!p.hasPermission("") && !p.hasPermission("")) {
+                if (!p.hasPermission("spigot.admin") && !p.hasPermission("spigot.svip")) {
                     p.sendMessage("&8\u00bb &cAby posiadac dostepu! Zakup range!");
                     return;
                 }
-                if (u.isKitSvip() && !p.hasPermission("spigotplugin.kit")) {
+                if (u.isKitSvip() && !p.hasPermission("spigotplugin.admin")) {
                     p.sendMessage("&8\u00bb &7Kit svip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_svip()));
                     return;
                 }
@@ -595,12 +595,12 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
-                p.sendMessage("&8\u00bb &cOtrzymales kit svip!");
+                p.sendMessage("&aOtrzymales kit svip!");
                 KitMenu.show(p);
                 return;
             }
             if (slot == 1) {
-                if (u.isKitStart() && !p.hasPermission("")) {
+                if (u.isKitStart() && !p.hasPermission("spigot.admin")) {
                     p.sendMessage("&8\u00bb &7Kit start mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_start()));
                     return;
                 }
@@ -609,23 +609,23 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
                 ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
                 ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
-                p.sendMessage("&8\u00bb &cOtrzymales kit start!");
+                p.sendMessage("&aOtrzymales kit start!");
                 KitMenu.show(p);
                 return;
             }
             if (slot == 0) {
-                if (u.isKitMieso() && !p.hasPermission("")) {
-                    p.sendMessage("&8\u00bb &7Kit mieso mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
+                if (u.isKitMieso() && !p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&7Kit mieso mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
                     return;
                 }
                 u.setKit_mieso(System.currentTimeMillis() + TimeUtil.SECOND.getTime(60));
                 ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
-                p.sendMessage("&8\u00bb &cOtrzymales kit mieso!");
+                p.sendMessage("&aOtrzymales kit mieso!");
                 KitMenu.show(p);
             }
             if (slot == 4) {
-                if (u.isKitTest() && !p.hasPermission("")) {
-                    p.sendMessage("&8\u00bb &7Kit test mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
+                if (u.isKitTest() && !p.hasPermission("spigot.admin")) {
+                    p.sendMessage("&7Kit test mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
                     return;
                 }
                 u.setKit_test(System.currentTimeMillis() + TimeUtil.SECOND.getTime(30));
@@ -647,7 +647,7 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
                 ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 12));
                 ItemUtil.giveItems(p, new ItemStack(Material.WATER_BUCKET, 1));
-                p.sendMessage("&8\u00bb &cOtrzymales kit test!");
+                p.sendMessage("&aOtrzymales kit test!");
                 KitMenu.show(p);
             }
             return;
@@ -695,6 +695,43 @@ public class InventoryListener implements Listener {
             }
             return;
         }
+        if (e.getInventory().getName().contains("Profil: ")) {
+            if (e.getCurrentItem() != null) {
+                e.setCancelled(true);
+                User x = UserManager.getUser(p);
+                String profilclear = "";
+                switch (e.getRawSlot()) {
+                    case 0:
+                        profilclear = "statystyki";
+                        x.setPoints(1000);
+                        x.setKills(0);
+                        x.setDeaths(0);
+                        x.setAsysty(0);
+                        x.setCoins(0);
+                        ProfilMenu.show(p);
+                        break;
+                    case 1:
+                        profilclear = "turbo";
+                        x.setTurboDrop(0);
+                        ProfilMenu.show(p);
+                        break;
+                    case 2:
+                        profilclear = "schowek";
+                        x.setKoxy(0);
+                        x.setStrzaly(0);
+                        x.setPerly(0);
+                        x.setRefile(0);
+                        ProfilMenu.show(p);
+                        break;
+                    default:
+                        break;
+                }
+                String name = e.getInventory().getName().replace("Profil: ", "");
+                TagUtil.updateBoard(p);
+                p.sendMessage("&fWyczysciles &d"+profilclear+ " &fgracz &d"+name);
+            }
+            return;
+        }
         if (e.getInventory().getName().contains("Grupa dla: ")) {
             if (e.getCurrentItem() != null) {
                 e.setCancelled(true);
@@ -728,20 +765,17 @@ public class InventoryListener implements Listener {
                 String name = e.getInventory().getName().replace("Grupa dla: ", "");
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
                 TagUtil.updateBoard(p);
-                p.sendMessage("&6Nadales grupe &c"+groupToGive+ " &6dla gracz &c"+name);
+                p.sendMessage("&fNadales grupe &d"+groupToGive+ " &fdla gracz &d"+name);
             }
             return;
         }
         if (p.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSprawdzanie"))) {
             e.setCancelled(true);
             if (e.getSlot() == 11) {
-                System.out.println(1);
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"ban "+p.getName() + " 1d");
-                System.out.println(3);
                 return;
             }
             if (e.getSlot() == 15) {
-                System.out.println(2);
                 u.setInBeingChecked(false);
                 p.closeInventory();
                 return;
@@ -760,13 +794,14 @@ public class InventoryListener implements Listener {
                     p.sendMessage("&cGildia jest przedluzona na maksymalny okres");
                     return;
                 }
-                if(!p.getInventory().containsAtLeast(guild.COST_PROLONG, guild.COST_PROLONG.getAmount())){
-                    p.sendMessage("&cNie Posiadasz x"+ guild.COST_PROLONG.getAmount()+"x"+ guild.COST_PROLONG.getAmount());
+                ItemStack costRenew = guild.RENEW_COST;
+                if(!p.getInventory().containsAtLeast(costRenew, costRenew.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costRenew.getType() + "x" + costRenew.getAmount());
                     return;
                 }
-                p.getInventory().removeItem(guild.COST_PROLONG);
+                p.getInventory().removeItem(guild.RENEW_COST);
                 g.setProlong(g.getProlong() + TimeUtil.DAY.getTime(guild.CUBOID_PROLONG_ADD));
-                p.sendMessage("&6Przedluzylesz waznosc gildii o &c" + guild.CUBOID_PROLONG_ADD + " &6dni!");
+                p.sendMessage("&fPrzedluzylesz waznosc gildii o &d" + guild.CUBOID_PROLONG_ADD + " &fdni!");
                 PanelMenu.show(p,g);
                 return;
             }
@@ -788,7 +823,7 @@ public class InventoryListener implements Listener {
                 p.getInventory().removeItem(new ItemStack(guild.COST_POWIEKSZ.getType(),amount));
                 g.addSize(guild.CUBOID_SIZE_ADD);
                 int size = g.getRegion().getSize() * 2 + 1;
-                p.sendMessage("&6Powiekszyles rozmiar gildii do &c" + size + "&7x&c" + size);
+                p.sendMessage("&fPowiekszyles rozmiar gildii do &d" + size + "&7x&d" + size);
                 PanelMenu.show(p,g);
                 return;
             }
@@ -802,7 +837,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 if (g.getRegen().isEmpty()) {
-                    p.sendMessage("Twoja gildia jest wlasnie regenerowana");
+                    p.sendMessage("&cTwoja gildia jest wlasnie regenerowana");
                     return;
                 }
                 g.setBlocksToRegen(g.getGold() * 10);
@@ -821,14 +856,14 @@ public class InventoryListener implements Listener {
                 }
 
                 if(goldBlocks == 0) {
-                    p.sendMessage("biedny");
+                    p.sendMessage("&ccos poszlo nie tak");
                     return;
                 }
 
                 g.setGold(g.getGold() + goldBlocks);
                 g.saveGold(g.getGold());
                 p.getInventory().remove(Material.GOLD_BLOCK);
-                p.sendMessage("Wplaciles " + goldBlocks + " blokow zlota");
+                p.sendMessage("&aWplaciles " + goldBlocks + " blokow zlota");
                 PanelMenu.show(p,g);
                 return;
             }
@@ -854,11 +889,11 @@ public class InventoryListener implements Listener {
                 wither.setCustomNameVisible(true);
                 wither.getWorld().setGameRuleValue("mobGriefing", "false");
                 wither.setMetadata("mwqxMaDuzego", new FixedMetadataValue(SpigotPlugin.getPlugin(), "mwqxMaDuzego"));
-                p.sendMessage(ChatUtil.color("&aZrespiles Withera"));
+                Bukkit.broadcastMessage("&fGildia &d"+g.getTag()+ "&f- &d"+g.getName()+ " &fprzywolala witchera! Gratulacje");
                 return;
             }
             if (e.getSlot() == 14){
-                if (!Config.MANAGE_PANEL) {
+                if (!statues.MANAGE_PANEL) {
                     p.sendMessage("&cAktualnie kupowanie hp jest wylaczone!");
                     return;
                 }
@@ -870,8 +905,9 @@ public class InventoryListener implements Listener {
                     p.sendMessage("&cGildia posiada maksymalna ilosc hp!");
                     return;
                 }
-                if(!p.getInventory().containsAtLeast(guild.COST_HP, guild.COST_HP.getAmount())){
-                    p.sendMessage("&cNie posiadasz x"+ guild.COST_HP.getAmount()+"x"+ guild.COST_HP.getAmount());
+                ItemStack costHp = guild.COST_HP;
+                if(!p.getInventory().containsAtLeast(costHp, costHp.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costHp.getType() + "x" + costHp.getAmount());
                     return;
                 }
                 p.getInventory().removeItem(guild.COST_HP);
@@ -882,8 +918,9 @@ public class InventoryListener implements Listener {
                 return;
             }
             if (e.getSlot() == 15){
-                if(!p.getInventory().containsAtLeast(guild.COST_LIMIT, guild.COST_LIMIT.getAmount())){
-                    p.sendMessage("&cNie posiadasz x"+ guild.COST_LIMIT.getAmount()+"x"+ guild.COST_LIMIT.getAmount());
+                ItemStack costLimit = guild.COST_LIMIT;
+                if(!p.getInventory().containsAtLeast(costLimit, costLimit.getAmount())){
+                    p.sendMessage("&cNie posiadasz " + costLimit.getType() + "x" + costLimit.getAmount());
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -945,81 +982,81 @@ public class InventoryListener implements Listener {
             }
             if (slot == 10) {
                 if (u.getkoxy() <= 0) {
-                    p.sendMessage("&8\u00bb &cNie posiadasz koxow do wyplacenia!");
+                    p.sendMessage("&cNie posiadasz koxow do wyplacenia!");
                     return;
                 }
-                if (k1 >= Config.LIMIT_KOX) {
-                    p.sendMessage("&8\u00bb &cOsiagneles juz limit koxow!");
+                if (k1 >= statues.LIMIT_KOX) {
+                    p.sendMessage("&cOsiagneles juz limit koxow!");
                     return;
                 }
-                if (u.getkoxy() <= Config.LIMIT_KOX) {
+                if (u.getkoxy() <= statues.LIMIT_KOX) {
                     schowek_koxy = u.getkoxy();
                     u.removeKoxy(schowek_koxy);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_koxy + " koxy");
                     SchowekMenu.show(p);
                     return;
                 }
-                if (k1 < Config.LIMIT_KOX) {
-                    int koxy= k1 - Config.LIMIT_KOX;
+                if (k1 < statues.LIMIT_KOX) {
+                    int koxy= k1 - statues.LIMIT_KOX;
                     schowek_koxy = koxy * -1;
                     u.removeKoxy(schowek_koxy);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_koxy + " koxy");
                     SchowekMenu.show(p);
                     return;
                 }
             }
             if (slot == 11) {
                 if (u.getRefile() <= 0) {
-                    p.sendMessage("&8\u00bb &cNie posiadasz refow do wyplacenia!");
+                    p.sendMessage("&cNie posiadasz refow do wyplacenia!");
                     return;
                 }
-                if (k2 >= Config.LIMIT_REFILE) {
-                    p.sendMessage("&8\u00bb &cOsiagneles juz limit refili!");
+                if (k2 >= statues.LIMIT_REFILE) {
+                    p.sendMessage("&cOsiagneles juz limit refili!");
                     return;
                 }
-                if (u.getRefile() <= Config.LIMIT_REFILE) {
+                if (u.getRefile() <= statues.LIMIT_REFILE) {
                     schowek_refile = u.getRefile();
                     u.removeRefile(schowek_refile);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_refile + " refile");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_refile + " refile");
                     SchowekMenu.show(p);
                     return;
                 }
-                if (k2 < Config.LIMIT_REFILE) {
-                    int ref = k2 - Config.LIMIT_REFILE;
+                if (k2 < statues.LIMIT_REFILE) {
+                    int ref = k2 - statues.LIMIT_REFILE;
                     schowek_refile = ref * -1;
                     u.removeRefile(schowek_refile);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_refile, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_refile + " refile");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_refile + " refile");
                     SchowekMenu.show(p);
                     return;
                 }
             }
             if (slot == 12) {
                 if (u.getPerly() <= 0) {
-                    p.sendMessage("&8\u00bb &cNie posiadasz perel do wyplacenia!");
+                    p.sendMessage("&cNie posiadasz perel do wyplacenia!");
                     return;
                 }
-                if (k3 >= Config.LIMIT_PEARL) {
-                    p.sendMessage("&8\u00bb &cOsiagneles juz limit perel!");
+                if (k3 >= statues.LIMIT_PEARL) {
+                    p.sendMessage("&cOsiagneles juz limit perel!");
                     return;
                 }
-                if (u.getPerly() <= Config.LIMIT_PEARL) {
+                if (u.getPerly() <= statues.LIMIT_PEARL) {
                     schowek_perly = u.getPerly();
                     u.removePerly(schowek_perly);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_perly + " perly");
                     SchowekMenu.show(p);
                     return;
                 }
-                if (k3 < Config.LIMIT_PEARL) {
-                    int ref = k3 - Config.LIMIT_PEARL;
+                if (k3 < statues.LIMIT_PEARL) {
+                    int ref = k3 - statues.LIMIT_PEARL;
                     schowek_perly = ref * -1;
                     u.removePerly(schowek_perly);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_perly + " perly");
                     SchowekMenu.show(p);
                     return;
                 }
@@ -1027,27 +1064,27 @@ public class InventoryListener implements Listener {
             }
             if (slot == 13) {
                 if (u.getStrzaly() <= 0) {
-                    p.sendMessage("&8\u00bb &cNie posiadasz strzal do wyplacenia!");
+                    p.sendMessage("&cNie posiadasz strzal do wyplacenia!");
                     return;
                 }
-                if (k4 >= Config.LIMIT_STRZAL) {
-                    p.sendMessage("&8\u00bb &cOsiagneles juz limit strzal!");
+                if (k4 >= statues.LIMIT_STRZAL) {
+                    p.sendMessage("&cOsiagneles juz limit strzal!");
                     return;
                 }
-                if (u.getStrzaly() <= Config.LIMIT_STRZAL) {
+                if (u.getStrzaly() <= statues.LIMIT_STRZAL) {
                     schowek_strzaly = u.getStrzaly();
                     u.removeStrzaly(schowek_strzaly);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " strzal");
                     SchowekMenu.show(p);
                     return;
                 }
-                if (k4 < Config.LIMIT_STRZAL) {
-                    int strzaly = k4 - Config.LIMIT_STRZAL;
+                if (k4 < statues.LIMIT_STRZAL) {
+                    int strzaly = k4 - statues.LIMIT_STRZAL;
                     schowek_strzaly = strzaly * -1;
                     u.removeStrzaly(schowek_strzaly);
                     ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
-                    p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
+                    p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " strzal");
                     SchowekMenu.show(p);
                     return;
                 }
@@ -1057,66 +1094,66 @@ public class InventoryListener implements Listener {
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lManage"))) {
             e.setCancelled(true);
             if(e.getSlot()==0){
-                Config.MANAGE_GUILDCREATE = !Config.MANAGE_GUILDCREATE;
-                Config.saveConfig();
+                statues.MANAGE_GUILDCREATE = !statues.MANAGE_GUILDCREATE;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Gildie zostaly "+(Config.MANAGE_GUILDCREATE ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Gildie zostaly "+(statues.MANAGE_GUILDCREATE ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             if(e.getSlot()==1){
-                Config.MANAGE_KIT = !Config.MANAGE_KIT;
-                Config.saveConfig();
+                statues.MANAGE_KIT = !statues.MANAGE_KIT;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Kity zostaly "+(Config.MANAGE_KIT ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Kity zostaly "+(statues.MANAGE_KIT ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             if(e.getSlot()==2){
-                Config.MANAGE_DIAMOND = !Config.MANAGE_DIAMOND;
-                Config.saveConfig();
+                statues.MANAGE_DIAMOND = !statues.MANAGE_DIAMOND;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Diamentowe Itemy zostaly "+(Config.MANAGE_DIAMOND ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Diamentowe Itemy zostaly "+(statues.MANAGE_DIAMOND ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             if(e.getSlot()==3){
-                Config.MANAGE_PANEL = !Config.MANAGE_PANEL;
-                Config.saveConfig();
+                statues.MANAGE_PANEL = !statues.MANAGE_PANEL;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Panel Gildyjny zostal "+(Config.MANAGE_PANEL ? "&aWlaczony":"&cWylaczony"));
+                Bukkit.broadcastMessage("&6Panel Gildyjny zostal "+(statues.MANAGE_PANEL ? "&aWlaczony":"&cWylaczony"));
                 return;
             }
             if(e.getSlot()==4){
-                Config.MANAGE_SHOP = !Config.MANAGE_SHOP;
-                Config.saveConfig();
+                statues.MANAGE_SHOP = !statues.MANAGE_SHOP;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Sklep zostal "+(Config.MANAGE_SHOP ? "&aWlaczony":"&cWylaczony"));
+                Bukkit.broadcastMessage("&6Sklep zostal "+(statues.MANAGE_SHOP ? "&aWlaczony":"&cWylaczony"));
                 return;
             }
             if(e.getSlot()==5){
-                Config.MANAGE_BEACON = !Config.MANAGE_BEACON;
-                Config.saveConfig();
+                statues.MANAGE_BEACON = !statues.MANAGE_BEACON;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Beacony zostaly "+(Config.MANAGE_BEACON ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Beacony zostaly "+(statues.MANAGE_BEACON ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             if(e.getSlot()==6){
-                Config.MANAGE_DROPHEAD = !Config.MANAGE_DROPHEAD;
-                Config.saveConfig();
+                statues.MANAGE_DROPHEAD = !statues.MANAGE_DROPHEAD;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Drop glow z graczy zostal "+(Config.MANAGE_DROPHEAD ? "&aWlaczony":"&cWylaczony"));
+                Bukkit.broadcastMessage("&6Drop glow z graczy zostal "+(statues.MANAGE_DROPHEAD ? "&aWlaczony":"&cWylaczony"));
                 return;
             }
             if(e.getSlot()==7){
-                Config.MANAGE_TPA = !Config.MANAGE_TPA;
-                Config.saveConfig();
+                statues.MANAGE_TPA = !statues.MANAGE_TPA;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Tpa zostalo "+(Config.MANAGE_TPA ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Tpa zostalo "+(statues.MANAGE_TPA ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             if(e.getSlot()==8){
-                Config.MANAGE_SPAWN = !Config.MANAGE_SPAWN;
-                Config.saveConfig();
+                statues.MANAGE_SPAWN = !statues.MANAGE_SPAWN;
+                statues.saveLang();
                 ManageMenu.openMenu(p);
-                Bukkit.broadcastMessage("&6Teleportowanie na spawna zostalo "+(Config.MANAGE_SPAWN ? "&aWlaczone":"&cWylaczone"));
+                Bukkit.broadcastMessage("&6Teleportowanie na spawna zostalo "+(statues.MANAGE_SPAWN ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             return;
@@ -1178,27 +1215,27 @@ public class InventoryListener implements Listener {
             Player p = u.getPlayer();
             int schowek_koxy;
             if (u.getkoxy() <= 0) {
-                p.sendMessage("&8\u00bb &cNie posiadasz koxow do wyplacenia!");
+                p.sendMessage("&cNie posiadasz koxow do wyplacenia!");
                 return;
             }
-            if (k1 >= Config.LIMIT_KOX) {
-                p.sendMessage("&8\u00bb &cOsiagneles juz limit koxow!");
+            if (k1 >= statues.LIMIT_KOX) {
+                p.sendMessage("&cOsiagneles juz limit koxow!");
                 return;
             }
-            if (u.getkoxy() <= Config.LIMIT_KOX) {
+            if (u.getkoxy() <= statues.LIMIT_KOX) {
                 schowek_koxy = u.getkoxy();
                 u.removeKoxy(schowek_koxy);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
+                p.sendMessage("&7Wyplaciles &6" + schowek_koxy + " koxy");
                 SchowekMenu.show(p);
                 return;
             }
-            if (k1 < Config.LIMIT_KOX) {
-                int ref = k1 - Config.LIMIT_KOX;
+            if (k1 < statues.LIMIT_KOX) {
+                int ref = k1 - statues.LIMIT_KOX;
                 schowek_koxy = ref * -1;
                 u.removeKoxy(schowek_koxy);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_koxy, (short) 1).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_koxy + " koxy");
+                p.sendMessage("&7Wyplaciles &6" + schowek_koxy + " koxy");
                 SchowekMenu.show(p);
             }
         }
@@ -1206,27 +1243,27 @@ public class InventoryListener implements Listener {
             Player p = u.getPlayer();
             int schowek_strzaly;
             if (u.getRefile() <= 0) {
-                p.sendMessage("&8\u00bb &cNie posiadasz refow do wyplacenia!");
+                p.sendMessage("&cNie posiadasz refow do wyplacenia!");
                 return;
             }
-            if (k2 >= Config.LIMIT_REFILE) {
-                p.sendMessage("&8\u00bb &cOsiagneles juz limit refili!");
+            if (k2 >= statues.LIMIT_REFILE) {
+                p.sendMessage("&cOsiagneles juz limit refili!");
                 return;
             }
-            if (u.getRefile() <= Config.LIMIT_REFILE) {
+            if (u.getRefile() <= statues.LIMIT_REFILE) {
                 schowek_strzaly = u.getRefile();
                 u.removeRefile(schowek_strzaly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " refile");
+                p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " refile");
                 SchowekMenu.show(p);
                 return;
             }
-            if (k2 < Config.LIMIT_REFILE) {
-                int ref = k2 - Config.LIMIT_REFILE;
+            if (k2 < statues.LIMIT_REFILE) {
+                int ref = k2 - statues.LIMIT_REFILE;
                 schowek_strzaly = ref * -1;
                 u.removeRefile(schowek_strzaly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.GOLDEN_APPLE, schowek_strzaly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " refile");
+                p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " refile");
                 SchowekMenu.show(p);
             }
         }
@@ -1234,27 +1271,27 @@ public class InventoryListener implements Listener {
             Player p = u.getPlayer();
             int schowek_perly;
             if (u.getPerly() <= 0) {
-                p.sendMessage("&8\u00bb &cNie posiadasz perel do wyplacenia!");
+                p.sendMessage("&cNie posiadasz perel do wyplacenia!");
                 return;
             }
-            if (k3 >= Config.LIMIT_PEARL) {
-                p.sendMessage("&8\u00bb &cOsiagneles juz limit perel!");
+            if (k3 >= statues.LIMIT_PEARL) {
+                p.sendMessage("&cOsiagneles juz limit perel!");
                 return;
             }
-            if (u.getPerly() <= Config.LIMIT_PEARL) {
+            if (u.getPerly() <= statues.LIMIT_PEARL) {
                 schowek_perly = u.getPerly();
                 u.removePerly(schowek_perly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
+                p.sendMessage("&7Wyplaciles &6" + schowek_perly + " perly");
                 SchowekMenu.show(p);
                 return;
             }
-            if (k3 < Config.LIMIT_PEARL) {
-                int ref = k3 - Config.LIMIT_PEARL;
+            if (k3 < statues.LIMIT_PEARL) {
+                int ref = k3 - statues.LIMIT_PEARL;
                 schowek_perly = ref * -1;
                 u.removePerly(schowek_perly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.ENDER_PEARL, schowek_perly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_perly + " perly");
+                p.sendMessage("&7Wyplaciles &6" + schowek_perly + " perly");
                 SchowekMenu.show(p);
             }
         }
@@ -1263,27 +1300,27 @@ public class InventoryListener implements Listener {
             Player p = u.getPlayer();
             int schowek_strzaly;
             if (u.getStrzaly() <= 0) {
-                p.sendMessage("&8\u00bb &cNie posiadasz strzal do wyplacenia!");
+                p.sendMessage("&cNie posiadasz strzal do wyplacenia!");
                 return;
             }
-            if (k4 >= Config.LIMIT_STRZAL) {
-                p.sendMessage("&8\u00bb &cOsiagneles juz limit strzal!");
+            if (k4 >= statues.LIMIT_STRZAL) {
+                p.sendMessage("&cOsiagneles juz limit strzal!");
                 return;
             }
-            if (u.getStrzaly() <= Config.LIMIT_STRZAL) {
+            if (u.getStrzaly() <= statues.LIMIT_STRZAL) {
                 schowek_strzaly = u.getStrzaly();
                 u.removeStrzaly(schowek_strzaly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " perly");
+                p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " perly");
                 SchowekMenu.show(p);
                 return;
             }
-            if (k4 < Config.LIMIT_STRZAL) {
-                int ref = k4 - Config.LIMIT_STRZAL;
+            if (k4 < statues.LIMIT_STRZAL) {
+                int ref = k4 - statues.LIMIT_STRZAL;
                 schowek_strzaly = ref * -1;
                 u.removeStrzaly(schowek_strzaly);
                 ItemUtil.giveItems(p, new ItemBuilder(Material.ARROW, schowek_strzaly, (short) 0).build());
-                p.sendMessage("&8\u00bb &7Wyplaciles &6" + schowek_strzaly + " strzal");
+                p.sendMessage("&7Wyplaciles &6" + schowek_strzaly + " strzal");
                 SchowekMenu.show(p);
             }
         }

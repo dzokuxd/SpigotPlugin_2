@@ -14,23 +14,6 @@ public class Settings {
     public static ItemStack cobblexItem = ItemUtil.getDefaultCobbleXItem();
     public static String inventoryName = "&7&lDrop z CobbleX";
 
-    public static List<Material> materialList=new ArrayList<>();
-    public static boolean isContains(Material material){
-        if(materialList.isEmpty()){
-            return false;
-        }
-        return materialList.contains(material);
-    }
-    public static void loadMaterials(){
-        SpigotPlugin.getPlugin().getConfig().getStringList("shadow-block.blocks").forEach(value->{
-            try {
-                materialList.add(Material.matchMaterial(value));
-            }catch (Exception ex){
-                System.out.println("Problem z materialem :="+value);
-            }
-        });
-    }
-
     public static List<ItemStack> normalDropList = Arrays.asList(
             new ItemStack(Material.ENCHANTMENT_TABLE, 1),
             new ItemStack(Material.ENDER_CHEST, 1),
@@ -85,5 +68,21 @@ public class Settings {
             new ItemStack(Material.PUMPKIN_PIE, 4),
             new ItemStack(Material.BOOK, 4)
     );
+    public static List<Material> materialList=new ArrayList<>();
+    public static boolean isContains(Material material){
+        if(materialList.isEmpty()){
+            return false;
+        }
+        return materialList.contains(material);
+    }
+    public static void loadMaterials(){
+        SpigotPlugin.getPlugin().getConfig().getStringList("shadow-block.blocks").forEach(value->{
+            try {
+                materialList.add(Material.matchMaterial(value));
+            }catch (Exception ex){
+                System.out.println("Problem z materialem :="+value);
+            }
+        });
+    }
 }
 

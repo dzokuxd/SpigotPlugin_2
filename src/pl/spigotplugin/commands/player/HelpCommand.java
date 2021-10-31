@@ -2,7 +2,7 @@ package pl.spigotplugin.commands.player;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 
 public class HelpCommand extends PlayerCommand {
     public HelpCommand() { super("pomoc", "pomoc", "", "help");
@@ -10,6 +10,6 @@ public class HelpCommand extends PlayerCommand {
 
     @Override
     public void onCommand(Player p, String[] args) {
-        p.sendMessage(GlobalMessage.MESSAGES_HELP);
+        p.sendMessage(core.MESSAGES_HELP);
     }
 }

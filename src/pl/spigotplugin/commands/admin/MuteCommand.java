@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.MuteManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.Mute;
@@ -14,12 +14,12 @@ import pl.spigotplugin.utils.DataUtil;
 
 public class MuteCommand extends Command {
     public MuteCommand() {
-        super("mute", "mute <gracz> [czas] [powod]", "");
+        super("mute", "mute <gracz> [czas] [powod]", "spigot.mute");
     }
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         Mute m = MuteManager.getMute(args[0]);
@@ -45,11 +45,11 @@ public class MuteCommand extends Command {
         if (time > System.currentTimeMillis()) {
             Mute mute = new Mute(args[0], admin, reason, time);
             MuteManager.addMute(args[0], mute);
-            Bukkit.broadcastMessage("&4Gracz &c" + args[0] + " &4zostal tymczasowo wyciszony przez &c" + sender.getName() + " &4do: &c" + DataUtil.getDate(time) + " &4powod: &c" + reason);
+            Bukkit.broadcastMessage("&cGracz " + args[0] + " zostal tymczasowo wyciszony przez " + sender.getName() + " do: " + DataUtil.getDate(time) + " powod: " + reason);
             return;
         }
         Mute mute = new Mute(args[0], admin, reason, 0L);
         MuteManager.addMute(args[0], mute);
-        Bukkit.broadcastMessage("&4Gracz &c" + args[0] + " &4zostal permamentnie wyciszony przez &c" + sender.getName() + " &4powod: &c" + reason);
+        Bukkit.broadcastMessage("&cGracz " + args[0] + " zostal permamentnie wyciszony przez " + sender.getName() + " powod: " + reason);
     }
 }

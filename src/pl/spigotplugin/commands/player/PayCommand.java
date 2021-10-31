@@ -2,7 +2,7 @@ package pl.spigotplugin.commands.player;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
@@ -13,7 +13,7 @@ public class PayCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         if (!ChatUtil.isInteger(args[1])) {

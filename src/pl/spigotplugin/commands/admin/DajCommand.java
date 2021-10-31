@@ -4,16 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
-    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|case611> <ilosc>", "", ""); }
+    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|case611> <ilosc>", "spigot.daj", ""); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         if (args[1].equalsIgnoreCase("boyfarmer")) {

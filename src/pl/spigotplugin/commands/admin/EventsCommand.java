@@ -3,50 +3,50 @@ package pl.spigotplugin.commands.admin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.Config;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.DataUtil;
 
 public class EventsCommand extends PlayerCommand {
-    public EventsCommand() { super("events", "events (<turbo all/gracz czas>/case/kill/beacon) set (czas)", ""); }
+    public EventsCommand() { super("events", "events (<turbo all/gracz czas>/case/kill/beacon) set (czas)", "spigot.events"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         switch (args[0].toLowerCase()) {
             case "beacon": {
                 if (args.length <=2) {
-                    p.sendMessage("/events beacon set czas");
+                    p.sendMessage("&c/events beacon set czas");
                     return;
                 }
-                long time = Config.EVENTS_BEACON = DataUtil.parseDateDiff(args[2], true);
-                Config.saveConfig();
-                Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany event &cDrop beacona za zabicie gracza z gildii &6do &c" + DataUtil.getDate(time));
+                long time = statues.EVENTS_BEACON = DataUtil.parseDateDiff(args[2], true);
+                statues.saveLang();
+                Bukkit.broadcastMessage("&fNa serwerze zostal aktywowany event &dDrop beacona za zabicie gracza z gildii &fdo &d" + DataUtil.getDate(time));
                 return;
             }
             case "kill": {
                 if (args.length <=2) {
-                    p.sendMessage("/events kill set czas");
+                    p.sendMessage("&c/events kill set czas");
                     return;
                 }
-                long time = Config.EVENTS_KILL = DataUtil.parseDateDiff(args[2], true);
-                Config.saveConfig();
-                Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany event &cDrop skrzynek za zabicie gracza z gildii &6do &c" + DataUtil.getDate(time));
+                long time = statues.EVENTS_KILL = DataUtil.parseDateDiff(args[2], true);
+                statues.saveLang();
+                Bukkit.broadcastMessage("&fNa serwerze zostal aktywowany event &dDrop skrzynek za zabicie gracza z gildii &fdo &d" + DataUtil.getDate(time));
                 return;
             }
             case "case": {
                 if (args.length <=2) {
-                    p.sendMessage("/events case set czas");
+                    p.sendMessage("&c/events case set czas");
                     return;
                 }
-                long time = Config.EVENTS_CASE = DataUtil.parseDateDiff(args[2], true);
-                Config.saveConfig();
-                Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany event &cDrop skrzynek ze stone &6do &c" + DataUtil.getDate(time));
+                long time = statues.EVENTS_CASE = DataUtil.parseDateDiff(args[2], true);
+                statues.saveLang();
+                Bukkit.broadcastMessage("&fNa serwerze zostal aktywowany event &dDrop skrzynek ze stone &fdo &d" + DataUtil.getDate(time));
                 return;
             }
             case "turbo": {
@@ -59,9 +59,9 @@ public class EventsCommand extends PlayerCommand {
                         p.sendMessage("/events turbo all czas");
                     }
                     long time = DataUtil.parseDateDiff(args[2], true);
-                    Config.EVENTS_TURBO = time;
-                    Config.saveConfig();
-                    Bukkit.broadcastMessage("&6Na serwerze zostal aktywowany &c&lTurboDrop &6do &c" + DataUtil.getDate(time));
+                    statues.EVENTS_TURBO = time;
+                    statues.saveLang();
+                    Bukkit.broadcastMessage("&fNa serwerze zostal aktywowany &d&lTurboDrop &fdo &d" + DataUtil.getDate(time));
                     return;
                 }
                 User u = UserManager.getUser(args[1]);
@@ -77,12 +77,12 @@ public class EventsCommand extends PlayerCommand {
                 long givenTurboDrop = DataUtil.parseDateDiff(args[2], true);
                 u.setTurboDrop(givenTurboDrop+turboDropHave);
                 u.save();
-                p.sendMessage("&6Dodales: &c"+DataUtil.secondsToString(givenTurboDrop)+"");
-                p.sendMessage("&c&lTurboDrop &6dla gracza &c" + args[1] + " &6do &c" + DataUtil.getDate(u.getTurboDrop()));
+                p.sendMessage("Dodales: &d"+DataUtil.secondsToString(givenTurboDrop)+"");
+                p.sendMessage("TurboDrop dla gracza &d" + args[1] + " &fdo &d" + DataUtil.getDate(u.getTurboDrop()));
                 return;
             }
             default: {
-                GlobalMessage.usage(p, getUsage());
+                core.usage(p, getUsage());
                 break;
             }
         }

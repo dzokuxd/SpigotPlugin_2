@@ -7,8 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.BossBarApi;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.Settings;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
@@ -28,7 +29,7 @@ public class PlayerMoveListener implements Listener {
         Player p = e.getPlayer();
         if (CheckUtil.checkedPlayers.contains(p)) {
             e.setTo(e.getFrom());
-            p.sendMessage("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (Config.IP));
+            p.sendMessage("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (statues.IP));
             return;
         }
         User u = UserManager.getUser(p);
@@ -67,10 +68,10 @@ public class PlayerMoveListener implements Listener {
             BossBarApi.setBar(e.getPlayer(), text, 100);
             p.sendMessage(text);
             if (guild.isProtected()){
-                p.sendMessage("&6Ta gildia posiada ochrone jeszcze przez &c" + DataUtil.secondsToString(guild.getprottime()));
+                p.sendMessage("&fTa gildia posiada ochrone jeszcze przez &d" + DataUtil.secondsToString(guild.getprottime()));
             }
             u.setOnCuboid(true);
-            if (p.hasPermission("spigotplugin.hide")) {
+            if (p.hasPermission("spigot.admin")) {
                 return;
             }
             if (guild.getMembers().contains(p.getName())) {
@@ -83,6 +84,13 @@ public class PlayerMoveListener implements Listener {
                 onlineMember.sendMessage("&4Wrog wkroczyl na teren twojej gildii "+p.getName());
             }
         }
+        Location to = e.getTo();
+        Location from = e.getFrom();
+        if(p.isBlocking())
+            if ((to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ())) {
+                final ItemStack s = p.getItemInHand();
+                p.setItemInHand(s);
+            }
     }
     @EventHandler
     public static void isCheck(Player player, Location from, Location to){
@@ -103,7 +111,7 @@ public class PlayerMoveListener implements Listener {
         teleport.subtract(-0.5, 0.0, -0.5);
         player.teleport(teleport);
         for (Player admins : Bukkit.getOnlinePlayers()) {
-            if (admins.hasPermission("vanish")) {
+            if (admins.hasPermission("spigot.admin")) {
                 admins.sendMessage("shadowblock" + player);
             }
         }

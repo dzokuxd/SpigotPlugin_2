@@ -24,7 +24,7 @@ public class PanelMenu {
         ItemStack odnow = new ItemBuilder(Material.WATCH, 1).setTitle("&7&lOdnow waznosc gildii!")
                 .addLore("&6Przedluza waznosc gildii o &c24 &6Godziny")
                 .addLore("&6Wygasa: "+(g.isExits() ? "&6za: &c" + DataUtil.secondsToString(g.getProlong()) : " &cWygasla"))
-                .addLore("&6Potzrebujesz: &c"+ guild.COST_PROLONG.getType()+"x"+ guild.COST_PROLONG.getAmount())
+                .addLore("&6Potzrebujesz: &c"+ guild.RENEW_COST.getType()+"x"+ guild.RENEW_COST.getAmount())
                 .addLore("")
                 .addLore("&7Kliknij, aby przedluzc!").build();
         ItemStack powieksz = new ItemBuilder(

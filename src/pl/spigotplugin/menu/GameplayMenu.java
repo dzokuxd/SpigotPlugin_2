@@ -2,11 +2,10 @@ package pl.spigotplugin.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.ItemBuilder;
@@ -18,11 +17,11 @@ public class GameplayMenu {
         for (int j = 0; j < 54; j++) {
             inv.setItem(j, itemStack);
         }
-        ItemStack strzaly = new ItemBuilder(Material.ARROW, Config.LIMIT_STRZAL).setTitle("&7Limit: &c"+Config.LIMIT_STRZAL).addLore("").build();
-        ItemStack border = new ItemBuilder(Material.BARRIER).setTitle("&cBorder:").addLore("&7Swiat: &c"+ Config.BORDER_WORLD).addLore("&7GrupoweTP: &c"+Config.BORDER_GTP).build();
-        ItemStack gapple = new ItemBuilder(Material.GOLDEN_APPLE, Config.LIMIT_KOX, (short) 1).setTitle("&7Limit: &c"+Config.LIMIT_KOX).build();
-        ItemStack refil = new ItemBuilder(Material.GOLDEN_APPLE, Config.LIMIT_REFILE, (short) 0).setTitle("&7Limit: &c"+Config.LIMIT_REFILE).build();
-        ItemStack perly = new ItemBuilder(Material.ENDER_PEARL, Config.LIMIT_PEARL).setTitle("&7Limit: &c"+Config.LIMIT_PEARL).build();
+        ItemStack strzaly = new ItemBuilder(Material.ARROW, statues.LIMIT_STRZAL).setTitle("&7Limit: &c"+ statues.LIMIT_STRZAL).addLore("").build();
+        ItemStack border = new ItemBuilder(Material.BARRIER).setTitle("&cBorder:").addLore("&7Swiat: &c"+ statues.BORDER_WORLD).addLore("&7GrupoweTP: &c"+ statues.BORDER_GTP).build();
+        ItemStack gapple = new ItemBuilder(Material.GOLDEN_APPLE, statues.LIMIT_KOX, (short) 1).setTitle("&7Limit: &c"+ statues.LIMIT_KOX).build();
+        ItemStack refil = new ItemBuilder(Material.GOLDEN_APPLE, statues.LIMIT_REFILE, (short) 0).setTitle("&7Limit: &c"+ statues.LIMIT_REFILE).build();
+        ItemStack perly = new ItemBuilder(Material.ENDER_PEARL, statues.LIMIT_PEARL).setTitle("&7Limit: &c"+ statues.LIMIT_PEARL).build();
         inv.setItem(10, ItemHolder.get("gui.gameplay.tnt"));
         inv.setItem(16, strzaly);
         inv.setItem(19, border);

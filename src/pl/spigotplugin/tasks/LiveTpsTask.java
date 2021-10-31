@@ -12,9 +12,9 @@ public class LiveTpsTask extends BukkitRunnable {
     @Override
     public void run() {
         int online = Bukkit.getOnlinePlayers().size();
-        double tps = ChatUtil.round(MinecraftServer.getServer().recentTps[0], 2);
+        double tps = ChatUtil.xD(MinecraftServer.getServer().recentTps[0], 2);
         for (Player p : LiveTpsCommand.using){
-            ChatUtil.sendActionBar(p,"&6Online: &c" +online+" &6TPS: &c"+ tps);
+            ChatUtil.sendActionBar(p,"&aOnline: " +online+" TPS: "+ tps);
         }
         for (Player p : VanishCommand.using) {
             ChatUtil.sendActionBar(p, "&b&lAktualnie jestes niewidzialny!");

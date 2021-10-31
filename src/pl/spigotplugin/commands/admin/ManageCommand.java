@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.menu.ManageMenu;
 
 public class ManageCommand extends PlayerCommand {
-    public ManageCommand() { super("manage", "/manage", ""); }
+    public ManageCommand() { super("manage", "/manage", "spigot.manage"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

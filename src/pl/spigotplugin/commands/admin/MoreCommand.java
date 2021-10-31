@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
 
 public class MoreCommand extends PlayerCommand {
-    public MoreCommand() { super("more", "", ""); }
+    public MoreCommand() { super("more", "", "spigot.more"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

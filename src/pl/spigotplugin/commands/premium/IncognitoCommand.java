@@ -14,7 +14,7 @@ import pl.spigotplugin.utils.TagUtil;
 
 public class IncognitoCommand extends PlayerCommand {
 
-    public IncognitoCommand() {super("incognito", "/incognito", "");}
+    public IncognitoCommand() {super("incognito", "/incognito", "spigot.incognito");}
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -44,6 +44,6 @@ public class IncognitoCommand extends PlayerCommand {
 
         }, 20);
 
-        p.sendMessage((u.isIncognito() ? "&7\u00bb &6Tryb incognito zostal: &aWlaczony" : "&7\u00bb &6Tryb incognito zostal: &cWylaczony"));
+        p.sendMessage((u.isIncognito() ? "&fTryb incognito zostal: &aWlaczony" : "&fTryb incognito zostal: &cWylaczony"));
     }
 }

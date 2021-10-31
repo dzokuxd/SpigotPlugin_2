@@ -1,17 +1,22 @@
 package pl.spigotplugin.listeners;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import pl.spigotplugin.configs.Config;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
+import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.objects.guild.Fight;
 import pl.spigotplugin.objects.guild.Guild;
-import pl.spigotplugin.utils.CheckUtil;
-import pl.spigotplugin.utils.CuboidUtil;
-import pl.spigotplugin.utils.EntityUtil;
+import pl.spigotplugin.utils.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,14 +38,14 @@ public class EnityDamageListener implements Listener {
 
         if (e.getDamager() instanceof Player && e.getEntity().getWorld().getName().equals("world")) {
             if (CuboidUtil.isSpawn(e.getEntity().getLocation())) {
-                if (e.getEntity().getLocation().getBlockY() <= (Config.REGION_BYPASSY)) {
+                if (e.getEntity().getLocation().getBlockY() <= (statues.REGION_BYPASSY)) {
                     return;
                 }
                 e.setCancelled(true);
                 return;
             }
             else if (CuboidUtil.isSpawn(e.getDamager().getLocation()) && CuboidUtil.isOutsideSpawn(e.getEntity().getLocation())) {
-                if (e.getEntity().getLocation().getBlockY() <= (Config.REGION_BYPASSY)) {
+                if (e.getEntity().getLocation().getBlockY() <= (statues.REGION_BYPASSY)) {
                     return;
                 }
                 e.setCancelled(true);
@@ -50,7 +55,7 @@ public class EnityDamageListener implements Listener {
         Player p = (Player) e.getEntity();
         Player playerDamager = EntityUtil.getDamager(e);
         if (playerDamager != null) {
-            if (p.getLocation().getBlockY() > Config.REGION_BYPASSY) {
+            if (p.getLocation().getBlockY() > statues.REGION_BYPASSY) {
                 if (CuboidUtil.isOutsideSpawn(p.getLocation())) {
                     e.setCancelled(true);
                     return;
@@ -106,5 +111,23 @@ public class EnityDamageListener implements Listener {
             return true;
         }
         return false;
+    }
+    @EventHandler
+    public void handle(EntityDeathEvent e) {
+        LivingEntity entity = e.getEntity();
+        if (entity.getKiller() == null) {
+            return;
+        }
+        Player killer = entity.getKiller();
+        if (killer.equals(entity)) {
+            return;
+        }
+        e.setDroppedExp(0);
+        e.getDrops().clear();
+        if (entity.getType() == EntityType.ENDER_DRAGON) {
+            ItemUtil.giveItems(killer, new ItemStack(Material.DRAGON_EGG, 1));
+            killer.giveExp(e.getDroppedExp());
+            Bukkit.broadcastMessage(core.DRAGON_BROADCAST.replace("{PLAYER}",killer.getName()));
+        }
     }
 }

@@ -9,7 +9,7 @@ public class CreatureSpawnListener implements Listener {
     @EventHandler
     private void onCreatureSpawnEvent(CreatureSpawnEvent e) {
         EntityType t = e.getEntityType();
-        if (t == EntityType.ENDERMAN || t == EntityType.ARMOR_STAND || t == EntityType.WITHER) {
+        if (t == EntityType.ENDERMAN || t == EntityType.ARMOR_STAND || t == EntityType.WITHER|| t == EntityType.ENDER_DRAGON) {
             return;
         }
         e.setCancelled(true);

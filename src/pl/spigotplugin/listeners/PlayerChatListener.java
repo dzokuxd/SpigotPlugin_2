@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import pl.spigotplugin.configs.Config;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.ChatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.MuteManager;
@@ -42,33 +42,33 @@ public class PlayerChatListener implements Listener {
             if (mute.getTime() != 0L && mute.getTime() <= System.currentTimeMillis()) {
                 MuteManager.unmute(mute);
             }
-            if (!p.hasPermission("spigotplugin.bypass")) {
+            if (!p.hasPermission("spigot.bypass")) {
                 p.sendMessage("&6Zostales wyciszony przez &c" + mute.getAdmin() + "&c, wygasa: &6" + ((mute.getTime() == 0L) ? "nigdy" : ("&cza &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
                 e.setCancelled(true);
                 return;
             }
         }
-        if ((!p.hasPermission("spigotplugin.bypass") && PlayerChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
+        if ((!p.hasPermission("spigot.bypass") && PlayerChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
             p.sendMessage("&cTwoja wiadomosc zawiera niedozwolone tresci!");
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigotplugin.bypass") && Config.LVL > u.getLvl()) {
-            p.sendMessage("&7Czat jest dostepy od &c" + Config.LVL + " &7poziomu!");
+        if (!p.hasPermission("spigot.bypass") && statues.LVL > u.getLvl()) {
+            p.sendMessage("&7Czat jest dostepy od &c" + statues.LVL + " &7poziomu!");
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigotplugin.chatvip") && ChatManager.vipChat) {
+        if (!p.hasPermission("spigot.chatvip") && ChatManager.vipChat) {
             p.sendMessage("&cChat jest dostepny tylko dla rang premium");
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigotplugin.bypass") && !ChatManager.enable && !ChatManager.vipChat) {
+        if (!p.hasPermission("spigot.bypass") && !ChatManager.enable && !ChatManager.vipChat) {
             p.sendMessage("&cChat jest aktualnie wylaczony!");
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigotplugin.bypass") && !u.isChat()) {
+        if (!p.hasPermission("spigot.bypass") && !u.isChat()) {
             p.sendMessage("&7Na czacie bedziesz mogl pisac dopiero za &c" + DataUtil.secondsToString(u.getLastChat()));
             e.setCancelled(true);
             return;
@@ -107,12 +107,12 @@ public class PlayerChatListener implements Listener {
             g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Potrzebuje pomocy!");
             g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Moje kordy to X: " + (int) p.getLocation().getX() + " Z: " + (int) p.getLocation().getZ() + " Y: " + (int) p.getLocation().getY());
         }
-        String globalFormat = GlobalMessage.CHAT_FORMAT_GLOBAL;
+        String globalFormat = core.CHAT_FORMAT_GLOBAL;
         if (p.hasPermission("spigotplugin.admin")) {
-            globalFormat = GlobalMessage.CHAT_FORMAT_ADMIN;
+            globalFormat = core.CHAT_FORMAT_ADMIN;
         }
-        String guildFormat = GlobalMessage.CHAT_FORMAT_GUILD;
-        u.setLastChat(System.currentTimeMillis() + TimeUtil.SECOND.getTime(Config.CHAT_SLOWMODE));
+        String guildFormat = core.CHAT_FORMAT_GUILD;
+        u.setLastChat(System.currentTimeMillis() + TimeUtil.SECOND.getTime(statues.CHAT_SLOWMODE));
         globalFormat = globalFormat.replace("{GUILD}", (u.getGuild().isEmpty()) ? "" : guildFormat.replace("{TAG}", GuildManager.getGuild(u.getGuild()).getTag()));
         globalFormat = globalFormat.replace("{PREFIX}", PermissionsEx.getUser(p).getPrefix());
         globalFormat = globalFormat.replace("{PLAYER}", "%1$s");

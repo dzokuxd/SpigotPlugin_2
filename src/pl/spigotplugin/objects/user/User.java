@@ -8,6 +8,7 @@ import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.helper.JSONHelper;
 import pl.spigotplugin.holder.SaveHolder;
 import pl.spigotplugin.mysql.MySQLUtil;
+import pl.spigotplugin.utils.ChatUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -121,6 +122,13 @@ public class User implements Comparable<User> {
         return Bukkit.getPlayer(name);
     }
 
+    public String getKDR() {
+        if (this.kills == 0 || this.deaths == 0) {
+            return "-";
+        }
+        return ChatUtil.round(this.kills / (double)this.deaths, 2, 2);
+    }
+
     public Map<User, Long> getLastKillers() {
         return this.lastKillers;
     }
@@ -209,17 +217,25 @@ public class User implements Comparable<User> {
 
     public int getkoxy() { return koxy; }
 
+    public void setKoxy(int koxy) { this.koxy = koxy; }
+
     public int getKoxEaten() { return koxEaten; }
 
     public int getRefile() { return refile; }
+
+    public void setRefile(int refile) { this.refile = refile; }
 
     public int getRefilEaten() { return refilEaten; }
 
     public int getPerly() { return perly; }
 
+    public void setPerly(int perly) { this.perly = perly; }
+
     public int getPearlThrown() { return pearlThrown; }
 
     public int getStrzaly() { return strzaly; }
+
+    public void setStrzaly(int strzaly) { this.strzaly = strzaly; }
 
     public int getArrowsShoten() { return arrowsShoten; }
 
@@ -230,6 +246,8 @@ public class User implements Comparable<User> {
     public int getKills() { return kills; }
 
     public void setKills(int kills) {this.kills = kills;}
+
+    public void setAsysty(int asysty) {this.asysty = asysty;}
 
     public int getAsysty() { return asysty; }
 

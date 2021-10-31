@@ -18,7 +18,7 @@ public class Teleporter {
         User u = UserManager.getUser(p);
         if (u.getCurrentTeleport() != null) return;
 
-        if (p.hasPermission("chuj")) {
+        if (p.hasPermission("spigot.admin")) {
             p.teleport(location);
             return;
         }

@@ -5,7 +5,7 @@ import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.menu.GroupMenu;
 
 public class GroupCommand extends PlayerCommand {
-    public GroupCommand() { super("group", "group <nick>", "", "grupa"); }
+    public GroupCommand() { super("group", "group <nick>", "spigot.group", "grupa"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

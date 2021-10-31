@@ -4,17 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.objects.user.Ban;
 
 public class UnbanCommand extends Command {
-    public UnbanCommand() { super("unban", "unban <gracz>", ""); }
+    public UnbanCommand() { super("unban", "unban <gracz>", "spigot.unban"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         if (!(sender instanceof Player) && args[0].equalsIgnoreCase("all")) {
@@ -32,6 +32,6 @@ public class UnbanCommand extends Command {
             return;
         }
         BanManager.unban(b);
-        Bukkit.broadcastMessage("&c" + b.getName() + " &4zostal odbanowany przez &c" + sender.getName() + "");
+        Bukkit.broadcastMessage("&c" + b.getName() + " zostal odbanowany przez " + sender.getName());
     }
 }

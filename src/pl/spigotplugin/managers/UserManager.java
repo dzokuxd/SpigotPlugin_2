@@ -3,7 +3,7 @@ package pl.spigotplugin.managers;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.objects.user.User;
 
 import java.sql.ResultSet;
@@ -32,7 +32,7 @@ public class UserManager {
     }
 
     public static boolean canPlaceByBorder(Location loc) {
-        return Math.abs(Config.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(Config.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-Config.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-Config.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-Config.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(Config.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(Config.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-Config.BORDER_WORLD - loc.getBlockZ()) >= 10;
+        return Math.abs(statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockZ()) >= 10;
     }
 
     public static void loadUsers() {

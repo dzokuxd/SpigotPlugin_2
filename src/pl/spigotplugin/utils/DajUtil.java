@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 
 public class DajUtil {
     public static ItemStack boyfarmer = new ItemBuilder(
@@ -26,7 +26,7 @@ public class DajUtil {
             .build();
     public static ItemStack casenormal = new ItemBuilder(
             Material.CHEST)
-            .setTitle("&c&lSkrzynia "+ Config.IP)
+            .setTitle("&c&lSkrzynia "+ statues.IP)
             .build();
     public static ItemStack case611 = new ItemBuilder(
             Material.CHEST)
@@ -62,7 +62,7 @@ public class DajUtil {
                 break;
             }
             default:{
-                sender.sendMessage("Nie ma takiego itemu: " + type);
+                sender.sendMessage("&cNie ma takiego itemu: " + type);
                 break;
             }
         }

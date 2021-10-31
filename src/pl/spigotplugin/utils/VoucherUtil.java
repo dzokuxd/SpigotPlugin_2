@@ -9,20 +9,20 @@ public class VoucherUtil {
     public static ItemStack vip = new ItemBuilder(
             Material.BOOK)
             .addEnchantment(Enchantment.DURABILITY,10)
-            .setTitle("&6Voucher &7(&cVIP&7)")
-            .addLore(ChatUtil.color("&6Kilknij &c&lPPM &6aby aktywowac!"))
+            .setTitle("&fVoucher &7(&dVIP&7)")
+            .addLore(ChatUtil.color("&fKilknij &d&lPPM &faby aktywowac!"))
             .build();
     public static ItemStack svip = new ItemBuilder(
             Material.BOOK)
             .addEnchantment(Enchantment.DURABILITY,10)
-            .setTitle("&6Voucher &7(&cSVIP&7)")
-            .addLore(ChatUtil.color("&6Kilknij &c&lPPM &6aby aktywowac!"))
+            .setTitle("&fVoucher &7(&dSVIP&7)")
+            .addLore(ChatUtil.color("&fKilknij &d&lPPM &faby aktywowac!"))
             .build();
     public static ItemStack turbo = new ItemBuilder(
             Material.BOOK)
             .addEnchantment(Enchantment.DURABILITY,10)
-            .setTitle("&6Voucher &7(&cTURBODROP 10M&7)")
-            .addLore(ChatUtil.color("&6Kilknij &c&lPPM &6aby aktywowac!")).build();
+            .setTitle("&fVoucher &7(&dTURBODROP 10M&7)")
+            .addLore(ChatUtil.color("&fKilknij &d&lPPM &faby aktywowac!")).build();
 
     public static void giveWithAmount(String type, int amount, Player sender) {
         ItemStack toGive = null;
@@ -43,7 +43,7 @@ public class VoucherUtil {
                 break;
             }
             default:{
-                sender.sendMessage("Nie ma vouchera: " + type);
+                sender.sendMessage("&cNie ma vouchera: " + type);
                 break;
             }
         }

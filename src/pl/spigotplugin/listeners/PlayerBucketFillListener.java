@@ -1,6 +1,5 @@
 package pl.spigotplugin.listeners;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +13,7 @@ public class PlayerBucketFillListener implements Listener {
     @EventHandler
     public void onPlayerBucketFill(PlayerBucketFillEvent event) {
         Player p = event.getPlayer();
-        if (p.hasPermission("core.cmd.admin")) {
+        if (p.hasPermission("spigot.bypass")) {
             return;
         }
         Guild g = GuildManager.getGuild(p.getLocation());
@@ -34,7 +33,7 @@ public class PlayerBucketFillListener implements Listener {
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         Player p = event.getPlayer();
-        if (p.hasPermission("core.cmd.admin")) {
+        if (p.hasPermission("spigot.bypass")) {
             return;
         }
         Guild g = GuildManager.getGuild(p.getLocation());

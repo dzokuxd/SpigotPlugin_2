@@ -62,7 +62,7 @@ public class ItemHolder {
         put("gui.gameplay.helm", new ItemBuilder(Material.DIAMOND_HELMET).setTitle("&7HELM &c3/2").addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 2).build());
         put("gui.gameplay.klata", new ItemBuilder(Material.DIAMOND_CHESTPLATE).setTitle("&7KLATA &c3/2").addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 2).build());
         put("gui.gameplay.spodnie", new ItemBuilder(Material.DIAMOND_LEGGINGS).setTitle("&7SPODNIE &c3/2").addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 2).build());
-        put("gui.gameplay.buty", new ItemBuilder(Material.DIAMOND_BOOTS).setTitle("&7BUTY &c3/2").addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.PROTECTION_FALL, 2).build());
+        put("gui.gameplay.buty", new ItemBuilder(Material.DIAMOND_BOOTS).setTitle("&7BUTY &c3/2").addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3).addEnchantment(Enchantment.DURABILITY, 2).addEnchantment(Enchantment.PROTECTION_FALL, 3).build());
         put("gui.check.yes", new ItemBuilder(Material.STAINED_CLAY, 1, (short) 13).setTitle("&2&lPrzyznaje sie").addLore("&7Kliknij, aby dostac bana").addLore("&cJesli sie przyznasz dostaniesz bana na 1 dzien").build());
         put("gui.check.no", new ItemBuilder(Material.STAINED_CLAY, 1, (short) 14).setTitle("&2&lNie przyznaje sie").addLore("&7Kliknij, aby pozostac na serwerze").addLore("&7Jesli sie nie przyznasz sprawdzanie bedzie trwalo dalej").build());
 

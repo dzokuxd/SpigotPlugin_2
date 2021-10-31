@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
@@ -35,7 +35,7 @@ public class MsgCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);

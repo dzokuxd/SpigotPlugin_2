@@ -4,12 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.CageManager;
 
 public class CageCommand extends PlayerCommand {
 
-    public CageCommand() { super("cage", "cage nick-nick diamond/iron", ""); }
+    public CageCommand() { super("cage", "cage nick-nick diamond/iron", "spigot.cage"); }
 
 
     private final Location cage1 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
@@ -18,7 +18,7 @@ public class CageCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            GlobalMessage.usage(p, getUsage());
+            core.usage(p, getUsage());
             return;
         }
         Player target = Bukkit.getPlayerExact(args[0]);
@@ -56,7 +56,7 @@ public class CageCommand extends PlayerCommand {
                 break;
             }
             default: {
-                p.sendMessage("&7\u00BB &6Dostepne argumenty: &cdiamond,iron");
+                p.sendMessage("&cDostepne argumenty: diamond,iron");
                 break;
             }
         }

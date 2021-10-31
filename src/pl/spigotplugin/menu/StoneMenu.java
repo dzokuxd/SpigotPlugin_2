@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.managers.DropManager;
 import pl.spigotplugin.managers.UserManager;
@@ -31,14 +31,14 @@ public class StoneMenu {
             } else if (p.hasPermission("core.drop.vip")) {
                 chance += 0.50;
             }
-            if (Config.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
+            if (statues.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
                 chance += 1;
             }
             double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
             ItemBuilder b = new ItemBuilder(d.getWhat().getType(), 1);
             b.setTitle("&7&l" + d.getName());
-            b.addLore(" &7\u00bb &6Szansa na drop: &c" + ChatUtil.round(chance, 3));
-            b.addLore(" &7\u00bb &6Bonus: &c" + ChatUtil.round(bonus, 3));
+            b.addLore(" &7\u00bb &6Szansa na drop: &c" + ChatUtil.xD(chance, 3));
+            b.addLore(" &7\u00bb &6Bonus: &c" + ChatUtil.xD(bonus, 3));
             b.addLore(" &7\u00bb &6Wypada ponizej: &c" + d.getMaxHeight() + " &6poziomu");
             b.addLore(" &7\u00bb &6Fortune: " + (d.isFortune() ? "&aTak" : "&cNie"));
             b.addLore(" &7\u00bb &6Drop: " + (d.isDisabled(p.getUniqueId()) ? "&cWylaczony" : "&aWlaczony"));

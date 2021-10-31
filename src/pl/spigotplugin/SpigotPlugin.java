@@ -43,9 +43,9 @@ public class SpigotPlugin extends JavaPlugin {
     @Override
     public void onEnable(){
         CitizensAPI.getNPCRegistry().deregisterAll();
-        GlobalMessage.reloadLang();
-        Config.reloadConfig();
+        core.reloadLang();
         guild.reloadLang();
+        statues.reloadLang();
         DropFile.reloadConfig();
         Settings.loadMaterials();
         try {
@@ -60,6 +60,7 @@ public class SpigotPlugin extends JavaPlugin {
         manager = new ProtocolTabManager(1);
         CraftingUtil.registerRecipe();
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
+        getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.jebanyend("end"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
         TopsManager.sortUser();
         ItemHolder.init();
@@ -103,6 +104,7 @@ public class SpigotPlugin extends JavaPlugin {
 
     private void registerListeners(PluginManager pm) {
         pm.registerEvents(new PlayerInteractListener(), this);
+        pm.registerEvents(new PistonListener(), this);
         pm.registerEvents(new BlockPlaceListener(), this);
         pm.registerEvents(new BlockBreakListener(), this);
         pm.registerEvents(new BorderListener(), this);
@@ -133,7 +135,11 @@ public class SpigotPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        registerCommand(new testCommand());
+        registerCommand(new SpawnBossCommand());
+        registerCommand(new GenerateChestCommand());
+        registerCommand(new ProfilCommand());
+        registerCommand(new CheckbanCommand());
+        registerCommand(new GuildAdminCommand());
         registerCommand(new HelpCommand());
         registerCommand(new GuildCommand());
         registerCommand(new GuildInfoCommand());

@@ -3,10 +3,10 @@ package pl.spigotplugin.commands.admin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 
 public class TopCommand extends PlayerCommand {
-    public TopCommand() { super("top ", "/op", ""); }
+    public TopCommand() { super("top ", "/op", "spigot.top"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,6 +17,6 @@ public class TopCommand extends PlayerCommand {
         }
         location.setY(y);
         p.teleport(location);
-        p.sendMessage(GlobalMessage.TOP);
+        p.sendMessage(core.TOP);
     }
 }

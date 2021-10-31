@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.Config;
+import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
@@ -38,15 +38,66 @@ public class BlockPlaceListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && !p.hasPermission("regionplugin.bypass")) {
+        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && (CuboidUtil.cuboid1(b.getLocation())) && (CuboidUtil.cuboid2(b.getLocation())) && !p.hasPermission("spigot.bypass")) {
             e.setBuild(false);
             e.setCancelled(true);
             p.sendMessage("&cTa interakcja jest zablokowana!");
             return;
         }
+        if (e.getBlockPlaced().getType() == Material.SPONGE){
+            e.setBuild(false);
+            e.setCancelled(true);
+        }
+        if (p.getItemInHand().isSimilar(Settings.cobblexItem)) {
+            e.setCancelled(true);
+            e.getBlockPlaced().setType(Material.AIR);
+            List<ItemStack> dropList = Settings.normalDropList;
+            if (p.hasPermission("cobblex.premiumDrop")) {
+                dropList = Settings.premiumDropList;
+            }
+            ItemUtil.giveDrop(e.getBlockPlaced().getLocation(), dropList);
+            p.getInventory().removeItem(Settings.cobblexItem);
+        }
+        if (e.getBlockPlaced().getType() == Material.OBSIDIAN) {
+            if (p.hasPermission("spigot.bypass")) {
+                return;
+            }
+            e.setBuild(false);
+            e.setCancelled(true);
+            p.sendMessage("&cObsydianu mozesz uzywac tylko na terenie gildii");
+        }
+        if (b.getLocation().getBlockY() >= 90) {
+            if (p.hasPermission("spigot.bypass")) {
+                return;
+            }
+            if (CombatManager.isFighting(p)) {
+                e.setCancelled(true);
+                p.sendMessage("&cJestes podczas walki! Nie mozesz stawiac powyzej 90 poziomu!");
+            }
+        }
         Guild guild = GuildManager.getGuild(b.getLocation());
+        if (b.getType() == Material.ENDER_STONE) {
+            Block u = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+            if (!u.isEmpty()) {
+                p.sendMessage("&cNie moze byc zadnego bloku nad generatorem!");
+                e.setCancelled(true);
+                return;
+            }
+            if (guild != null) {
+                if (!guild.isMember(e.getPlayer().getName())) {
+                    if (CombatManager.isFighting(p)) {
+                        p.sendMessage("&cJestes podczas walki nie mozesz postawic stoniarki!");
+                        e.setCancelled(true);
+                        e.getBlock().setType(Material.AIR);
+                        return;
+                    }
+                }
+            }
+            u.setType(Material.STONE);
+            u.setData((byte) 3);
+        }
         if (guild != null) {
-            if (p.hasPermission("regionplugin.bypass"))
+            if (p.hasPermission("spigot.bypass"))
                 return;
             User user = UserManager.getUser(p);
             if (user == null) {
@@ -73,7 +124,8 @@ public class BlockPlaceListener implements Listener {
                 if (e.getBlockPlaced().getType() == Material.CHEST) {
                     e.setBuild(false);
                     e.setCancelled(true);
-                    p.sendMessage("Skrzynie mozesz postawic ponizej 60 poziomu");
+                    p.sendMessage("&cSkrzynie mozesz postawic ponizej 60 poziomu");
+                    return;
                 }
             }
             if (CombatManager.isFighting(p)) {
@@ -81,49 +133,7 @@ public class BlockPlaceListener implements Listener {
                 e.setBuild(false);
             }
         }
-        if (b.getLocation().getBlockY() >= 90) {
-            if (CombatManager.isFighting(p)) {
-                e.setCancelled(true);
-                p.sendMessage("&cJestes podczas walki! Nie mozesz stawiac powyzej 90 poziomu!");
-            }
-        }
-        if (e.getBlockPlaced().getType() == Material.OBSIDIAN) {
-            e.setBuild(false);
-            e.setCancelled(true);
-            p.sendMessage("&cObsydianu mozesz uzywac tylko na terenie gildii");
-        }
-        if (b.getType() == Material.ENDER_STONE) {
-            Block u = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-            if (!u.isEmpty()) {
-                p.sendMessage("&cNie moze byc zadnego bloku nad generatorem!");
-                e.setCancelled(true);
-                return;
-            }
-            if (guild != null) {
-                if (!guild.isMember(e.getPlayer().getName())) {
-                    if (CombatManager.isFighting(p)) {
-                        p.sendMessage("&cJestes podczas walki nie mozesz postawic stoniarki!");
-                        e.setCancelled(true);
-                        e.getBlock().setType(Material.AIR);
-                        return;
-                    }
-                }
-            }
-            u.setType(Material.STONE);
-            return;
-        }
-
-        if (p.getItemInHand().isSimilar(Settings.cobblexItem)) {
-            e.setCancelled(true);
-            e.getBlockPlaced().setType(Material.AIR);
-            List<ItemStack> dropList = Settings.normalDropList;
-            if (p.hasPermission("cobblex.premiumDrop")) {
-                dropList = Settings.premiumDropList;
-            }
-            ItemUtil.giveDrop(e.getBlockPlaced().getLocation(), dropList);
-            p.getInventory().removeItem(Settings.cobblexItem);
-        }
-    }//TODO dodac boyfarmery
+    }
 
     private static final List<ItemStack> itemStacks = new ArrayList<>();
 
@@ -165,10 +175,59 @@ public class BlockPlaceListener implements Listener {
             b.setType(Material.AIR);
             p.getInventory().removeItem(getCaseItem1());
             p.playEffect(p.getLocation(), Effect.EXPLOSION_HUGE, 10);
-            // zmienic
+            ItemStack randomDrop = BossUtil.easycase.get(RandomUtil.getRandInteger(0, BossUtil.easycase.size() - 1));
+            ItemUtil.giveItems(p, randomDrop);
+            Bukkit.broadcastMessage("&aGracz "+p.getName()+ " otworzyl easycase i otrzymal "+randomDrop.getType()+"x"+randomDrop.getAmount());
         }
         if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp")) {
-            e.setCancelled(true);
+            if (b.getLocation().getBlockY() <= 60) {
+                e.setCancelled(true);
+                e.setBuild(false);
+                return;
+            }
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    e.getBlockPlaced().setType(Material.AIR);
+                }
+            }.runTaskLater(SpigotPlugin.getPlugin(), 20 * 15);
+        }
+        if (p.getItemInHand() == null) {
+            return;
+        }
+        if (!p.getItemInHand().hasItemMeta()) {
+            return;
+        }
+        if (p.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatUtil.color("&a&lBoyFarmer"))) {
+            Guild gg = GuildManager.getGuild(e.getBlock().getLocation());
+            if (gg == null) {
+                e.getPlayer().sendMessage("&cBoyFarmera mozesz postawic tylko na terenie swojej gildii!");
+                e.setCancelled(true);
+                return;
+            }
+            if (!gg.isMember(p.getName())) {
+                e.getBlock().setType(Material.AIR);
+                e.getPlayer().sendMessage(ChatUtil.color("&cNie mozesz postwic BoyFarmera na terenie innej gildii!"));
+                return;
+            }
+            if (e.getBlock().getY() > 70) {
+                p.sendMessage("&cBoyFarmera mozesz postawic tylko do 70 poziomu!");
+                e.setCancelled(true);
+                return;
+            }
+            new BukkitRunnable() {
+                double i = -1.0;
+                public void run() {
+                    if (!b.getLocation().add(0.0, -(this.i + 2), 0.0).getBlock().isEmpty()) {
+                        this.cancel();
+                        b.getLocation().add(0.0, -(this.i + 1), 0.0).getBlock().setType(Material.OBSIDIAN);
+                        return;
+                    }
+                    ++this.i;
+                    b.getLocation().add(0.0, -this.i, 0.0).getBlock().setType(Material.OBSIDIAN);
+                }
+            }.runTaskTimer(SpigotPlugin.getPlugin(), 10L, 10L);
         }
     }
     private ItemStack getCaseItem() {
@@ -181,7 +240,7 @@ public class BlockPlaceListener implements Listener {
     private ItemStack getCaseItem1() {
         ItemStack item = new ItemStack(Material.CHEST, 1);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatUtil.color("&c&lSkrzynia "+ Config.IP));
+        meta.setDisplayName(ChatUtil.color("&c&lSkrzynia "+ statues.IP));
         item.setItemMeta(meta);
         return item;
     }

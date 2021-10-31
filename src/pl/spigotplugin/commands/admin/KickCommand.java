@@ -5,18 +5,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
-import pl.spigotplugin.configs.GlobalMessage;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
-import pl.spigotplugin.utils.CombatUtil;
 
 public class KickCommand extends Command {
-    public KickCommand() { super("kick", "/kick <gracz> [powod]", ""); }
+    public KickCommand() { super("kick", "/kick <gracz> [powod]", "spigot.kick"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            GlobalMessage.usage(sender, getUsage());
+            core.usage(sender, getUsage());
             return;
         }
         Player p = Bukkit.getPlayer(args[0]);
@@ -42,6 +41,6 @@ public class KickCommand extends Command {
                 "\n&8&m------===------";
         CombatManager.clear(p.getPlayer());
         p.kickPlayer(ChatUtil.color(kick));
-        Bukkit.broadcastMessage("&cGracz " + args[0] + " &czostal wyrzucony z serwera przez " + sender.getName() + " &cz powodem " + reason);
+        Bukkit.broadcastMessage("&cGracz " + args[0] + " zostal wyrzucony z serwera przez " + sender.getName() + " z powodem " + reason);
     }
 }

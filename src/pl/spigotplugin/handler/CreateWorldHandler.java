@@ -12,5 +12,12 @@ public class CreateWorldHandler {
         worldCreator.environment(World.Environment.NORMAL);
         worldCreator.createWorld();
     }
+    public static void jebanyend(String name) {
+        WorldCreator worldCreator = new WorldCreator(name);
+        worldCreator.type(WorldType.FLAT);
+        worldCreator.generateStructures(false);
+        worldCreator.environment(World.Environment.THE_END);
+        worldCreator.createWorld();
+    }
 }
 
