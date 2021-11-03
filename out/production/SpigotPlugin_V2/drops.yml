@@ -1,0 +1,181 @@
+random-drops:
+  diament:
+    chance: 2.0
+    exp: 9
+    fortune: true
+    message: '&7Zdobyles: &fx{AMOUNT} &bDiamond +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 25
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: DIAMOND
+      from: STONE
+  szmaragd:
+    chance: 1.0
+    exp: 11
+    fortune: true
+    message: '&7Zdobyles: &fx{AMOUNT} &2Emerald +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 25
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: EMERALD
+      from: STONE
+  zloto:
+    chance: 2.0
+    exp: 6
+    fortune: true
+    message: '&7Zdobyles: &fx{AMOUNT} &6Zloto +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: GOLD_INGOT
+      from: STONE
+  zelazo:
+    chance: 2.0
+    exp: 6
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &7Zelazo +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: IRON_INGOT
+      from: STONE
+  jablko:
+    chance: 0.75
+    exp: 11
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &cJablko +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: APPLE
+      from: STONE
+  obsydian:
+    chance: 1.0
+    exp: 9
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &5Obsidian +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: OBSIDIAN
+      from: STONE
+  wegiel:
+    chance: 3.5
+    exp: 200
+    fortune: true
+    message: '&7Zdobyles: &fx{AMOUNT} &0Wegiel +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: COAL
+      from: STONE
+  skora:
+    chance: 1.0
+    exp: 11
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &8Skora +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: LEATHER
+      from: STONE
+  piasek:
+    chance: 2.0
+    exp: 2
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &ePiasek +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
+    height:
+      min: 0
+      max: 64
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: SAND
+      from: STONE
+  perla:
+    chance: 0.01
+    exp: 16
+    fortune: false
+    message: '&7Zdobyles: &fx{AMOUNT} &5Perla +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 25
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: ENDER_PEARL
+      from: STONE
+  proch:
+    chance: 0.5
+    exp: 11
+    fortune: true
+    message: '&7Zdobyles: &fx{AMOUNT} &8Gunpowder +{EXP}'
+    biome: []
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
+    height:
+      min: 0
+      max: 25
+    amount:
+      min: 1
+      max: 1
+    drop:
+      what: SULPHUR
+      from: STONE
+cancel-drops: []
+exp-drops:
+  STONE: 7
+  OBSIDIAN: 14
