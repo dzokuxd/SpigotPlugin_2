@@ -24,7 +24,6 @@ public class CheckbanCommand extends PlayerCommand {
             return;
         }
         p.sendMessage("&fGracz: &d" + args[0]);
-        p.sendMessage("");
         p.sendMessage("&fZbanowal: &d" +b.getAdmin());
         p.sendMessage("&fPowod: &d" +b.getReason());
         p.sendMessage("&fWygasa: &d" +((b.getTime() == 0L) ? "&cNigdy!" : "&cza " + DataUtil.secondsToString(b.getTime())));

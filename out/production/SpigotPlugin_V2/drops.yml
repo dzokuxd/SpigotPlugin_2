@@ -1,7 +1,7 @@
 random-drops:
   diament:
     chance: 2.0
-    exp: 9
+    exp: 3
     fortune: true
     message: '&7Zdobyles: &fx{AMOUNT} &bDiamond +{EXP}'
     biome: []
@@ -17,7 +17,7 @@ random-drops:
       from: STONE
   szmaragd:
     chance: 1.0
-    exp: 11
+    exp: 2
     fortune: true
     message: '&7Zdobyles: &fx{AMOUNT} &2Emerald +{EXP}'
     biome: []
@@ -32,8 +32,8 @@ random-drops:
       what: EMERALD
       from: STONE
   zloto:
-    chance: 2.0
-    exp: 6
+    chance: 1.40
+    exp: 4
     fortune: true
     message: '&7Zdobyles: &fx{AMOUNT} &6Zloto +{EXP}'
     biome: []
@@ -79,25 +79,9 @@ random-drops:
     drop:
       what: APPLE
       from: STONE
-  obsydian:
-    chance: 1.0
-    exp: 9
-    fortune: false
-    message: '&7Zdobyles: &fx{AMOUNT} &5Obsidian +{EXP}'
-    biome: []
-    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
-    height:
-      min: 0
-      max: 64
-    amount:
-      min: 1
-      max: 1
-    drop:
-      what: OBSIDIAN
-      from: STONE
   wegiel:
-    chance: 3.5
-    exp: 200
+    chance: 3.0
+    exp: 3
     fortune: true
     message: '&7Zdobyles: &fx{AMOUNT} &0Wegiel +{EXP}'
     biome: []
@@ -111,13 +95,13 @@ random-drops:
     drop:
       what: COAL
       from: STONE
-  skora:
-    chance: 1.0
+  ksiazka:
+    chance: 0.50
     exp: 11
     fortune: false
-    message: '&7Zdobyles: &fx{AMOUNT} &8Skora +{EXP}'
+    message: '&7Zdobyles: &fx{AMOUNT} &8Ksiazke +{EXP}'
     biome: []
-    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
+    tool: [DIAMOND_PICKAXE, IRON_PICKAXE]
     height:
       min: 0
       max: 64
@@ -125,26 +109,10 @@ random-drops:
       min: 1
       max: 1
     drop:
-      what: LEATHER
-      from: STONE
-  piasek:
-    chance: 2.0
-    exp: 2
-    fortune: false
-    message: '&7Zdobyles: &fx{AMOUNT} &ePiasek +{EXP}'
-    biome: []
-    tool: [DIAMOND_PICKAXE, IRON_PICKAXE, STONE_PICKAXE]
-    height:
-      min: 0
-      max: 64
-    amount:
-      min: 1
-      max: 1
-    drop:
-      what: SAND
+      what: BOOK
       from: STONE
   perla:
-    chance: 0.01
+    chance: 0.001
     exp: 16
     fortune: false
     message: '&7Zdobyles: &fx{AMOUNT} &5Perla +{EXP}'

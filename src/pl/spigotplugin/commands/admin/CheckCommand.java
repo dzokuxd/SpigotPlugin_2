@@ -16,7 +16,7 @@ public class CheckCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 1) {
-            p.sendMessage("&7\u00bb &dPrawidlowe uzycie:");
+            p.sendMessage("&cPrawidlowe uzycie:");
             p.sendMessage("&c/sprawdz [nick]");
             p.sendMessage("&c/sprawdz czysty [nick]");
             p.sendMessage("&c/sprawdz czity [nick]");
@@ -24,7 +24,7 @@ public class CheckCommand extends PlayerCommand {
         }
         if (args[0].equalsIgnoreCase("czysty")) {
             if (args.length != 2) {
-                p.sendMessage("&7\u00bb &dPrawidlowe uzycie:");
+                p.sendMessage("&cPrawidlowe uzycie:");
                 p.sendMessage("&c/sprawdz [nick]");
                 p.sendMessage("&c/sprawdz czysty [nick]");
                 p.sendMessage("&c/sprawdz czity [nick]");
@@ -43,7 +43,7 @@ public class CheckCommand extends PlayerCommand {
             Bukkit.broadcastMessage("&7\u00bb &fGracz &d" + target.getName() + " &fzostal sprawdzony i nie posiadal cheatow!");
         } else if (args[0].equalsIgnoreCase("cheaty")) {
             if (args.length != 2) {
-                p.sendMessage("&7\u00bb &dPrawidlowe uzycie:");
+                p.sendMessage("&cPrawidlowe uzycie:");
                 p.sendMessage("&c/sprawdz [nick]");
                 p.sendMessage("&c/sprawdz czysty [nick]");
                 p.sendMessage("&c/sprawdz czity [nick]");

@@ -3,12 +3,14 @@ package pl.spigotplugin.objects.user;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.helper.JSONHelper;
 import pl.spigotplugin.holder.SaveHolder;
 import pl.spigotplugin.mysql.MySQLUtil;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.ItemSerializer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,11 +60,13 @@ public class User implements Comparable<User> {
     private String guild = "";
     private String achievments = "0@0@0@0@0@0@0";
     private long time;
+    private ItemStack[] enderchest = new ItemStack[0];
     private boolean incognito = false;
     private boolean inBeingChecked = false;
     private boolean isOnCuboid = false;
     private final Map<User, Long> lastKillers = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Material, Integer> drops = new ConcurrentHashMap<>();
+    public String focused = "";
 
     public User(Player p) {
         this.name = p.getName();
@@ -100,6 +104,7 @@ public class User implements Comparable<User> {
         this.lastChat = 0L;
         this.guild = rs.getString("guild");
         this.time = rs.getLong("time");
+        this.enderchest = ItemSerializer.stringToItems(rs.getString("enderchest"));
     }
 
     public ConcurrentHashMap<Material, Integer> getDrops() {
@@ -128,6 +133,7 @@ public class User implements Comparable<User> {
         }
         return ChatUtil.round(this.kills / (double)this.deaths, 2, 2);
     }
+
 
     public Map<User, Long> getLastKillers() {
         return this.lastKillers;
@@ -307,6 +313,12 @@ public class User implements Comparable<User> {
         this.incognito = incognito;
     }
 
+    public ItemStack[] getEnderchest() {return this.enderchest;}
+
+    public void setEnderchest(ItemStack[] items) {
+        this.enderchest = items;
+    }
+
     private void insert() {
         Map<String,Object> data = new ConcurrentHashMap<>();
         data.put("name", name);
@@ -339,6 +351,7 @@ public class User implements Comparable<User> {
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
         MySQLUtil.insert("users", data);
     }
 
@@ -373,6 +386,7 @@ public class User implements Comparable<User> {
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
         MySQLUtil.save("users", "name", name, data);
     }
 
@@ -407,6 +421,7 @@ public class User implements Comparable<User> {
         data.put("time", time);
         data.put("os", achievments);
         data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
         MySQLUtil.saveSync("users", "name", name, data);
     }
     public int getAchLvl(AchievmentTypeName type) {
@@ -524,5 +539,4 @@ public class User implements Comparable<User> {
     public void setPoints(int points) {this.points = points;}
 
     public int getPoints() {return this.points;}
-
 }

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.helper.TabHelper;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.DataUtil;

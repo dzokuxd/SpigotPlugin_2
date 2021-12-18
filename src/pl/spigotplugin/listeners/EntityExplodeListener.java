@@ -1,7 +1,9 @@
 package pl.spigotplugin.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -19,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EntityExplodeListener implements Listener {
-    private static List<Material> SKIPPABLE = new LinkedList<>();
+    private static final List<Material> SKIPPABLE = new LinkedList<>();
 
     static {
         SKIPPABLE.add(Material.CHEST);
@@ -41,6 +43,7 @@ public class EntityExplodeListener implements Listener {
         stand.setCustomName(ChatUtil.color("&cTnT od 60 poziomu"));
         stand.setCustomNameVisible(true);
         stand.setVisible(false);
+        stand.setArms(false);
         new BukkitRunnable() {
 
             @Override
@@ -52,8 +55,8 @@ public class EntityExplodeListener implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getLocation().getBlockY() >= 60) {
-            spawnEntity(e.getLocation());
             e.setCancelled(true);
+            spawnEntity(e.getLocation());
             return;
         }
         if (!TNTUtil.isBetween()) {
@@ -69,7 +72,7 @@ public class EntityExplodeListener implements Listener {
         if (g != null) {
             g.setLastExplodeTime(System.currentTimeMillis() + TimeUtil.MINUTE.getTime(0));
             g.message("&4Na terenie gildii wybuchlo tnt!");
-            if (g.getCreateTime() + TimeUtil.HOUR.getTime(0) > System.currentTimeMillis()) {
+            if (g.getCreateTime() + TimeUtil.HOUR.getTime(24) > System.currentTimeMillis()) {
                 e.setCancelled(true);
                 return;
             }

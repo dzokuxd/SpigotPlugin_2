@@ -2,6 +2,7 @@ package pl.spigotplugin.managers;
 
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.DataUtil;
 
 import java.util.*;
 
@@ -43,20 +44,18 @@ public class TopsManager {
 
     public static void sortUser() {
         points.sort((o1, o2) -> Integer.compare(o2.getPoints(), o1.getPoints()));
-
-/*      stone.sort(Comparator.comparing(User::getWykStone).reversed());
-        time.sort(Comparator.comparing(User::getTime).reversed());
-        gapple.sort(Comparator.comparing(User::getKoxEaten).reversed());
-        apple.sort(Comparator.comparing(User::getRefilEaten).reversed());
-        obsidian.sort(Comparator.comparing(User::getWykObsidian).reversed());
-        pearls.sort(Comparator.comparing(User::getPearlThrown).reversed());
-        arrows.sort(Comparator.comparing(User::getArrowsShoten).reversed());
-        lvl.sort(Comparator.comparing(User::getLvl).reversed());
-        coins.sort(Comparator.comparing(User::getCoins).reversed());
-        easycase.sort(Comparator.comparing(User::getEasycase).reversed());
-        kills.sort(Comparator.comparing(User::getKills).reversed());
-        asysty.sort(Comparator.comparing(User::getAsysty).reversed());
-        case6.sort(Comparator.comparing(User::getCase611).reversed());//TODO zmienic na postawione casy*/
+        stone.sort((o1, o2) -> Integer.compare(o2.getWykStone(), o1.getWykStone()));
+        gapple.sort((o1, o2) -> Integer.compare(o2.getKoxEaten(), o1.getKoxEaten()));
+        apple.sort((o1, o2) -> Integer.compare(o2.getRefilEaten(), o1.getRefilEaten()));
+        obsidian.sort((o1, o2) -> Integer.compare(o2.getWykObsidian(), o1.getWykObsidian()));
+        pearls.sort((o1, o2) -> Integer.compare(o2.getPearlThrown(), o1.getPearlThrown()));
+        arrows.sort((o1, o2) -> Integer.compare(o2.getArrowsShoten(), o1.getArrowsShoten()));
+        lvl.sort((o1, o2) -> Integer.compare(o2.getLvl(), o1.getLvl()));
+        coins.sort((o1, o2) -> Integer.compare(o2.getCoins(), o1.getCoins()));
+        easycase.sort((o1, o2) -> Integer.compare(o2.getEasycase(), o1.getEasycase()));
+        case6.sort((o1, o2) -> Integer.compare(o2.getCase611(), o1.getCase611()));
+        kills.sort((o1, o2) -> Integer.compare(o2.getKills(), o1.getKills()));
+        asysty.sort((o1, o2) -> Integer.compare(o2.getAsysty(), o1.getAsysty()));
     }
 
     public static void sortGuild() {
@@ -64,8 +63,8 @@ public class TopsManager {
     }
 
     public static int getPlaceUser(User user) {
-        for (int num = 0; num < TopsManager.stone.size(); ++num) {
-            if (TopsManager.stone.get(num).equals(user)) {
+        for (int num = 0; num < TopsManager.points.size(); ++num) {
+            if (TopsManager.points.get(num).equals(user)) {
                 return num + 1;
             }
         }

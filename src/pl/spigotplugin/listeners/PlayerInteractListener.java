@@ -5,7 +5,6 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -13,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.holder.LocationHolder;
 import pl.spigotplugin.managers.GuildManager;
@@ -48,8 +50,9 @@ public class PlayerInteractListener implements Listener {
                 clickedBlock.setType(Material.AIR);
                 ItemStack randomDrop = BossUtil.drops.get(RandomUtil.getRandInteger(0, BossUtil.drops.size() - 1));
                 ItemUtil.giveItems(p, randomDrop);
-                Bukkit.broadcastMessage("&aGracz "+p.getName()+ " otworzyl magiczny drop i otrzymal "+randomDrop.getType()+"x"+randomDrop.getAmount());
+                Bukkit.broadcastMessage("&aGracz " + p.getName() + " otworzyl magiczny drop i otrzymal " + randomDrop.getType() + "x" + randomDrop.getAmount());
                 clickedBlock.getWorld().playEffect(clickedBlock.getLocation(), Effect.EXPLOSION_HUGE, 10);
+                p.setVelocity(new Vector(0,30,0));
                 return;
             }
         }
@@ -81,14 +84,14 @@ public class PlayerInteractListener implements Listener {
             ItemUtil.removeItems(p, VoucherUtil.turbo);
             long turboDropHave = 0L;
             long currentTurboDrop = u.getTurboDrop();
-            if(currentTurboDrop >System.currentTimeMillis()){
-                turboDropHave = currentTurboDrop-System.currentTimeMillis();
+            if (currentTurboDrop > System.currentTimeMillis()) {
+                turboDropHave = currentTurboDrop - System.currentTimeMillis();
             }
             long givenTurboDrop = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10);
-            u.setTurboDrop(givenTurboDrop+turboDropHave);
+            u.setTurboDrop(givenTurboDrop + turboDropHave);
             return;
         }
-        if(clickedBlock != null){
+        if (clickedBlock != null) {
             if (clickedBlock.getType() == Material.STONE_BUTTON) {
                 if (e.getAction() != Action.RIGHT_CLICK_BLOCK)
                     return;
@@ -112,10 +115,10 @@ public class PlayerInteractListener implements Listener {
             World gtp = Bukkit.getWorld("gtp");
             for (Player players : this.getPlayersInRadius(clickedBlock.getLocation(), 3)) {
                 ++i;
-                Location location = new Location(gtp,x, gtp.getHighestBlockYAt(x,z),z);
+                Location location = new Location(gtp, x, gtp.getHighestBlockYAt(x, z), z);
                 if (i > 2) continue;
                 p.teleport(location);
-                Location ploc =p.getLocation().clone();
+                Location ploc = p.getLocation().clone();
                 ploc.setY(p.getLocation().getY() + 5.0);
                 p.teleport(ploc);
                 players.teleport(p.getLocation());
@@ -145,52 +148,51 @@ public class PlayerInteractListener implements Listener {
                 p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_PEARL + " perel! (" + added + " perly zostaja odlozone do twojego schowka)");
             }
         }
-        if ((ea.equals(Action.RIGHT_CLICK_AIR)) || (ea.equals(Action.RIGHT_CLICK_BLOCK))) {
-            if (e.getMaterial().equals(Material.PUMPKIN_PIE)) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 4, 3));
-                p.getInventory().removeItem(new ItemStack(Material.PUMPKIN_PIE, 1));
-            }
-            if (e.getMaterial().equals(Material.NAME_TAG)) {
-                if (s.getItemMeta() != null && s.getItemMeta().getDisplayName() != null && e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatUtil.color("&6&lAnty Nogi"))) {
-                    Guild g = GuildManager.getGuild(p);
-                    if (g == null) {
-                        p.sendMessage("&cNie posiadasz gildi!");
-                        return;
-                    }
-                    Guild gcub = GuildManager.getGuild(p.getLocation());
-                    if (gcub == null) {
-                        p.sendMessage("&cNie ma tutaj zadnego cuboida!");
-                        return;
-                    }
-                    if (gcub.getTag().equalsIgnoreCase(g.getTag())) {
-                        p.sendMessage("&cNie mozesz tego zrobic na swoim cuboidzie!");
-                        return;
-                    }
-                    ArrayList<Player> gra = new ArrayList<>();
-                    for (Player w : getPlayersInRadius(p.getLocation(), 20)) {
-                        Guild gw = GuildManager.getGuild(w);
-                        if (gw == null) {
-                            continue;
-                        }
-                        if (!(g == gw)) {
-                            continue;
-                        }
-                        if (p.getName().equals(w.getName())) {
-                            continue;
-                        }
-                        gra.add(w);
-                    }
-                    if (gra.size() == 0) {
-                        p.sendMessage("&cAby uwolnic kolege z nozek musisz stac od niego 20 kratek!");
-                        return;
-                    }
-                    Inventory inv = Bukkit.createInventory(p, 27, (ChatUtil.color("&7Gracze do uratowania")));
-                    for (int i = 0; i < gra.size(); i++) {
-                        ItemBuilder gracz = new ItemBuilder(Material.SKULL_ITEM, (short) 3).setTitle(ChatUtil.color("&6" + gra.get(i).getName())).addLore(ChatUtil.color("&8\u00bb &7Aby uratowac tego gracz musisz kliknac w jego glowe!"));
-                        inv.setItem(i, gracz.build());
-                    }
-                    p.openInventory(inv);
+        if (p.getItemInHand().isSimilar(new ItemStack(Material.PUMPKIN_PIE))) {
+            ItemUtil.removeItems(p, new ItemStack(Material.PUMPKIN_PIE, 1));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 4, 3));
+            p.playSound(p.getLocation(), Sound.EAT, 2.0f, 0.8f);
+        }
+        if (e.getMaterial().equals(Material.NAME_TAG)) {
+            if (s.getItemMeta() != null && s.getItemMeta().getDisplayName() != null && e.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(ChatUtil.color("&6&lAnty Nogi"))) {
+                Guild g = GuildManager.getGuild(p);
+                if (g == null) {
+                    p.sendMessage("&cNie posiadasz gildi!");
+                    return;
                 }
+                Guild gcub = GuildManager.getGuild(p.getLocation());
+                if (gcub == null) {
+                    p.sendMessage("&cNie ma tutaj zadnego cuboida!");
+                    return;
+                }
+                if (gcub.getTag().equalsIgnoreCase(g.getTag())) {
+                    p.sendMessage("&cNie mozesz tego zrobic na swoim cuboidzie!");
+                    return;
+                }
+                ArrayList<Player> gra = new ArrayList<>();
+                for (Player w : getPlayersInRadius(p.getLocation(), 20)) {
+                    Guild gw = GuildManager.getGuild(w);
+                    if (gw == null) {
+                        continue;
+                    }
+                    if (!(g == gw)) {
+                        continue;
+                    }
+                    if (p.getName().equals(w.getName())) {
+                        continue;
+                    }
+                    gra.add(w);
+                }
+                if (gra.size() == 0) {
+                    p.sendMessage("&cAby uwolnic kolege z nozek musisz stac od niego 20 kratek!");
+                    return;
+                }
+                Inventory inv = Bukkit.createInventory(p, 27, (ChatUtil.color("&7Gracze do uratowania")));
+                for (int i = 0; i < gra.size(); i++) {
+                    ItemBuilder gracz = new ItemBuilder(Material.SKULL_ITEM, (short) 3).setTitle(ChatUtil.color("&6" + gra.get(i).getName())).addLore(ChatUtil.color("&8\u00bb &7Aby uratowac tego gracz musisz kliknac w jego glowe!"));
+                    inv.setItem(i, gracz.build());
+                }
+                p.openInventory(inv);
             }
         }
         ItemStack k = e.getPlayer().getItemInHand();
@@ -216,16 +218,6 @@ public class PlayerInteractListener implements Listener {
         }
         PlayerInteractListener.leaver.put(p.getUniqueId(), System.currentTimeMillis());
     }
-
-    @EventHandler
-    public void dropEvent(PlayerDropItemEvent event){
-        Item item = event.getItemDrop();
-        Player p = event.getPlayer();
-        if(event.getItemDrop().getItemStack().getType().equals(Material.GOLDEN_APPLE)) {
-            p.updateInventory();
-            p.sendMessage("&cNie możesz tego wyrzucic. (Bugowanie jedzenia w biegu zablokowane)");
-        }
-    }
     @EventHandler
     public void onEntityCreatePortal(EntityCreatePortalEvent e) {
         e.setCancelled(true);
@@ -238,8 +230,6 @@ public class PlayerInteractListener implements Listener {
             Player p = event.getPlayer();
             User user = UserManager.getUser(p);
             Guild g = GuildManager.getGuild(p);
-            int x = RandomUtil.getRandInt(-90, 90);
-            int z = RandomUtil.getRandInt(-90, 90);
             World end = Bukkit.getWorld("end");
             if (user.getGuild().isEmpty()) {
                 p.sendMessage("&cNie posiadasz gildii!");
@@ -330,10 +320,6 @@ public class PlayerInteractListener implements Listener {
             p.sendMessage("&cZeby podbic gildie musisz miec z nimi wojne! /g wojna " + g.getTag());
             return;
         }
-        /*if (!gg.getGuildWar().containsKey(g.getTag())) {
-            p.sendMessage("&cZeby podbic gildie musisz miec z nimi wojne! /g wojna " + g.getTag());
-            return;
-        }*/
         /*if (g.getHpLastAttack() > System.currentTimeMillis()) {
             p.sendMessage("&cGildie mozesz podbic za " + DataUtil.secondsToString(g.getHpLastAttack()));
             return;
@@ -342,7 +328,7 @@ public class PlayerInteractListener implements Listener {
             p.sendMessage("&cGildie mozna podbic tylko gdy tnt jest wlaczone!");
             return;
         }*/
-        if (p.getLocation().distance(g.getRegion().getLocation()) > 2.0) {
+        if (p.getLocation().distance(g.getRegion().getLocation()) > 3.0) {
             p.sendMessage("&cMusisz byc blizej jajka gildii!");
             return;
         }
@@ -354,9 +340,25 @@ public class PlayerInteractListener implements Listener {
             }
             PlayerInteractListener.guildclick.put(p.getUniqueId(), System.currentTimeMillis());
             g.setHp(g.getHp() - 1);
-            g.message("&cTwoja gildia jest atakowana przez: "+gg.getTag()+ "pozostale hp to: "+g.getHp());
+            g.message("&cTwoja gildia jest atakowana przez: "+gg.getTag()+ " pozostale hp to: "+g.getHp());
             gg.message("&cPozostale hp gildii "+g.getTag()+ " to " +g.getHp());
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 3));
+            if (RandomUtil.getChance(35.0)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 10, 2));
+                return;
+            }
+            if (RandomUtil.getChance(50.0)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 10, 2));
+                return;
+            }
+            if (RandomUtil.getChance(50.0)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 10, 2));
+                return;
+            }
+            if (RandomUtil.getChance(40.0)) {
+                p.setVelocity(new Vector(5,0,5));
+                return;
+            }
             return;
         }
         if (g.getLife() == 1) {
@@ -377,7 +379,7 @@ public class PlayerInteractListener implements Listener {
             Bukkit.broadcastMessage("&7[&c" + g.getTag() + "&7] [&c-100&7]&c " + g.getName() + " &6zostala podbita przez &7[&c" + gg.getTag() + "&7] [&c+100&7]&c " + p.getName());
             Bukkit.broadcastMessage("&6Zostalo jej &c" + g.getLife() + " &6zyc");
             ChatUtil.sendTitleMessage(p, "&c&lWOJNY", "&c"+gg.getTag()+" +100 &6Wygrala wojne z gildia&c "+g.getTag()+" -100", 30, 70, 40);
-            p.sendMessage("&aZa podbicie gildie otrzymales x8 Skrzyn " + statues.IP);
+            p.sendMessage("&aZa podbicie gildii otrzymales x8 Skrzyn " + statues.IP);
             DajUtil.giveWithAmount("easycase", 8, p);
         }
         gg.setLife(gg.getLife() +1);
@@ -394,6 +396,64 @@ public class PlayerInteractListener implements Listener {
             e.setLine(i, ChatUtil.color(e.getLine(i)));
         }
     }
+
+    @EventHandler
+    private void clickInv(final InventoryClickEvent e) {
+        final Player p = (Player) e.getWhoClicked();
+        if (e.isCancelled()) {
+            return;
+        }
+        if (e.getInventory().getName().contains("Ender Chest") && !p.hasPermission("spigot.powiekszonyec") && e.getSlot() >= 27 && e.getSlot() <= 44) {
+            e.setCancelled(true);
+            e.setResult(Event.Result.DENY);
+        }
+    }
+    @EventHandler
+    private void onInventoryCloseEvent(final InventoryCloseEvent e) {
+        final Player p = (Player)e.getPlayer();
+        if (e.getInventory().getName().contains("Ender Chest: ")) {
+            final String name = e.getInventory().getName().substring(13);
+            if (e.getInventory().getSize() < 36) {
+                return;
+            }
+            final ItemBuilder szklo = new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short)14).setTitle(ChatUtil.color("&cDOSTEPNE DLA RANG PREMIUM"));
+            e.getInventory().remove(szklo.build());
+            p.playSound(e.getPlayer().getLocation(), Sound.CHEST_CLOSE, 1.0f, 1.0f);
+            EnderChestUtil.close(p, e.getInventory());
+        }
+        else {
+            if (!e.getInventory().getName().contains("Ender Chest")) {
+                return;
+            }
+            if (e.getInventory().getSize() < 36) {
+                return;
+            }
+            p.playSound(e.getPlayer().getLocation(), Sound.CHEST_CLOSE, 1.0f, 1.0f);
+            final ItemBuilder szklo2 = new ItemBuilder(Material.STAINED_GLASS_PANE, 1, (short)14).setTitle(ChatUtil.color("&cDOSTEPNE DLA RANG PREMIUM"));
+            e.getInventory().remove(szklo2.build());
+            EnderChestUtil.close(p, e.getInventory());
+        }
+    }
+    @EventHandler
+    public void lagFix(final PlayerInteractEvent e) {
+        final Block clicked = e.getClickedBlock();
+        final Player p = e.getPlayer();
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (clicked.getType() == Material.ENDER_CHEST) {
+                e.setCancelled(true);
+                if (p.isSneaking()) {
+                    return;
+                }
+                p.getWorld().playSound(e.getPlayer().getLocation(), Sound.CHEST_OPEN, 1.0f, 1.0f);
+                if (p.hasPermission("spigot.powiekszonyec")) {
+                    EnderChestUtil.open(p);
+                } else {
+                    EnderChestUtil.openGracz(p);
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onCraft(CraftItemEvent e) {
         ItemStack item = e.getRecipe().getResult();
@@ -406,6 +466,13 @@ public class PlayerInteractListener implements Listener {
         }
         if (item.getType() == Material.MINECART) {
             p.sendMessage( "&cCraftowanie wagonikow jest wylaczone!");
+            e.setCancelled(true);
+            e.setCurrentItem(null);
+            e.setResult(Event.Result.DENY);
+            return;
+        }
+        if (item.getType() == Material.FISHING_ROD) {
+            p.sendMessage( "&cCraftowanie wedek jest wylaczone!");
             e.setCancelled(true);
             e.setCurrentItem(null);
             e.setResult(Event.Result.DENY);
@@ -442,9 +509,6 @@ public class PlayerInteractListener implements Listener {
             p.sendMessage("&cPosiadasz przy sobie wiecej niz " + statues.LIMIT_REFILE + " refile! (" + added + " refile zostaja odlozone do twojego schowka)");
         }
         if (is.getDurability() == 1) {
-            e.setCancelled(true);
-            p.getInventory().removeItem(new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
-
             p.removePotionEffect(PotionEffectType.ABSORPTION);
             p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2410, 1));
 

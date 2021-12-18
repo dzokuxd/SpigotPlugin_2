@@ -91,7 +91,7 @@ public class GuildAdminCommand extends PlayerCommand {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     TagUtil.updateBoard(onlinePlayer);
                 }
-            }//TODO dodac zmiane lidera dodawnie i usuwanie pkt
+            }//TODO dodac zmiane lidera dodawnie i usuwanie pkt i nic kurwa nie dziala
         }
     }
     private void usage(CommandSender p) {

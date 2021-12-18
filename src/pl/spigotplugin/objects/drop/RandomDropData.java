@@ -1,6 +1,9 @@
 package pl.spigotplugin.objects.drop;
 
+import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Note;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -93,14 +96,14 @@ public class RandomDropData implements DropData{
             }
             double chance = d.getChance();
             if (player.hasPermission("core.drop.vip")) {
-                chance += 1.0;
+                chance += 0.25;
             } else if (player.hasPermission("core.drop.svip")) {
-                chance += 0.50;
+                chance += 0.35;
             }
             if (statues.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
                 chance += 2;
             }
-            double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
+            double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 0.75) - d.getChance();
             chance += bonus;
             if (!RandomUtil.getChance(chance)) {
                 continue;

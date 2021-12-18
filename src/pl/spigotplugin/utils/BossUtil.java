@@ -4,7 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Wither;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import pl.spigotplugin.SpigotPlugin;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +21,13 @@ public class BossUtil {
         dragon.setCustomName(ChatUtil.color(name));
         dragon.setMaxHealth(health);
         dragon.setHealth(health);
+    }
+    public static void spawnWither(Location location, String name, double health) {
+        Wither wither = location.getWorld().spawn(location, Wither.class);
+        wither.setCustomNameVisible(true);
+        wither.setCustomName(ChatUtil.color(name));
+        wither.setMaxHealth(health);
+        wither.setHealth(health);
     }
     public static List<ItemStack> easycase = Arrays.asList(new ItemStack(Material.DIRT, 64),
             new ItemStack(Material.ANVIL, 8),

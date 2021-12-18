@@ -9,7 +9,7 @@ import pl.spigotplugin.managers.CageManager;
 
 public class CageCommand extends PlayerCommand {
 
-    public CageCommand() { super("cage", "cage nick-nick diamond/iron", "spigot.cage"); }
+    public CageCommand() { super("cage", "cage <nick-nick> <diamond/iron>", "spigot.cage"); }
 
 
     private final Location cage1 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);

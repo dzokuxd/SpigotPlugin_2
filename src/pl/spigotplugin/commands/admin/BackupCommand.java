@@ -9,7 +9,7 @@ import pl.spigotplugin.objects.user.Backup;
 import java.sql.SQLException;
 
 public class BackupCommand extends PlayerCommand {
-    public BackupCommand() { super("backup", "backup gracz", "spigot.backup"); }
+    public BackupCommand() { super("backup", "backup <gracz>", "spigot.backup"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

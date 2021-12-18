@@ -76,25 +76,27 @@ public class BlockPlaceListener implements Listener {
             }
         }
         Guild guild = GuildManager.getGuild(b.getLocation());
-        if (b.getType() == Material.ENDER_STONE) {
-            Block u = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-            if (!u.isEmpty()) {
-                p.sendMessage("&cNie moze byc zadnego bloku nad generatorem!");
-                e.setCancelled(true);
-                return;
-            }
-            if (guild != null) {
-                if (!guild.isMember(e.getPlayer().getName())) {
-                    if (CombatManager.isFighting(p)) {
-                        p.sendMessage("&cJestes podczas walki nie mozesz postawic stoniarki!");
-                        e.setCancelled(true);
-                        e.getBlock().setType(Material.AIR);
-                        return;
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("world")) {
+            if (b.getType() == Material.ENDER_STONE) {
+                Block u = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+                if (!u.isEmpty()) {
+                    p.sendMessage("&cNie moze byc zadnego bloku nad generatorem!");
+                    e.setCancelled(true);
+                    return;
+                }
+                if (guild != null) {
+                    if (!guild.isMember(e.getPlayer().getName())) {
+                        if (!CombatManager.isFighting(p)) {
+                            p.sendMessage("&cJestes podczas walki nie mozesz postawic stoniarki!");
+                            e.setCancelled(true);
+                            e.getBlock().setType(Material.AIR);
+                            return;
+                        }
                     }
                 }
+                u.setType(Material.STONE);
+                u.setData((byte) 3);
             }
-            u.setType(Material.STONE);
-            u.setData((byte) 3);
         }
         if (guild != null) {
             if (p.hasPermission("spigot.bypass"))
@@ -192,6 +194,10 @@ public class BlockPlaceListener implements Listener {
                     e.getBlockPlaced().setType(Material.AIR);
                 }
             }.runTaskLater(SpigotPlugin.getPlugin(), 20 * 15);
+        }
+        if (p.getWorld().getName().equals("gtp")) {
+            e.setBuild(false);
+            e.setCancelled(true);
         }
         if (p.getItemInHand() == null) {
             return;

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.ChatManager;
@@ -25,6 +26,13 @@ public class PlayerChatListener implements Listener {
     public static Pattern BANNED_WORDS = Pattern.compile(".*(.ench|.pl|.tasrv|.crsv|.eu|.com|.aternos|aternos sie pali|Kopacz By|Buzkaa <3|Skrypt|Skrypt do kopania|By gizaar|gizaar+).*");
     public static Pattern IPPATTERN = Pattern.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 
+
+    @EventHandler
+    public void handle(PlayerKickEvent event) {
+        if (event.getReason().contains("disconnect.spam")) {
+            event.setCancelled(true);
+        }
+    }
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         if (e.isCancelled()) {

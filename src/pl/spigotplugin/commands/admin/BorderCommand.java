@@ -8,7 +8,7 @@ import pl.spigotplugin.listeners.BorderListener;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BorderCommand extends Command {
-    public BorderCommand() { super("border", "border (world/gtp) <liczba>", "spigot.border"); }
+    public BorderCommand() { super("border", "border <world/gtp> <liczba>", "spigot.border"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {

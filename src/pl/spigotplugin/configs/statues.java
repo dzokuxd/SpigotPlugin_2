@@ -36,6 +36,7 @@ public class statues {
     public static int LVL = 1;
     public static int CHAT_SLOWMODE = 10;
     public static boolean MANAGE_TPA = false;
+    public static boolean MANAGE_ENCHANT = false;
     public static boolean MANAGE_SPAWN = false;
     public static boolean MANAGE_KIT = false;
     public static boolean MANAGE_DIAMOND = false;

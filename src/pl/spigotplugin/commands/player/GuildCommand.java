@@ -4,9 +4,9 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.component.Teleporter;
 import pl.spigotplugin.configs.statues;
@@ -21,6 +21,7 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.tasks.GuildRegenerationTask;
 import pl.spigotplugin.utils.*;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class GuildCommand extends PlayerCommand {
@@ -41,6 +42,10 @@ public class GuildCommand extends PlayerCommand {
                 }
                 if (!p.hasPermission("spigot.manage") && !statues.MANAGE_GUILDCREATE) {
                     p.sendMessage("&cZakladanie gildii jest tymczasowo wylaczone!");
+                    return;
+                }
+                if (p.getWorld() != Bukkit.getWorld("world")) {
+                    p.sendMessage("&cGildie mozesz zalozyc tylko w normalnym swiecie!");
                     return;
                 }
                 if (!user.getGuild().isEmpty())  {
@@ -69,9 +74,9 @@ public class GuildCommand extends PlayerCommand {
                     p.sendMessage(guild.CREATE_FULLNAMENOTALPHANUMERIC);
                     return;
                 }
-                if (!isValidLocation(p)) {
+                /*if (!isValidLocation(p)) {
                     return;
-                }
+                }*/
                 /*if (!GuildManager.canCreateGuildBySpawn(p.getLocation())) {
                     p.sendMessage(guild.CREATE_TOCLOSESPAWN);
                     return;
@@ -98,7 +103,7 @@ public class GuildCommand extends PlayerCommand {
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isDeputy(p.getName())){
@@ -127,6 +132,7 @@ public class GuildCommand extends PlayerCommand {
                         g.getInvites().add(players.getUniqueId());
                         players.sendMessage(guild.INVITE_TARGET1.replace("{TAG}",g.getTag()).replace("{PLAYER}",p.getName()));
                         players.sendMessage(guild.INVITE_TARGET2.replace("{TAG}",g.getTag()));
+                        ChatUtil.sendHoverMessageCommand(players, "&7&lKliknij tutaj aby dolaczyc!",  "&7&lKliknij tutaj aby dolaczyc!","/g dolacz" + g.getTag());
                     }
                     p.sendMessage("&aZaprosiles " + i + " graczy do gildii");
                 } else {
@@ -160,6 +166,7 @@ public class GuildCommand extends PlayerCommand {
                     p.sendMessage("&fZaprosiles &d"+o.getName()+ "&fdo gildii");
                     o.getPlayer().sendMessage(guild.INVITE_TARGET1.replace("{TAG}",g.getTag()).replace("{PLAYER}",p.getName()));
                     o.getPlayer().sendMessage(guild.INVITE_TARGET2.replace("{TAG}",g.getTag()));
+                    ChatUtil.sendHoverMessageCommand(o.getPlayer(), "&7&lKliknij tutaj aby dolaczyc!",  "&7&lKliknij tutaj aby dolaczyc!","/g dolacz" + g.getTag());
                     return;
                 }
                 break;
@@ -171,7 +178,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -198,8 +205,17 @@ public class GuildCommand extends PlayerCommand {
                 if (g.isLeader(o.getName())) {
                     g.setDeputy("Brak");
                 }
-                if (g.isMember(p.getName())) {
+                if (p.getWorld().getName().equals("end")) {
                     p.teleport(LocationHolder.SPAWN);
+                    p.sendMessage("&aZostalas przeteleportowany na spawn poniewaz byles w endzie i zostales wyrzucony z gildii");
+                    return;
+                }
+                Guild x = GuildManager.getGuild(p.getLocation());
+                if (x != null && !x.isMember(p.getName())) {
+                    p.teleport(LocationHolder.SPAWN);
+                    return;
+                }
+                if (g.isMember(p.getName())) {
                     g.removeMember(o.getName());
                     TagUtil.updateBoard(p);
                     user.setGuild("");
@@ -215,7 +231,7 @@ public class GuildCommand extends PlayerCommand {
             case "usun": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -258,7 +274,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild gl = GuildManager.getGuild(p);
                 if (gl != null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 Guild g = GuildManager.getGuild(args[1]);
@@ -287,7 +303,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 Guild o = GuildManager.getGuild(p.getLocation());
@@ -306,7 +322,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isDeputy(p.getName())) {
@@ -329,7 +345,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -345,12 +361,12 @@ public class GuildCommand extends PlayerCommand {
                     p.sendMessage(guild.PLAYER_DONTHAVEAGUILD);
                     return;
                 }
-                ItemStack costLeader = guild.LEADER_COST;
+                ItemStack costLeader = guild.LIDER_COST;
                 if(!p.getInventory().containsAtLeast(costLeader, costLeader.getAmount())){
                     p.sendMessage("&cNie posiadasz " + costLeader.getType() + "x" + costLeader.getAmount());
                     return;
                 }
-                p.getInventory().removeItem(guild.LEADER_COST);
+                p.getInventory().removeItem(guild.LIDER_COST);
                 g.setLeader(u.getName());
                 g.putForSave();
                 Bukkit.broadcastMessage(guild.LIDER_BROADCAST.replace("{TARGET}",u.getName()).replace("{TAG}",g.getTag()));
@@ -363,7 +379,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -404,7 +420,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -433,7 +449,7 @@ public class GuildCommand extends PlayerCommand {
                 }
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (g.isLeader(p.getName())) {
@@ -443,10 +459,16 @@ public class GuildCommand extends PlayerCommand {
                 if (g.isLeader(p.getName())) {
                     g.setDeputy("Brak");
                 }
+                if (p.getWorld().getName().equals("end")) {
+                    p.teleport(LocationHolder.SPAWN);
+                    p.sendMessage("&aZostalas przeteleportowany na spawn poniewaz byles w endzie i zostales wyrzucony z gildii");
+                    return;
+                }
                 g.removeMember(p.getName());
                 Guild o = GuildManager.getGuild(p.getLocation());
                 if (o != null && !o.isMember(p.getName())) {
                     p.teleport(LocationHolder.SPAWN);
+                    return;
                 }
                 user.setGuild("");
                 TagUtil.updateBoard(p);
@@ -456,7 +478,7 @@ public class GuildCommand extends PlayerCommand {
             case "pvp": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -481,7 +503,7 @@ public class GuildCommand extends PlayerCommand {
             case "panel": {
                 Guild g = GuildManager.getGuild(p);
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 PanelMenu.show(p,g);
@@ -511,9 +533,27 @@ public class GuildCommand extends PlayerCommand {
                 break;
             }
             case "zapisz": {
-                p.sendMessage("xD");
-                p.sendMessage("xD");
-                break;
+                Guild g = GuildManager.getGuild(p);
+                if (args.length != 1) {
+                    p.sendMessage("&6Prawidlowe uzycie: &c/g zapisz");
+                    return;
+                }
+                if (g == null) {
+                    p.sendMessage("&4Blad: &cNie posiadasz gidlii!");
+                    return;
+                }
+                if (!g.isLeader(p.getName())) {
+                    p.sendMessage("&4Blad: &cNie jestes zalozycielem gildii!");
+                    return;
+                }
+                if (g.isZapisana()) {
+                    p.sendMessage("&4Blad: &cTwoja gildia jest juz zapisana!");
+                    return;
+                }
+                SpigotPlugin.getMySQL().update("INSERT INTO `{P}savedGuilds` (`tag`) VALUES ('" + g.getTag() + "')");
+                g.setZapisana(true);
+                p.sendMessage("&aTwoja gildia zostala zapisana");
+                return;
             }
             case "wojna": {
                 Guild g = GuildManager.getGuild(p);
@@ -522,7 +562,7 @@ public class GuildCommand extends PlayerCommand {
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -592,7 +632,7 @@ public class GuildCommand extends PlayerCommand {
                     return;
                 }
                 if (g == null) {
-                    p.sendMessage(guild.PLAYERYOU_DONTHAVEAGUILD);
+                    p.sendMessage(guild.PLAYER_YOUDONTHAVEAGUILD);
                     return;
                 }
                 if (!g.isLeader(p.getName())) {
@@ -680,8 +720,8 @@ public class GuildCommand extends PlayerCommand {
             break;
         }
     }
-    private static boolean isValidLocation(Player player) {
-        Location location = player.getLocation();
+    private static boolean isValidLocation(final Player player) {
+        final Location location = player.getLocation();
         if (!checkSpawn(location)) {
             player.sendMessage("za blisko spawnu");
             return false;
@@ -697,10 +737,10 @@ public class GuildCommand extends PlayerCommand {
         return true;
     }
 
-    private static boolean checkGuild(Location location) {
-        int distance = 130;
-        for (Guild value : GuildManager.getGuilds().values()) {
-            Location valueLocation = LocationParser.parseStringToLocation(value.getCenter());
+    private static boolean checkGuild(final Location location) {
+        final int distance = 130;
+        for (final Guild value : GuildManager.getGuilds().values()) {
+            final Location valueLocation = LocationParser.parseStringToLocation(value.getCenter());
             if (Math.abs(valueLocation.getX() - location.getBlockX()) <= distance && Math.abs(valueLocation.getZ() - location.getBlockZ()) <= distance) {
                 return false;
             }
@@ -708,9 +748,9 @@ public class GuildCommand extends PlayerCommand {
         return true;
     }
 
-    private static boolean checkSpawn(Location location) {
-        int x = 0;
-        int z = 0;
+    private static boolean checkSpawn(final Location location) {
+        final int x = 0;
+        final int z = 0;
         return Math.abs(location.getBlockX() - x) >= 350 || Math.abs(location.getBlockZ() - z) >= 350;
     }
 }

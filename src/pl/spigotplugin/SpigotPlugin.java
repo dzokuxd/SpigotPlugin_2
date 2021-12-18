@@ -3,6 +3,7 @@ package pl.spigotplugin;
 import com.comphenix.protocol.ProtocolLibrary;
 import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -10,8 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.spigotplugin.api.*;
 import pl.spigotplugin.commands.admin.*;
 import pl.spigotplugin.commands.player.*;
-import pl.spigotplugin.commands.premium.IncognitoCommand;
-import pl.spigotplugin.commands.premium.RepairCommand;
+import pl.spigotplugin.commands.premium.*;
 import pl.spigotplugin.configs.*;
 import pl.spigotplugin.handler.CreateWorldHandler;
 import pl.spigotplugin.holder.ItemHolder;
@@ -62,7 +62,9 @@ public class SpigotPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.jebanyend("end"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         TopsManager.sortUser();
+        TopsManager.sortGuild();
         ItemHolder.init();
         initBukkitSettings();
 
@@ -79,10 +81,11 @@ public class SpigotPlugin extends JavaPlugin {
 
     private void initBukkitSettings() {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "timings on");
-        for (final World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             world.setStorm(false);
             world.setThundering(false);
             world.setTime(1000L);
+            world.setDifficulty(Difficulty.NORMAL);
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doFireTick", "false");
         }
@@ -90,6 +93,7 @@ public class SpigotPlugin extends JavaPlugin {
 
     @Override
     public void onDisable(){
+        Bukkit.getScheduler().cancelTasks(this);
         CitizensAPI.getNPCRegistry().deregisterAll();
         CombatManager.getFightMap().clear();
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -122,19 +126,27 @@ public class SpigotPlugin extends JavaPlugin {
         pm.registerEvents(new DamageShowListener(), this);
         pm.registerEvents(new EntityExplodeListener(), this);
         pm.registerEvents(new PlayerBucketFillListener(), this);
+        pm.registerEvents(new EnchantListener(), this);
+        pm.registerEvents(new ToggleListener(), this);
     }
     private void registerTasks() {
         new AutoMsgTask().runTaskTimerAsynchronously(this, 1200L, 1200L);
         new TurboTask().runTaskTimerAsynchronously(this, 20L, 20L);
         new CombatTask().runTaskTimer(this, 40L, 20L);
-        new TabUpdate().runTaskTimerAsynchronously(this, 40L, 20 * 10);
         new LiveTpsTask().runTaskTimerAsynchronously(this, 20L, 20L);
-        new CheckValidityTask().runTaskTimer(this, 20, 20);
+        new CheckValidityTask().runTaskTimer(this, 60, 1200);
         new BarTask().runTaskTimerAsynchronously(this, 20, 20);
-        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(), 1200, 1200);
+        new DiscoTask().runTaskTimerAsynchronously(this, 20, 1L);
+        this.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(), 120, 120);
     }
 
     private void registerCommands() {
+        registerCommand(new DiscoCommand());
+        registerCommand(new SpawnerCommand());
+        registerCommand(new ResetujRankingCommand());
+        registerCommand(new BlocksCommand());
+        registerCommand(new FocusCommand());
+        registerCommand(new EnderchestCommand());
         registerCommand(new SpawnBossCommand());
         registerCommand(new GenerateChestCommand());
         registerCommand(new ProfilCommand());
@@ -208,8 +220,6 @@ public class SpigotPlugin extends JavaPlugin {
         registerCommand(new SchowekCommand());
         registerCommand(new GroupCommand());
         registerCommand(new AchievementCommand());
-        registerCommand(new ShopCommand());
-        registerCommand(new PayCommand());
         registerCommand(new ManageCommand());
         registerCommand(new RankingCommand());
     }

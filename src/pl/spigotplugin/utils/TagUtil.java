@@ -5,6 +5,7 @@ import net.minecraft.server.v1_8_R3.Scoreboard;
 import net.minecraft.server.v1_8_R3.ScoreboardTeam;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.managers.GuildManager;
@@ -46,7 +47,11 @@ public class TagUtil {
             ScoreboardTeam team = scoreboard.getPlayerTeam(p.getName());
             team.setDisplayName("");
             Bukkit.getOnlinePlayers().forEach(player -> {
-                team.setPrefix(getValidPrefix(p, player));
+                String validPrefix = getValidPrefix(p, player);
+                if (validPrefix.length() > 16) {
+                    validPrefix = validPrefix.substring(0, 15);
+                }
+                team.setPrefix(validPrefix);
                 String suffix = "";
                 PermissionUser uu = PermissionsEx.getUser(p);
                 if (uu.inGroup("Prezes")) {
@@ -98,11 +103,9 @@ public class TagUtil {
             if (g.equals(o)) {
                 color = "&a";
                 chuj = true;
-                shouldAddQuestionMark = false;
             } else if (g.getAlly().contains(o.getTag())) {
                 color = "&9";
                 chuj = true;
-                shouldAddQuestionMark = false;
             }
         }
         String tag = "";
@@ -112,18 +115,26 @@ public class TagUtil {
         }
         String tag1234;
         if (!chuj && !send.hasPermission("spigotplugin.bypass")) {
-            tag1234 = ChatUtil.color("&k");
+            tag1234 = "&k";
         } else {
-            tag1234 = ChatUtil.color(tag);
+            tag1234 = tag;
         }
 
         if (shouldAddQuestionMark && !chuj) {
             if (!send.hasPermission("spigotplugin.bypass")) {
-                ChatUtil.color(tag1234 = "&8[&c?&8] &c&k ");
+               tag1234 = "&8[&c?&8] &c&k ";
             }
         }
 
-        return (u.isIncognito() ? ChatUtil.color(tag1234) : ChatUtil.color(tag));
+        ChatColor nameColor = ChatColor.WHITE;
+        if (u.focused.equals(send.getName())) {
+            nameColor = ChatColor.LIGHT_PURPLE;
+        }
+
+        get.sendMessage(nameColor.name());
+        get.sendMessage(u.focused);
+
+        return (u.isIncognito() ? ChatUtil.color(tag1234) + nameColor : ChatUtil.color(tag) + nameColor);
     }
 
     public static void removeBoard(Player p) {

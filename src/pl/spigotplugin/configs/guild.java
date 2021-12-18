@@ -18,47 +18,48 @@ public class guild {
     private static final File file = new File(SpigotPlugin.getPlugin().getDataFolder(), "guild.yml");
     private static FileConfiguration c = null;
 
-    public static String GUILDHELP_MESSAGE = "&7&m-------------&r&7[  &c&lKomendy gildii  &7]&7&m-------------"+
-            "\n&c/g zaloz <tag> <pelna_nazwa> &7- &6zalozenie gildii"+
-            "\n&c/g dolacz <tag/nazwa> &7- &6dolaczasz do gildii"+
-            "\n&c/g opusc &7- &6opuszczasz gildie"+
-            "\n&c/g dom &7- &6teleportacja do gildii"+
-            "\n&c/g odnow &7- &6oplaca gildie na 1 dni"+
-            "\n&c/g ustawdom &7- &6ustawia baze gildii"+
-            "\n&c/g wyrzuc <nick> &7- &6wyrzuca gracza z gildii"+
-            "\n&c/g zapros <nick/all> &7- &6zaprasza gracza do gildii"+
-            "\n&c/g lider <nick> &7- &6przekazuje wlasciciela gildii"+
-            "\n&c/g zastepca <nick> &7- &6zmienia zastepce gildii"+
-            "\n&c/g wojna &7- &6wywolywanie wojen gildyjnych"+
-            "\n&c/g pvp &7- &6wlacza/wylacza pvp w gildii"+
-            "\n&c/g pvp sojusz &7- &6wlacza/wylacza pvp w sojuszu"+
-            "\n&c/g zapisz &7- &6zapisuje gildie na event"+
-            "\n&c/gildia <gildia> &7- &6informacje o gildii"+
+    public static String GUILDHELP_MESSAGE = "&7&m-------------&r&7[  &d&lKomendy gildii  &7]&7&m-------------"+
+            "\n&d/g zaloz <tag> <pelna_nazwa> &7- &fzalozenie gildii"+
+            "\n&d/g dolacz <tag/nazwa> &7-&fdolaczasz do gildii"+
+            "\n&d/g opusc &7- &fopuszczasz gildie"+
+            "\n&d/g dom &7- &fteleportacja do gildii"+
+            "\n&d/g odnow &7- &foplaca gildie na 1 dni"+
+            "\n&d/g ustawdom &7- &fustawia baze gildii"+
+            "\n&d/g wyrzuc <nick> &7- &fwyrzuca gracza z gildii"+
+            "\n&d/g zapros <nick/all> &7- &fzaprasza gracza do gildii"+
+            "\n&d/g lider <nick> &7- &fprzekazuje wlasciciela gildii"+
+            "\n&d/g zastepca <nick> &7- &fzmienia zastepce gildii"+
+            "\n&d/g wojna &7- &fwywolywanie wojen gildyjnych"+
+            "\n&d/g pvp &7- &fwlacza/wylacza pvp w gildii"+
+            "\n&d/g pvp sojusz &7- &fwlacza/wylacza pvp w sojuszu"+
+            "\n&d/g zapisz &7- &fzapisuje gildie na event"+
+            "\n&d/gildia <gildia> &7- &finformacje o gildii"+
             "\n "+
-            "\n&c! &8- &6Wiadomosc do gildii"+
-            "\n&c!! &8- &6Wiadomosc do sojuszy"+
-            "\n&c@ &8- &6Wiadomosc o pomoc do gildii"+
-            "\n&7&m-------------&r&7[  &c&lKomendy gildii  &7]&7&m-------------";
+            "\n&d! &8- &fWiadomosc do gildii"+
+            "\n&d!! &8- &fWiadomosc do sojuszy"+
+            "\n&d@ &8- &fWiadomosc o pomoc do gildii"+
+            "\n&7&m-------------&r&7[  &d&lKomendy gildii  &7]&7&m-------------";
 
-    public static String PLAYER_ISOFFLINE = "Gracz jest offline";
-    public static String PLAYER_USERNULL = "gracza nie bylo nigdy na serwerze";
+    public static String PLAYER_ISOFFLINE = "&cGracz jest offline";
+    public static String PLAYER_USERNULL = "&cTaki gracz nigdy nie był na serwerze";
     public static String PLAYER_DONTHAVEAGUILD = "&cGracz nie jest w twojej gildii!";
-    public static String PLAYERYOU_DONTHAVEAGUILD = "Nie posiadasz gildii!";
-    public static String PLAYER_NOPERMISSION = "nie posiadasz permisji";
+    public static String PLAYER_YOUDONTHAVEAGUILD = "&cNie posiadasz gildii!";
+    public static String PLAYER_NOPERMISSION = "&cNie posiadasz permisji";
     public static ItemStack COST_HP = new ItemStack(Material.DIAMOND, 8);
     public static ItemStack COST_LIMIT = new ItemStack(Material.DIAMOND, 8);
     public static ItemStack COST_POWIEKSZ = new ItemStack(Material.DIAMOND, 8);
+    public static ItemStack COST_WITHER = new ItemStack(Material.DIAMOND, 8);
 
-    public static String CREATE_BROADCAST = "gildia {TAG} - {NAME} zostala zalozona przez {PLAYER}";
-    public static String CREATE_HAVEGUILD = "posiadasz juz gildie!";
-    public static String CREATE_WRONGTAGANDNAME = "tag gildi musi zawierac 2-5 zankow, nawzwa 4-32 znakow";
-    public static String CREATE_ALLREADYEXISTSBYSHORTCUT = "Istenieje juz gildia o takim tagu!";
-    public static String CREATE_ALLREADYEXISTSBYFULLNAME = "Istnieje juz gildia o takiej nazwie";
-    public static String CREATE_SHORTCUTNOTALPHANUMERIC = "Tag nie moze byc alfanumeryczny";
-    public static String CREATE_FULLNAMENOTALPHANUMERIC = "Nazwa nie moze byc alfanumeryczna";
-    public static String CREATE_TOCLOSESPAWN = "Gildie mozna zakladac 250 kratek od spawnu!";
-    public static String CREATE_TITLE = "zalozyles gildie {TAG}";
-    public static String CREATE_SUBTITLE = "gratulacje {PLAYER}";
+    public static String CREATE_BROADCAST = "&d{PLAYER} &fzalożył gildie &d{TAG} &f- &d{NAME}";
+    public static String CREATE_HAVEGUILD = "&cPosiadasz juz gildie!";
+    public static String CREATE_WRONGTAGANDNAME = "&cTag gildii musi zawierac &d2-5 &fznakow, nazwa &d4-32 &fznakow";
+    public static String CREATE_ALLREADYEXISTSBYSHORTCUT = "&cIstenieje juz gildia o takim tagu!";
+    public static String CREATE_ALLREADYEXISTSBYFULLNAME = "&cIstnieje juz gildia o takiej nazwie!";
+    public static String CREATE_SHORTCUTNOTALPHANUMERIC = "&cTag nie moze byc alfanumeryczny";
+    public static String CREATE_FULLNAMENOTALPHANUMERIC = "&cNazwa nie moze byc alfanumeryczna";
+    public static String CREATE_TOCLOSESPAWN = "&cGildie mozna zakladac 250 kratek od spawnu!";
+    public static String CREATE_TITLE = "&fZalożyleś gildie &d{TAG}";
+    public static String CREATE_SUBTITLE = "&fGratulacje &d{PLAYER}";
     public static List<ItemStack> CREATE_COST = Arrays.asList(
             new ItemStack(Material.DIAMOND, 64),
             new ItemStack(Material.GOLDEN_APPLE, 64),
@@ -71,22 +72,22 @@ public class guild {
             new ItemStack(Material.HAY_BLOCK, 64)
     );
 
-    public static String INVITE_TARGET1 = "zostales zaproszony do gildii {TAG} przez {PLAYER}";
-    public static String INVITE_TARGET2 = "wpisz /g dolacz {TAG}, aby dolaczyc do gildii!";
-    public static String INVITE_GROUPMESSAGE = "Brak ludzi dookola ciebie w promieniu 5 kratek";
-    public static String INVITE_GROUPERROR = "Jedna osoba posiada juz zaproszenie";
-    public static String INVITE_COFNIETE1 = "zaproszenie do gildi {TAG} zostalo cofniete przez {PLAYER}";
-    public static String INVITE_COFNIETE2 = "Cofnales zaproszenie do gildii dla gracza {TARGET}";
+    public static String INVITE_TARGET1 = "&fZostales zaproszony do gildii &d{TAG} &fprzez &d{PLAYER}";
+    public static String INVITE_TARGET2 = "&fwpisz &d/g dolacz {TAG}&f, aby dolaczyc do gildii!";
+    public static String INVITE_GROUPMESSAGE = "&cBrak ludzi dookola ciebie w promieniu 5 kratek";
+    public static String INVITE_GROUPERROR = "&cJedna osoba posiada juz zaproszenie";
+    public static String INVITE_COFNIETE1 = "&fZaproszenie do gildi &d{TAG} &fzostalo &ccofniete &fprzez &d{PLAYER}";
+    public static String INVITE_COFNIETE2 = "&fCofnales zaproszenie do gildii dla gracza &d{TARGET}";
     public static ItemStack INVITE_COST = new ItemStack(Material.DIAMOND, 8);
 
     public static String JOIN_GUILDNOTFOUND = "&cGildia o takim tagu nie istnieje!";
-    public static String JOIN_NOTINVITED = "&6Nie posiadasz zaproszenia do gildii &c{TAG}";
+    public static String JOIN_NOTINVITED = "&cNie posiadasz zaproszenia do gildii {TAG}";
     public static String JOIN_HAVEMAXPLAYERS = "&cGildia do ktorej chcesz dolaczyc posiada maksymalna liczbe czlonkow!";
-    public static String JOIN_BROADCAST = "&6Gracz &c{PLAYER} &6dolaczyl do gildii &7{TAG}";
+    public static String JOIN_BROADCAST = "&fGracz &d{PLAYER} &fdolaczyl do gildii &c{TAG}";
     public static String JOIN_TELEPORT = "&cNie mozesz teleportowac sie na terenie wrogiej gildii!";
 
-    public static String FRIENDLYFIRE_GUILD = "gracz {PLAYER} {GUILDSTATE} pvp w gildii";
-    public static String FRIENDLYFIRE_ALLY = "gracz {PLAYER} {ALLYSTATE} pvp w sojuszu";
+    public static String FRIENDLYFIRE_GUILD = "&f{PLAYER} {GUILDSTATE} &fpvp w gildi";
+    public static String FRIENDLYFIRE_ALLY = "&f{PLAYER} {ALLYSTATE} &fpvp w sojuszu";
 
     public static String REGEN_BLOCKS = "&cGildia nie posiada zadnych blokow do regeneracji!";
     public static String REGEN_TNTBETWEEN = "&cGildie mozesz regenerowac gdy TNT jest wylaczone";
@@ -96,52 +97,52 @@ public class guild {
     public static String WAR_ALLY = "&cNie mozesz wyzywac sojuszy do wojny!";
     public static String WAR_BETWEEN = "&cWojny mozesz wywolywac tylko gdy tnt jest wylaczone!";
     public static String WAR_ISSET = "&cTwoja gildia posiada juz wojne z {TARGETGUILD}";
-    public static String WAR_BROADCAST = "gildia {TAG} wyzwala gildie {TARGETGUILD} na wojne";
-    public static String WAR_TITLE = "&c&lWOJNY";
-    public static String WAR_SUBTITLE = "&6Wywolales wojne z gildia &c{TARGETGUILD}";
+    public static String WAR_BROADCAST = "&fGildia &d{TAG} &fwyzwala gildie &d{TARGETGUILD} &fna wojne";
+    public static String WAR_TITLE = "&d&lWOJNY";
+    public static String WAR_SUBTITLE = "&fWywolales wojne z gildia &d{TARGETGUILD}";
 
     public static String ALLY_MYGUILD = "&cNie mozesz zawrzec sojuszu z wlasna gildia!";
     public static String ALLY_NOTALLY = "&cNie posiadasz sojuszu z gildia {TARGETGUILD}";
-    public static String ALLY_BREAKBROADCAST = "gildia {TAG} &6zerwala sojusz z gildia {TARGETGUILD}";
-    public static String ALLY_SUCCESS = "gildia {TAG} &6zawarla sojusz z gildia {TARGETGUILD}";
-    public static String ALLY_ALLREADYALLY = "&cGildia posiada juz sojusz z  {TARGETGUILD}";
-    public static String ALLY_CHUJ = "&6Zaproszenie do sojuszu z gildia {TARGETGUILD} &6zostalo cofniete!";
-    public static String ALLY_CHUJ1 = "gildia {TAG} &6cofnela zaproszenie do sojuszu!";
-    public static String ALLY_MAX = "gildia {TAG} &6cofnela zaproszenie do sojuszu!";
-    public static String ALLY_INVITED = "&6Wyslales zaproszenie do sojuszu z gildia {TARGETGUILD}";
+    public static String ALLY_BREAKBROADCAST = "&fGildia &d{TAG} &fzerwala sojusz z gildia &d{TARGETGUILD}";
+    public static String ALLY_SUCCESS = "&fgildia &d{TAG} &fzawarla sojusz z gildia &d{TARGETGUILD}";
+    public static String ALLY_ALLREADYALLY = "&cGildia posiada juz sojusz z {TARGETGUILD}";
+    public static String ALLY_CHUJ = "&cZaproszenie do sojuszu z gildia {TARGETGUILD} zostalo cofniete!";
+    public static String ALLY_CHUJ1 = "&cGildia {TAG} cofnela zaproszenie do sojuszu!";
+    public static String ALLY_MAX = "&cTwoja gildia posiada max limit sojuszu";
+    public static String ALLY_INVITED = "&fWyslales zaproszenie do sojuszu z gildia &d{TARGETGUILD}";
     public static String ALLY_LEADER = "&cLider gildii {LEADER} jest offline!";
-    public static String ALLY_MESSAGETOMEMBERS1 = "&6Twoja gildia otrzymala zaproszenie dosojuszu z gildia {TAG}";
-    public static String ALLY_MESSAGETOMEMBERS2 = "&6Wpisz &c/g sojusz zawrzyj {TAG} &6, aby zaakceptowac!";
+    public static String ALLY_MESSAGETOMEMBERS1 = "&fTwoja gildia otrzymala zaproszenie dosojuszu z gildia &d{TAG}";
+    public static String ALLY_MESSAGETOMEMBERS2 = "&fWpisz &d/g sojusz zawrzyj {TAG} &f, aby zaakceptowac!";
     public static ItemStack ALLY_COST = new ItemStack(Material.DIAMOND, 8);
 
-    public static String LEAVE_BROADCAST = "gracz {PLAYER} opuscil gildie {TAG}";
+    public static String LEAVE_BROADCAST = "&fGracz &d{PLAYER} &fopuscil gildie &d{TAG}";
 
-    public static String LIDER_BROADCAST = "gracz {TARGET} zostal nowym liderem gildii {TAG}";
-    public static ItemStack LEADER_COST = new ItemStack(Material.DIAMOND, 8);
+    public static String LIDER_BROADCAST = "&fGracz &d{TARGET} &fzostal nowym liderem gildii &d{TAG}";
+    public static ItemStack LIDER_COST = new ItemStack(Material.DIAMOND, 8);
 
-    public static String DEPUTY_CHANGE = "gracz {TARGET} zostal nowym zastepca gildii {TAG}";
-    public static String DEPUTY_BROADCAST = "gracz {TARGET} nie jest juz zastepca gildii {TAG}";
+    public static String DEPUTY_CHANGE = "&fGracz &d{TARGET} &fzostal nowym zastepca gildii &d{TAG}";
+    public static String DEPUTY_BROADCAST = "&fGracz &d{TARGET} &fnie jest juz zastepca gildii &d{TAG}";
     public static ItemStack DEPUTY_COST = new ItemStack(Material.DIAMOND, 8);
 
     public static String RENEW_MAX = "&cGildia jest przedluzona na maksymalny okres";
-    public static String RENEW_SEND = "&6Przedluzylesz waznosc gildii o &c{RENEWADD}";
+    public static String RENEW_SEND = "&fPrzedluzylesz waznosc gildii o &d{RENEWADD}";
     public static int RENEW_ADD = 1;
     public static ItemStack RENEW_COST = new ItemStack(Material.DIAMOND, 8);
 
     public static String SETHOME_WRONGTERRAIN = "&cBaze gildii mozesz ustawic tylko na terenie gildii!";
     public static String SETHOME_SUCCESS = "&aUstawiles baze gildii!";
 
-    public static String KICK_BROADCAST = "{TARGET} zostal wyjebany z gildii {TAG}";
-    public static String KICK_CANTKICKLEADER = "Nie mozesz wyrzuci zalozyciela";
-    public static String KICK_NOTINYOURGUILD = "Gracz nie jest w twojej gildii!";
-    public static String KICK_SAMEGOSIEBIE = "Nie mozesz wyrzucic samego siebie!";
+    public static String KICK_BROADCAST = "&fGracz &d{TARGET} &fzostal wyrzucony z gildii &d{TAG}";
+    public static String KICK_CANTKICKLEADER = "&cNie mozesz wyrzucic zalozyciela";
+    public static String KICK_NOTINYOURGUILD = "&cGracz nie jest w twojej gildii!";
+    public static String KICK_SAMEGOSIEBIE = "&cNie mozesz wyrzucic samego siebie!";
 
-    public static String DELETE_GUILD = "&6Potwierdz usuniecie gildii: &c/g usun <{CODE}>";
+    public static String DELETE_GUILD = "&fPotwierdz usuniecie gildii: &d/g usun <{CODE}>";
     public static String DELETE_INVAILDCODE = "&cPodales zly kod";
-    public static String DELETE_USAGECODE = "&6Prawidlowe uzycie: &c/g usun <kod>";
-    public static String DELETE_BROADCAST = "gracz {PLAYER} rozwiazal gildie [{TAG}] - [{NAME}]";
+    public static String DELETE_USAGECODE = "&cPrawidlowe uzycie: /g usun <kod>";
+    public static String DELETE_BROADCAST = "&fGracz &d{PLAYER} &frozwiazal gildie &d{TAG} &f- &d{NAME}";
     public static String DELETE_TITLE = "&cUsunales gildie: {TAG}";
-    public static String DELETE_SUBTITLE = "Gratulacje {PLAYER}";
+    public static String DELETE_SUBTITLE = "&cSzkoda {PLAYER}";
 
     public static int CUBOID_TNT_OD = 11;
     public static int CUBOID_TNT_DO = 22;

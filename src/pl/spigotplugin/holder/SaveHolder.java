@@ -11,8 +11,6 @@ public class SaveHolder {
 
     public static final Map<String, Guild> GUILDS = new ConcurrentHashMap<>();
 
-    public static final Map<String, GuildWar> GUILDSWAR = new ConcurrentHashMap<>();
-
     public static final Map<String, User> USERS = new ConcurrentHashMap<>();
 
 }

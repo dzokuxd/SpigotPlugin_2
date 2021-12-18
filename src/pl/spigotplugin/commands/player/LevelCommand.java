@@ -22,15 +22,15 @@ public class LevelCommand extends PlayerCommand {
         }
         int wzor = (u.getLvl() * 100 * u.getLvl()) - u.getExp();
         if (u.getName().equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&7&m------&r &cTwoje Statystyki &7&m------&r");
-            p.sendMessage("&7\u00bb &6Aktualnie posiadasz &c" + u.getExp() + " &6pkt czyli &c" + u.getLvl() + " &6poziom!");
-            p.sendMessage("&7\u00bb &6Do nastepnego poziomu brakuje Ci: &c" + wzor);
-            p.sendMessage("&7&m------&r &cTwoje Statystyki &7&m------&r");
+            p.sendMessage("&7&m------&r &fTwoje Statystyki &7&m------&r");
+            p.sendMessage("&7\u00bb &fAktualnie posiadasz &d" + u.getExp() + " &fpkt czyli &d" + u.getLvl() + " &fpoziom!");
+            p.sendMessage("&7\u00bb &fDo nastepnego poziomu brakuje Ci: &d" + wzor);
+            p.sendMessage("&7&m------&r &fTwoje Statystyki &7&m------&r");
         } else {
-            p.sendMessage("&7&m------&r &cStatystyki Gracza &c" + u.getName() + " &7&m------&r");
-            p.sendMessage("&7\u00bb &6Aktualnie posiada &c" + u.getExp() + " &6pkt czyli &c" + u.getLvl() + " &6poziom!");
-            p.sendMessage("&7\u00bb &6Do nastepnego poziomu brakuje mu &c" + wzor);
-            p.sendMessage("&7&m------&r &cStatystyki Gracza &c" + u.getName() + " &7&m------&r");
+            p.sendMessage("&7&m------&r &fStatystyki &c" + u.getName() + " &7&m------&r");
+            p.sendMessage("&7\u00bb &fAktualnie posiada &d" + u.getExp() + " &fpkt czyli &d" + u.getLvl() + " &fpoziom!");
+            p.sendMessage("&7\u00bb &fDo nastepnego poziomu brakuje mu &d" + wzor);
+            p.sendMessage("&7&m------&r &fStatystyki &c" + u.getName() + " &7&m------&r");
         }
     }
 }

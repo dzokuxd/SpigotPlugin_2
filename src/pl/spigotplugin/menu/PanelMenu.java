@@ -58,7 +58,7 @@ public class PanelMenu {
                 Material.SKULL_ITEM,1,(short) 1)
                 .setTitle("&7&lWither")
                 .addLore("&6Zabij go aby otrzymac Netherowa Gwiazde")
-                .addLore("&6Potrzebujesz: &cx32GOLDEN_HEAD&7, &cx32KOX")
+                .addLore("&6Potrzebujesz: &c"+guild.COST_WITHER.getType()+"x"+guild.COST_WITHER.getAmount())
                 .addLore("")
                 .addLore("&7Kliknij, aby zrespic withera!").build();
         ItemStack hp = new ItemBuilder(

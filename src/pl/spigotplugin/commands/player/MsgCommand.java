@@ -34,7 +34,7 @@ public class MsgCommand extends PlayerCommand {
 
     @Override
     public void onCommand(Player p, String[] args) {
-        if (args.length != 1) {
+        if (args.length < 2) {
             core.usage(p, getUsage());
             return;
         }
@@ -70,7 +70,7 @@ public class MsgCommand extends PlayerCommand {
         MsgCommand.lastMsg.put(p.getUniqueId(), o.getUniqueId());
         MsgCommand.lastMsg.put(o.getUniqueId(), p.getUniqueId());
         MsgCommand.times.put(p.getUniqueId(), System.currentTimeMillis());
-        p.sendMessage("&9Ja → " + o.getName() + "&9: &7" + message);
-        ChatUtil.sendHoverMessageCommand(o, "&9" + p.getName() + " → Ja: &7" + message, "&8(&fKliknij, aby odpisac&8)", "/msg " + p.getName());
+        p.sendMessage("&9Ja \u00BB " + o.getName() + "&9:" + message);
+        ChatUtil.sendHoverMessageCommand(o, "&9" + p.getName() + " \u00BB Ja: &9" + message, "&8(&fKliknij, aby odpisac&8)", "/msg " + p.getName());
     }
 }

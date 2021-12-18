@@ -13,7 +13,7 @@ public class CobblexCommand extends PlayerCommand {
     public void onCommand(Player p, String[] args) {
         ItemStack item = Settings.cobblexItem.clone();
         if (!p.getInventory().containsAtLeast(new ItemStack(Material.COBBLESTONE),64 * 9)) {
-            p.sendMessage("&6Nie posiadasz &c9*64 &6cobblestone");
+            p.sendMessage("&fNie posiadasz &d9*64 cobblestone");
             return;
         }
         p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE,64 * 9));

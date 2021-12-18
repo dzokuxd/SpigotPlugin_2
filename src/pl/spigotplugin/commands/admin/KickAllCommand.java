@@ -10,7 +10,7 @@ import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class KickAllCommand extends Command {
-    public KickAllCommand() { super("kickall", "/kickall powod", "spigot.kickall"); }
+    public KickAllCommand() { super("kickall", "kickall powod", "spigot.kickall"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {

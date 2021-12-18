@@ -4,6 +4,7 @@ import io.netty.util.internal.ConcurrentSet;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,13 +28,13 @@ import java.util.Set;
 public class BlockBreakListener implements Listener {
     public static Set<Player> playerSet = new ConcurrentSet<>();
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Player p = e.getPlayer();
         Block b = e.getBlock();
         User u = UserManager.getUser(p);
         Guild g = GuildManager.getGuild(b.getLocation());
-        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp")) {
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("gtp") && p.getWorld().getName().equals("end")) {
             e.setCancelled(true);
             p.sendMessage("&cNie mozesz niszczyc na tym swiecie!");
             return;
@@ -50,6 +51,9 @@ public class BlockBreakListener implements Listener {
         if (playerSet.contains(p)) {
             if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COBBLESTONE) {
                 int amount = ItemUtil.getamount(Material.COBBLESTONE, p, (short) 0);
+                if (!p.getInventory().containsAtLeast(new ItemStack(Material.COBBLESTONE),64 * 9)) {
+                    return;
+                }
                 if (amount > 64 * 9) {
                     p.getInventory().removeItem(new ItemStack(Material.COBBLESTONE, 64 * 9));
                     p.getInventory().addItem(Settings.cobblexItem);
@@ -101,29 +105,35 @@ public class BlockBreakListener implements Listener {
                 return;
             }
         }
-        if (b.getType() == Material.STONE) {
-            b.setData((byte) 3);
-            Block bb = b.getLocation().subtract(0, 1, 0).getBlock();
-            if (bb.getType() == Material.ENDER_STONE) {
-                new BukkitRunnable() {
-                    public void run() {
-                        if (g != null) {
-                            if (g.getLastExplodeTime() > System.currentTimeMillis()) {
-                                return;
+        if (p.getGameMode().equals(GameMode.SURVIVAL) && p.getWorld().getName().equals("world")) {
+            if (b.getType() == Material.STONE) {
+                b.setData((byte) 3);
+                Block bb = b.getLocation().subtract(0, 1, 0).getBlock();
+                if (bb.getType() == Material.ENDER_STONE) {
+                    new BukkitRunnable() {
+                        public void run() {
+                            if (g != null) {
+                                if (g.getLastExplodeTime() > System.currentTimeMillis()) {
+                                    return;
+                                }
+                                if (!CombatManager.isFighting(p)) {
+                                    return;
+                                }
                             }
-                            if (CombatManager.isFighting(p)) {
-                                return;
-                            }
+                            b.setType(Material.STONE);
+                            b.setData((byte) 3);
                         }
-                        b.setType(Material.STONE);
-                        b.setData((byte) 3);
-                    }
-                }.runTaskLater(SpigotPlugin.getPlugin(), 25L);
-                return;
+                    }.runTaskLater(SpigotPlugin.getPlugin(), 25L);
+                    return;
+                }
             }
+        }
+        if (!p.getGameMode().equals(GameMode.SURVIVAL)) {
+            return;
         }
         int exp = DropManager.getExp(b.getType(), p);
         p.giveExp(exp);
+        p.playSound(p.getLocation(), Sound.ORB_PICKUP, 0.5f, (float)(Math.random() * 20.0) / 10.0f);
         DropManager.getDropData(b.getType()).breakBlock(b, p, p.getItemInHand());
         e.setCancelled(true);
     }

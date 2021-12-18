@@ -49,7 +49,7 @@ public class Guild {
     private final Set<UUID> invites = ConcurrentHashMap.newKeySet();
     private Set<String> members = ConcurrentHashMap.newKeySet();
     private Set<GuildWar> wars = ConcurrentHashMap.newKeySet();
-
+    private boolean zapisana;
     public String deleteCode = "";
 
     public Guild(ResultSet rs) throws SQLException {
@@ -68,6 +68,7 @@ public class Guild {
         this.gold = rs.getInt("gold");
         this.regen = rs.getString("regen");
         this.hpLastAttack = rs.getLong("hpLastAttack");
+        this.zapisana = false;
 
         this.region = JSONHelper.GSON.fromJson(rs.getString("region"), Region.class);
         this.members = JSONHelper.GSON.fromJson(rs.getString("members"), new TypeToken<Set<String>>(){}.getType());
@@ -83,6 +84,7 @@ public class Guild {
         this.home = home;
         this.members.add(leader.getName());
         this.lastExplodeTime = 0L;
+        this.zapisana = false;
 
         this.prolong = System.currentTimeMillis() + TimeUtil.DAY.getTime(guild.CUBOID_PROLONG_START);
         this.region = new Region(home, 20);
@@ -243,6 +245,12 @@ public class Guild {
     public void setLife(int life) {
         this.life = life;
         putForSave();
+    }
+    public boolean isZapisana() {
+        return zapisana;
+    }
+    public void setZapisana(boolean zapisana) {
+        this.zapisana = zapisana;
     }
 
     public long getHpLastAttack() {

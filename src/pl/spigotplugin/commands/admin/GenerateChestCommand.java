@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.RandomUtil;
 
 public class GenerateChestCommand extends PlayerCommand {
@@ -14,7 +15,7 @@ public class GenerateChestCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            p.sendMessage("&c/generatechest <ilosc>");
+            core.usage(p, getUsage());
             return;
         }
         int i;

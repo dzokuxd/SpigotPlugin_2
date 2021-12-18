@@ -2,6 +2,7 @@ package pl.spigotplugin.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -22,6 +23,8 @@ import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.enums.AchievmentType;
 import pl.spigotplugin.enums.AchievmentTypeName;
+import pl.spigotplugin.enums.ArmorType;
+import pl.spigotplugin.managers.DataManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.*;
@@ -764,8 +767,8 @@ public class InventoryListener implements Listener {
 
                 String name = e.getInventory().getName().replace("Grupa dla: ", "");
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
-                TagUtil.updateBoard(p);
                 p.sendMessage("&fNadales grupe &d"+groupToGive+ " &fdla gracz &d"+name);
+                TagUtil.updateBoard(p);
             }
             return;
         }
@@ -781,6 +784,43 @@ public class InventoryListener implements Listener {
                 return;
             }
             return;
+        }
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lDisco"))) {
+            e.setCancelled(true);
+            if (e.getSlot() == 10) {
+                DataManager.getDisco().put(p.getName(), ArmorType.GRAY);
+                DataManager.getLastColor().put(p.getName(), Color.fromRGB(255, 0, 0));
+                p.sendMessage("&6Zmieniono tryb disco zbroi na GRAY");
+                p.closeInventory();
+                return;
+            }
+            if (e.getSlot() == 12) {
+                DataManager.getDisco().put(p.getName(), ArmorType.RANDOM);
+                p.sendMessage("&6Zmieniono tryb disco zbroi na RANDOM");
+                p.closeInventory();
+                return;
+            }
+            if (e.getSlot() == 14) {
+                DataManager.getDisco().put(p.getName(), ArmorType.SMOOTH);
+                DataManager.getLastColor().put(p.getName(), Color.fromRGB(255, 0, 0));
+                p.sendMessage("&6Zmieniono tryb disco zbroi na SMOOTH");
+                p.closeInventory();
+                return;
+            }
+            if (e.getSlot() == 16) {
+                DataManager.getDisco().put(p.getName(), ArmorType.ULTRA);
+                p.sendMessage("&6Zmieniono tryb disco zbroi na ULTRA");
+                p.closeInventory();
+                return;
+            }
+            if (e.getSlot() == 22) {
+                DataManager.getDisco().remove(p.getName());
+                DataManager.getLastColor().remove(p.getName());
+                DataManager.getShiftArmor().remove(p.getName());
+                p.sendMessage("&6Wylaczono disco zbroje");
+                p.closeInventory();
+                return;
+            }
         }
         if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lPanel"))) {
             e.setCancelled(true);
@@ -868,8 +908,9 @@ public class InventoryListener implements Listener {
                 return;
             }
             if (e.getSlot() == 13){
-                if (!p.getInventory().containsAtLeast(new ItemStack(Material.SKULL_ITEM, 1, (short) 3), 32) && !p.getInventory().containsAtLeast(new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1), 32)) {
-                    p.sendMessage("&cNie posiadasz 32 Glow i 32 Blokow Zlota!");
+                ItemStack costWither = guild.COST_WITHER;
+                if (!p.getInventory().containsAtLeast(costWither, costWither.getAmount())) {
+                    p.sendMessage("&cNie posiadasz "+costWither.getType()+"x"+costWither.getAmount());
                     return;
                 }
                 Guild gl = GuildManager.getGuild(p.getLocation());
@@ -881,14 +922,8 @@ public class InventoryListener implements Listener {
                     p.sendMessage("&cWithera mozesz zrepisc na terenie gildii swojej!");
                     return;
                 }
-                p.getInventory().removeItem(new ItemStack(Material.SKULL_ITEM, 32, (short) 3));
-                p.getInventory().removeItem(new ItemStack(Material.GOLDEN_APPLE, 32, (short) 1));
-
-                Entity wither = p.getWorld().spawnEntity(p.getLocation(), EntityType.WITHER);
-                wither.setCustomName(ChatUtil.color("&e~ WITHER ~"));
-                wither.setCustomNameVisible(true);
-                wither.getWorld().setGameRuleValue("mobGriefing", "false");
-                wither.setMetadata("mwqxMaDuzego", new FixedMetadataValue(SpigotPlugin.getPlugin(), "mwqxMaDuzego"));
+                p.getInventory().removeItem(guild.COST_WITHER);
+                BossUtil.spawnWither(p.getLocation(), "&e~ WITHER ~", 1200);
                 Bukkit.broadcastMessage("&fGildia &d"+g.getTag()+ "&f- &d"+g.getName()+ " &fprzywolala witchera! Gratulacje");
                 return;
             }
@@ -911,7 +946,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 p.getInventory().removeItem(guild.COST_HP);
-                g.setHp(100);
+                g.setHp(50);
                 Bukkit.broadcastMessage("&7[&c" + g.getTag() + "&7] &c" + g.getName() + " &6zakupila odnowienie &chp");
                 p.sendMessage("&aOdnowiles hp gildyjne");
                 PanelMenu.show(p,g);
@@ -1154,6 +1189,13 @@ public class InventoryListener implements Listener {
                 statues.saveLang();
                 ManageMenu.openMenu(p);
                 Bukkit.broadcastMessage("&6Teleportowanie na spawna zostalo "+(statues.MANAGE_SPAWN ? "&aWlaczone":"&cWylaczone"));
+                return;
+            }
+            if(e.getSlot()==9){
+                statues.MANAGE_ENCHANT = !statues.MANAGE_ENCHANT;
+                statues.saveLang();
+                ManageMenu.openMenu(p);
+                Bukkit.broadcastMessage("&6Enchantowanie przedmiotow zostalo "+(statues.MANAGE_ENCHANT ? "&aWlaczone":"&cWylaczone"));
                 return;
             }
             return;

@@ -42,13 +42,16 @@ public class ManageMenu {
         ItemStack spawn = new ItemBuilder(Material.EYE_OF_ENDER).setTitle(ChatUtil.color("&7&lSpawn"))
                 .addLore(ChatUtil.color("&6Status: "+(statues.MANAGE_SPAWN ? "&aon":"&coff")))
                 .addLore(ChatUtil.color("&7Kliknij, aby przelaczyc!")).setGlow(statues.MANAGE_SPAWN).build();
+        ItemStack enchant = new ItemBuilder(Material.ENCHANTMENT_TABLE).setTitle(ChatUtil.color("&7&lEnchant"))
+                .addLore(ChatUtil.color("&6Status: "+(statues.MANAGE_ENCHANT ? "&aon":"&coff")))
+                .addLore(ChatUtil.color("&7Kliknij, aby przelaczyc!")).setGlow(statues.MANAGE_ENCHANT).build();
         ItemStack gc = new ItemBuilder(Material.WATCH).setTitle(ChatUtil.color("&7&lGC"))
                 .addLore(ChatUtil.color("&7\u00bb &6Online serwer: &c")+ DataUtil.secondsToString((System.currentTimeMillis() - ManagementFactory.getRuntimeMXBean().getStartTime())))
                 .addLore(ChatUtil.color("&7\u00bb &6Max RAM: &c")+ Runtime.getRuntime().maxMemory() / 1024L / 1024L + "MB")
                 .addLore(ChatUtil.color("&7\u00bb &6Total RAM: &c")+ Runtime.getRuntime().totalMemory() / 1024L / 1024L + "MB")
                 .addLore(ChatUtil.color("&7\u00bb &6Free RAM: &c")+ Runtime.getRuntime().freeMemory() / 1024L / 1024L + "MB")
                 .addLore(ChatUtil.color("")).build();
-        inventory.addItem(gildie,kit,diamond,panel,shop,beacon,head,tpa,spawn,gc);
+        inventory.addItem(gildie,kit,diamond,panel,shop,beacon,head,tpa,spawn,enchant,gc);
         p.openInventory(inventory);
     }
 }

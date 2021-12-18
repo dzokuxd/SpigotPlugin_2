@@ -4,9 +4,11 @@ import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.util.regex.Pattern;
@@ -79,6 +81,44 @@ public class ChatUtil {
     public static double xD(double value, int decimals) {
         double p = Math.pow(10, decimals);
         return Math.round(value * p) / p;
+    }
+    public static int getAmount(final Player arg0, final ItemStack arg1) {
+        if (arg1 == null) {
+            return 0;
+        }
+        int amount = 0;
+        for (int i = 0; i < 36; ++i) {
+            final ItemStack slot = arg0.getInventory().getItem(i);
+            if (slot != null && slot.isSimilar(arg1)) {
+                amount += slot.getAmount();
+            }
+        }
+        return amount;
+    }
+    public static void replace(final Player p, final Material toReplace, final Material block) {
+        if (p.getInventory().containsAtLeast(new ItemStack(toReplace), 9)) {
+            final double amount = getAmount(p, new ItemStack(toReplace));
+            p.getInventory().removeItem(new ItemStack(toReplace, getAmount(p, new ItemStack(toReplace))));
+            final double wynik = amount / 9.0;
+            final String tekst = Double.toString(wynik);
+            final String[] tekstArray = tekst.split("\\.");
+            final int bloki = Integer.parseInt(tekstArray[0]);
+            p.getInventory().addItem(new ItemStack(block, bloki));
+            double pi;
+            pi = Double.parseDouble(tekstArray[1]);
+            pi *= 100.0;
+            pi = (double) Math.round(pi);
+            pi /= 100.0;
+            if (first_digit(pi) != 0) {
+                p.getInventory().addItem(new ItemStack(toReplace, first_digit(pi)));
+            }
+        }
+    }
+    public static int first_digit(double n) {
+        while (n > 10.0) {
+            n /= 10.0;
+        }
+        return (int)n;
     }
 
     public static boolean isAlphaNumeric(String s) {

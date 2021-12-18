@@ -2,17 +2,21 @@ package pl.spigotplugin.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
 import pl.spigotplugin.managers.CombatManager;
+import pl.spigotplugin.managers.DataManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.objects.guild.Fight;
 import pl.spigotplugin.objects.guild.Guild;
@@ -128,6 +132,21 @@ public class EnityDamageListener implements Listener {
             ItemUtil.giveItems(killer, new ItemStack(Material.DRAGON_EGG, 1));
             killer.giveExp(e.getDroppedExp());
             Bukkit.broadcastMessage(core.DRAGON_BROADCAST.replace("{PLAYER}",killer.getName()));
+        }
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        Player player = null;
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        player = (Player)entity;
+        if (player.isSneaking() && DataManager.getShiftArmor().containsKey(player.getName())) {
+            ItemStack[] armor = DataManager.getShiftArmor().get(player.getName());
+            DataManager.getShiftArmor().remove(player.getName());
+            player.getInventory().setArmorContents(armor);
+            player.updateInventory();
         }
     }
 }

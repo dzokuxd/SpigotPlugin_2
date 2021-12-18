@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class DataUtil {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy, HH:mm:ss");
-    private static final SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat timeFormat= new SimpleDateFormat("HH:mm");
     private static final Map<Integer, String> values = new LinkedHashMap<>(6);
 
     static {

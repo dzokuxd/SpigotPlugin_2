@@ -8,12 +8,12 @@ import java.util.List;
 
 public class TabManager {
     public static String getReplacementR(Integer i) {
-        if (TopsManager.kills.size() >= i) {
+        if (TopsManager.points.size() >= i) {
             String s = "&7" + i + ". &d";
             if (i > 9) {
                 s = "&7" + i + ". &d";
             }
-            return s + TopsManager.kills.get(i - 1).getName();
+            return s + TopsManager.points.get(i - 1).getName();
         }
         return "";
     }

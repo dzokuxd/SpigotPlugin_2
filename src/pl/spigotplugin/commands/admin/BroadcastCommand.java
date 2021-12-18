@@ -9,7 +9,7 @@ import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BroadcastCommand extends Command {
-    public BroadcastCommand() { super("broadcast", "broadcast chat/title text", "spigot.broadcast", "bc");
+    public BroadcastCommand() { super("broadcast", "broadcast <chat/title> <text>", "spigot.broadcast", "bc");
     }
 
     @Override

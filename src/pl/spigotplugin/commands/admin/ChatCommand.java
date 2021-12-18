@@ -10,7 +10,7 @@ import pl.spigotplugin.utils.ChatUtil;
 
 public class ChatCommand extends Command {
     public ChatCommand() {
-        super("chat", "chat <cc|on|off|level|vip|slow>", "spigot.chat");
+        super("chat", "chat <cc/on/off/lvl/vip/slow>", "spigot.chat");
     }
 
     @Override

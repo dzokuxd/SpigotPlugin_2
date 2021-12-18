@@ -10,7 +10,7 @@ import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class KickCommand extends Command {
-    public KickCommand() { super("kick", "/kick <gracz> [powod]", "spigot.kick"); }
+    public KickCommand() { super("kick", "kick <gracz> [powod]", "spigot.kick"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {

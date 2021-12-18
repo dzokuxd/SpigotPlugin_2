@@ -78,14 +78,13 @@ public class GuildManager {
     public static Guild createGuild(String tag, String name, Player owner, Location home) {
         Guild g = new Guild(tag, name, owner, home);
 
-        guilds.put(tag, g);//TODO xd
+        guilds.put(tag, g);
         TopsManager.guildRankings.add(g);
         Bukkit.getScheduler().runTask(SpigotPlugin.getPlugin(), () -> createRoomGuild(g,owner));
         return g;
     }
 
     public static void deleteGuild(Guild g) {
-        //RankingManager.removeRanking(g);
         Bukkit.getScheduler().runTask(SpigotPlugin.getPlugin(), () -> deleteRoom(g));
 
         for (String memberName : g.getMembers()) {
@@ -96,7 +95,7 @@ public class GuildManager {
         guilds.remove(g.getTag());
         TopsManager.guildRankings.remove(g);
         SpigotPlugin.getMySQL().update("DELETE FROM `{P}guilds` WHERE `tag` = '" + g.getTag() + "'");
-        //SpigotPlugin.getMySQL().update("DELETE FROM `{P}savedGuilds` WHERE `tag` = '" + g.getTag() + "'");
+        SpigotPlugin.getMySQL().update("DELETE FROM `{P}savedGuilds` WHERE `tag` = '" + g.getTag() + "'");
         for (String aly : g.getAlly()) {
             Guild a = GuildManager.getGuild(aly);
             if (a != null) {
@@ -130,7 +129,7 @@ public class GuildManager {
         for (Location loc : SpaceUtil.getSquare(c, 1, 0)) {
             loc.getBlock().setType(Material.OBSIDIAN);
         }
-        c.getBlock().setType(Material.SPONGE);
+        c.getBlock().setType(Material.BEDROCK);
         c.setY(30.0);
         for (Location loc : SpaceUtil.getSquare(c, 1, 0)) {
             loc.getBlock().setType(Material.AIR);

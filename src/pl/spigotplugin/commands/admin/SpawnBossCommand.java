@@ -2,6 +2,7 @@ package pl.spigotplugin.commands.admin;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.configs.core;
 import pl.spigotplugin.utils.BossUtil;
 
 public class SpawnBossCommand extends PlayerCommand {
@@ -10,7 +11,7 @@ public class SpawnBossCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 2) {
-            p.sendMessage("&c/spawnboss <nazwa> <hp>");
+            core.usage(p, getUsage());
             return;
         }
         String name = args[0];

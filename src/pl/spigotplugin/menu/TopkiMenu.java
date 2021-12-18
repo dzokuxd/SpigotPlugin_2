@@ -130,41 +130,68 @@ public class TopkiMenu {
             } else {
                 time.addLore(" &7" + i2 + ". &cBrak");
             }
-            ItemBuilder zabojstwa = new ItemBuilder(Material.DIAMOND_SWORD);
-            ItemBuilder asysty = new ItemBuilder(Material.GOLD_SWORD);
-            ItemBuilder zgony = new ItemBuilder(Material.WOOD_SWORD);
-            ItemStack head = new ItemBuilder(Material.SKULL_ITEM).setTitle("&7&lTwoje Statystyki")
-                    .addLore("")
-                    .addLore(" &7\u00bb &6Zabojstwa: &c"+u.getKills())
-                    .addLore(" &7\u00bb &6Asysty: &c"+u.getAsysty())
-                    .addLore(" &7\u00bb &6Smierci: &c"+u.getDeaths())
-                    .addLore(" &7\u00bb &6Twoj lvl: &c" + u.getLvl())
-                    .addLore(" &7\u00bb &6Coinsy: &c" + u.getCoins())
-                    .addLore(" &7\u00bb &6Zjedzone koxy: &c" + u.getKoxEaten())
-                    .addLore(" &7\u00bb &6Zjedzone refile: &c" + u.getRefilEaten())
-                    .addLore(" &7\u00bb &6Wyrzucone perly: &c" + u.getPearlThrown())
-                    .addLore(" &7\u00bb &6Wystrzelone strzaly: &c" + u.getArrowsShoten())
-                    .addLore(" &7\u00bb &6Wykopany stone: &c" + u.getWykStone())
-                    .addLore(" &7\u00bb &6Wykopany Obsydian: &c" + u.getWykObsidian())
-                    .addLore(" &7\u00bb &6Otwarte easycasy: &c" + u.getEasycase())
-                    .addLore(" &7\u00bb &6Otwarte casy6/1/1: &c" + u.getCase611())
-                    .addLore("&6").setGlow(true).build();//TODO zmien na postawione casy
-            inv.setItem(10, zabojstwa.build());
-            inv.setItem(11, asysty.build());
-            inv.setItem(12, zgony.build());
-            inv.setItem(13, gapple.build());
-            inv.setItem(14, apple.build());
-            inv.setItem(15, pearls.build());
-            inv.setItem(16, arrows.build());
-            inv.setItem(22, head);
-            inv.setItem(28, stone.build());
-            inv.setItem(29, obsidian.build());
-            inv.setItem(30, lvl.build());
-            inv.setItem(31, coins.build());
-            inv.setItem(32, easycase.build());
-            inv.setItem(33, case6.build());
-            inv.setItem(34, time.build());
-            p.openInventory(inv);
         }
+        ItemBuilder zabojstwa = new ItemBuilder(Material.DIAMOND_SWORD);
+        zabojstwa.setTitle("&7&lTOP RANKINGU");
+        for (int i2 = 1; i2 < 11; ++i2) {
+            if (TopsManager.points.size() >= i2) {
+                User user4 = TopsManager.points.get(i2 - 1);
+                zabojstwa.addLore(" &7" + i2 + ". &6" + user4.getName() + ": &c" + (user4.getPoints()));
+            } else {
+                zabojstwa.addLore(" &7" + i2 + ". &cBrak");
+            }
+        }
+        ItemBuilder asysty = new ItemBuilder(Material.GOLD_SWORD);
+        asysty.setTitle("&7&lTOP ZABOJSTW");
+        for (int i2 = 1; i2 < 11; ++i2) {
+            if (TopsManager.kills.size() >= i2) {
+                User user4 = TopsManager.kills.get(i2 - 1);
+                asysty.addLore(" &7" + i2 + ". &6" + user4.getName() + ": &c" + (user4.getKills()));
+            } else {
+                asysty.addLore(" &7" + i2 + ". &cBrak");
+            }
+        }
+        ItemBuilder zgony = new ItemBuilder(Material.WOOD_SWORD);
+        zgony.setTitle("&7&lTOP ASYST");
+        for (int i2 = 1; i2 < 11; ++i2) {
+            if (TopsManager.asysty.size() >= i2) {
+                User user4 = TopsManager.asysty.get(i2 - 1);
+                zgony.addLore(" &7" + i2 + ". &6" + user4.getName() + ": &c" + (user4.getAsysty()));
+            } else {
+                zgony.addLore(" &7" + i2 + ". &cBrak");
+            }
+        }
+        ItemStack head = new ItemBuilder(Material.SKULL_ITEM).setTitle("&7&lTwoje Statystyki")
+                .addLore("")
+                .addLore(" &7\u00bb &6Zabojstwa: &c"+u.getKills())
+                .addLore(" &7\u00bb &6Asysty: &c"+u.getAsysty())
+                .addLore(" &7\u00bb &6Smierci: &c"+u.getDeaths())
+                .addLore(" &7\u00bb &6Twoj lvl: &c" + u.getLvl())
+                .addLore(" &7\u00bb &6Coinsy: &c" + u.getCoins())
+                .addLore(" &7\u00bb &6Zjedzone koxy: &c" + u.getKoxEaten())
+                .addLore(" &7\u00bb &6Zjedzone refile: &c" + u.getRefilEaten())
+                .addLore(" &7\u00bb &6Wyrzucone perly: &c" + u.getPearlThrown())
+                .addLore(" &7\u00bb &6Wystrzelone strzaly: &c" + u.getArrowsShoten())
+                .addLore(" &7\u00bb &6Wykopany stone: &c" + u.getWykStone())
+                .addLore(" &7\u00bb &6Wykopany Obsydian: &c" + u.getWykObsidian())
+                .addLore(" &7\u00bb &6Otwarte easycasy: &c" + u.getEasycase())
+                .addLore(" &7\u00bb &6Otwarte casy6/1/1: &c" + u.getCase611())
+                .addLore("&6").setGlow(true).build();//TODO zmien na postawione casy
+        inv.setItem(10, zabojstwa.build());
+        inv.setItem(11, asysty.build());
+        inv.setItem(12, zgony.build());
+        inv.setItem(13, gapple.build());
+        inv.setItem(14, apple.build());
+        inv.setItem(15, pearls.build());
+        inv.setItem(16, arrows.build());
+        inv.setItem(22, head);
+        inv.setItem(28, stone.build());
+        inv.setItem(29, obsidian.build());
+        inv.setItem(30, lvl.build());
+        inv.setItem(31, coins.build());
+        inv.setItem(32, easycase.build());
+        inv.setItem(33, case6.build());
+        inv.setItem(34, time.build());
+        p.openInventory(inv);
     }
 }

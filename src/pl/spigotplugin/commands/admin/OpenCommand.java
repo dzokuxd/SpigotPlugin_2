@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.utils.EnderChestUtil;
 
 public class OpenCommand extends PlayerCommand {
     public OpenCommand() { super("open", "open <nick> <inv/ender/armor>", "spigot.open"); }
@@ -16,6 +17,7 @@ public class OpenCommand extends PlayerCommand {
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);
+        Player player = Bukkit.getPlayer(args[1]);
         if (o == null) {
             p.sendMessage("&cGracz nie jest online!");
             return;
@@ -25,6 +27,7 @@ public class OpenCommand extends PlayerCommand {
                 p.openInventory(o.getInventory());
                 break;
             case "ender":
+                EnderChestUtil.openOther(p, player);
                 p.openInventory(o.getEnderChest());
                 break;
             case "armor":

@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.helper.TabHelper;
 import pl.spigotplugin.holder.LocationHolder;
 import pl.spigotplugin.managers.*;
 import pl.spigotplugin.objects.guild.Guild;
@@ -60,7 +61,8 @@ public class PlayerQuitJoinListener implements Listener {
         }
         TagUtil.createBoard(p.getPlayer());
         TagUtil.updateBoard(p.getPlayer());
-        TabUtil.update(p);
+        TabHelper.executeCreate(p);
+        TabHelper.update(p);
         if (p.isDead()) {
             new BukkitRunnable() {
                 public void run() {
@@ -115,6 +117,7 @@ public class PlayerQuitJoinListener implements Listener {
     public void onKick(PlayerKickEvent e) {
         quitGame(e.getPlayer());
         e.setLeaveMessage(null);
+        TabHelper.executeRemove(e.getPlayer());
         CombatManager.clear(e.getPlayer());
         TagUtil.removeBoard(e.getPlayer());
     }
@@ -124,6 +127,7 @@ public class PlayerQuitJoinListener implements Listener {
         e.setQuitMessage(null);
         Player p = e.getPlayer();
         TagUtil.removeBoard(p.getPlayer());
+        TabHelper.executeRemove(e.getPlayer());
         if (CheckUtil.checkedPlayers.contains(p)) {
             CheckUtil.checkedPlayers.remove(p);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ban " + p.getName() + " logout podzcas sprawdzadnia");
@@ -139,7 +143,7 @@ public class PlayerQuitJoinListener implements Listener {
             user.setDeaths(user.getDeaths() +1);
             user.setPoints(user.getPoints() -50);
             user.save();
-            Bukkit.broadcastMessage("&cGracz " + (g == null ? "" : "[" + g.getTag() + "] ") + p.getName() + "-50 &6wylogowal sie podczas walki!");
+            Bukkit.broadcastMessage("&6Gracz &c" + (g == null ? "" : "[" + g.getTag() + "] ") + p.getName() + "-50 &6wylogowal sie podczas walki!");
         }
     }
 }
