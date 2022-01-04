@@ -29,7 +29,7 @@ public class DajUtil {
             .setTitle("&c&lSkrzynia "+ statues.IP)
             .build();
     public static ItemStack case611 = new ItemBuilder(
-            Material.CHEST)
+            Material.ENDER_CHEST)
             .setTitle("&c&lSkrzynia Easy6/1/1")
             .build();
 

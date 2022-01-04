@@ -4,10 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BlocksCommand extends PlayerCommand {
-    public BlocksCommand() {super("bloki", "bloki", "");}
+    public BlocksCommand() {super("bloki", RankType.GRACZ);}
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,6 +18,6 @@ public class BlocksCommand extends PlayerCommand {
         ChatUtil.replace(p, Material.EMERALD, Material.EMERALD_BLOCK);
         ChatUtil.replace(p, Material.IRON_INGOT, Material.IRON_BLOCK);
         ChatUtil.replace(p, Material.DIAMOND, Material.DIAMOND_BLOCK);
-        p.sendMessage("&aPomyslnie zamieniles wszystko na bloki!");
+        p.sendMessage(ChatUtil.color("&aPomyslnie zamieniles wszystko na bloki!"));
     }
 }

@@ -125,7 +125,6 @@ public class guild {
     public static ItemStack DEPUTY_COST = new ItemStack(Material.DIAMOND, 8);
 
     public static String RENEW_MAX = "&cGildia jest przedluzona na maksymalny okres";
-    public static String RENEW_SEND = "&fPrzedluzylesz waznosc gildii o &d{RENEWADD}";
     public static int RENEW_ADD = 1;
     public static ItemStack RENEW_COST = new ItemStack(Material.DIAMOND, 8);
 

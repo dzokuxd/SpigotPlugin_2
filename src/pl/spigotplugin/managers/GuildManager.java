@@ -77,7 +77,6 @@ public class GuildManager {
 
     public static Guild createGuild(String tag, String name, Player owner, Location home) {
         Guild g = new Guild(tag, name, owner, home);
-
         guilds.put(tag, g);
         TopsManager.guildRankings.add(g);
         Bukkit.getScheduler().runTask(SpigotPlugin.getPlugin(), () -> createRoomGuild(g,owner));

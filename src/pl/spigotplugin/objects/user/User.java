@@ -5,13 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.enums.AchievmentTypeName;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.helper.JSONHelper;
 import pl.spigotplugin.holder.SaveHolder;
 import pl.spigotplugin.mysql.MySQLUtil;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.ItemSerializer;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class User implements Comparable<User> {
 
     private String name;
+    private RankType rankType=RankType.GRACZ;
     private long turboDrop = 0;
     private boolean autoMessages = true;
     private boolean privateMessages = true;
@@ -47,7 +49,6 @@ public class User implements Comparable<User> {
     private int refilEaten = 0;
     private int pearlThrown = 0;
     private int arrowsShoten = 0;
-    private int coins = 0;
     private int easycase = 0;
     private int case611 = 0;
     private int kills = 0;
@@ -75,6 +76,7 @@ public class User implements Comparable<User> {
 
     public User(ResultSet rs) throws SQLException {
         this.name = rs.getString("name");
+        this.rankType = RankType.valueOf(rs.getString("rankType"));
         this.turboDrop = rs.getLong("turboDrop");
         this.kit_start = rs.getLong("kit_start");
         this.kit_vip = rs.getLong("kit_vip");
@@ -92,7 +94,6 @@ public class User implements Comparable<User> {
         this.refilEaten = rs.getInt("refilEaten");
         this.pearlThrown = rs.getInt("pearlThrown");
         this.arrowsShoten = rs.getInt("arrowsShoten");
-        this.coins = rs.getInt("coins");
         this.easycase = rs.getInt("easycase");
         this.case611 = rs.getInt("case611");
         this.kills = rs.getInt("kills");
@@ -105,6 +106,112 @@ public class User implements Comparable<User> {
         this.guild = rs.getString("guild");
         this.time = rs.getLong("time");
         this.enderchest = ItemSerializer.stringToItems(rs.getString("enderchest"));
+    }
+
+    private void insert() {
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("name", name);
+        data.put("rankType", this.rankType.name());
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
+        data.put("time", time);
+        data.put("os", achievments);
+        data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
+        MySQLUtil.insert("users", data);
+    }
+
+    public void save() {
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("rankType", this.rankType.name());
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
+        data.put("time", time);
+        data.put("os", achievments);
+        data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
+        MySQLUtil.save("users", "name", name, data);
+    }
+
+    public void saveSync() {
+        Map<String,Object> data = new ConcurrentHashMap<>();
+        data.put("rankType", this.rankType.name());
+        data.put("turboDrop", turboDrop);
+        data.put("kit_start", kit_start);
+        data.put("kit_vip", kit_vip);
+        data.put("kit_svip", kit_svip);
+        data.put("lvl", lvl);
+        data.put("exp", exp);
+        data.put("wykStone", wykStone);
+        data.put("wykObsidian", wykObsidian);
+        data.put("drops", JSONHelper.dropsToJsonString(drops));
+        data.put("koxy", koxy);
+        data.put("refile", refile);
+        data.put("perly", perly);
+        data.put("strzaly", strzaly);
+        data.put("koxEaten", koxEaten);
+        data.put("refilEaten", refilEaten);
+        data.put("pearlThrown", pearlThrown);
+        data.put("arrowsShoten", arrowsShoten);
+        data.put("easycase", easycase);
+        data.put("case611", case611);
+        data.put("kills", kills);
+        data.put("asysty", asysty);
+        data.put("points", points);
+        data.put("deaths", deaths);
+        data.put("ks", ks);
+        data.put("maxks", maxks);
+        data.put("time", time);
+        data.put("os", achievments);
+        data.put("guild", guild);
+        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
+        MySQLUtil.saveSync("users", "name", name, data);
     }
 
     public ConcurrentHashMap<Material, Integer> getDrops() {
@@ -134,6 +241,17 @@ public class User implements Comparable<User> {
         return ChatUtil.round(this.kills / (double)this.deaths, 2, 2);
     }
 
+    public RankType getRankType() {
+        return this.rankType;
+    }
+
+    public void setRankType(RankType rankType) {
+        this.rankType = rankType;
+    }
+
+    public void updateGroup() {
+        SpigotPlugin.getMySQL().update("UPDATE users SET group = '" + rankType + "' WHERE name = '" + name + "'");
+    }
 
     public Map<User, Long> getLastKillers() {
         return this.lastKillers;
@@ -217,10 +335,6 @@ public class User implements Comparable<User> {
 
     public int getLvl() { return lvl; }
 
-    public int getCoins() { return coins; }
-
-    public void setCoins(int coins) {this.coins = coins;}
-
     public int getkoxy() { return koxy; }
 
     public void setKoxy(int koxy) { this.koxy = koxy; }
@@ -265,7 +379,6 @@ public class User implements Comparable<User> {
 
     public void removeStrzaly(int index) { this.strzaly -= index; }
 
-    public void removeCoins(int paramInt) { this.coins -= paramInt; }
 
     public void addKoxy(int index) { this.koxy += index; }
 
@@ -282,8 +395,6 @@ public class User implements Comparable<User> {
     public void addpearlThrown(int index) { this.pearlThrown += index; }
 
     public void addarrowsShoten(int index) { this.arrowsShoten += index; }
-
-    public void addCoins(int index) { this.coins += index; }
 
     public void addEasycase(int index) { this.easycase += index; }
 
@@ -319,111 +430,6 @@ public class User implements Comparable<User> {
         this.enderchest = items;
     }
 
-    private void insert() {
-        Map<String,Object> data = new ConcurrentHashMap<>();
-        data.put("name", name);
-        data.put("turboDrop", turboDrop);
-        data.put("kit_start", kit_start);
-        data.put("kit_vip", kit_vip);
-        data.put("kit_svip", kit_svip);
-        data.put("lvl", lvl);
-        data.put("exp", exp);
-        data.put("wykStone", wykStone);
-        data.put("wykObsidian", wykObsidian);
-        data.put("drops", JSONHelper.dropsToJsonString(drops));
-        data.put("koxy", koxy);
-        data.put("refile", refile);
-        data.put("perly", perly);
-        data.put("strzaly", strzaly);
-        data.put("koxEaten", koxEaten);
-        data.put("refilEaten", refilEaten);
-        data.put("pearlThrown", pearlThrown);
-        data.put("arrowsShoten", arrowsShoten);
-        data.put("coins", coins);
-        data.put("easycase", easycase);
-        data.put("case611", case611);
-        data.put("kills", kills);
-        data.put("asysty", asysty);
-        data.put("points", points);
-        data.put("deaths", deaths);
-        data.put("ks", ks);
-        data.put("maxks", maxks);
-        data.put("time", time);
-        data.put("os", achievments);
-        data.put("guild", guild);
-        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
-        MySQLUtil.insert("users", data);
-    }
-
-    public void save() {
-        Map<String,Object> data = new ConcurrentHashMap<>();
-        data.put("turboDrop", turboDrop);
-        data.put("kit_start", kit_start);
-        data.put("kit_vip", kit_vip);
-        data.put("kit_svip", kit_svip);
-        data.put("lvl", lvl);
-        data.put("exp", exp);
-        data.put("wykStone", wykStone);
-        data.put("wykObsidian", wykObsidian);
-        data.put("drops", JSONHelper.dropsToJsonString(drops));
-        data.put("koxy", koxy);
-        data.put("refile", refile);
-        data.put("perly", perly);
-        data.put("strzaly", strzaly);
-        data.put("koxEaten", koxEaten);
-        data.put("refilEaten", refilEaten);
-        data.put("pearlThrown", pearlThrown);
-        data.put("arrowsShoten", arrowsShoten);
-        data.put("coins", coins);
-        data.put("easycase", easycase);
-        data.put("case611", case611);
-        data.put("kills", kills);
-        data.put("asysty", asysty);
-        data.put("points", points);
-        data.put("deaths", deaths);
-        data.put("ks", ks);
-        data.put("maxks", maxks);
-        data.put("time", time);
-        data.put("os", achievments);
-        data.put("guild", guild);
-        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
-        MySQLUtil.save("users", "name", name, data);
-    }
-
-    public void saveSync() {
-        Map<String,Object> data = new ConcurrentHashMap<>();
-        data.put("turboDrop", turboDrop);
-        data.put("kit_start", kit_start);
-        data.put("kit_vip", kit_vip);
-        data.put("kit_svip", kit_svip);
-        data.put("lvl", lvl);
-        data.put("exp", exp);
-        data.put("wykStone", wykStone);
-        data.put("wykObsidian", wykObsidian);
-        data.put("drops", JSONHelper.dropsToJsonString(drops));
-        data.put("koxy", koxy);
-        data.put("refile", refile);
-        data.put("perly", perly);
-        data.put("strzaly", strzaly);
-        data.put("koxEaten", koxEaten);
-        data.put("refilEaten", refilEaten);
-        data.put("pearlThrown", pearlThrown);
-        data.put("arrowsShoten", arrowsShoten);
-        data.put("coins", coins);
-        data.put("easycase", easycase);
-        data.put("case611", case611);
-        data.put("kills", kills);
-        data.put("asysty", asysty);
-        data.put("points", points);
-        data.put("deaths", deaths);
-        data.put("ks", ks);
-        data.put("maxks", maxks);
-        data.put("time", time);
-        data.put("os", achievments);
-        data.put("guild", guild);
-        data.put("enderchest", ItemSerializer.itemsToString(this.enderchest));
-        MySQLUtil.saveSync("users", "name", name, data);
-    }
     public int getAchLvl(AchievmentTypeName type) {
         String[] split = achievments.split("@");
         Bukkit.broadcastMessage(split.length+"");

@@ -8,6 +8,7 @@ import pl.spigotplugin.helper.TabHelper;
 import pl.spigotplugin.managers.TopsManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
 
 
 import java.util.concurrent.TimeUnit;
@@ -26,7 +27,7 @@ public class AutoMsgTask extends BukkitRunnable {
 
             if (u.isAutoMessages()) {
                 p.sendMessage(" ");
-                p.sendMessage(core.MESSAGES_AUTOMSG.get(index));
+                p.sendMessage(ChatUtil.color(core.MESSAGES_AUTOMSG.get(index)));
                 p.sendMessage(" ");
                 TopsManager.sortUser();
                 TopsManager.sortGuild();

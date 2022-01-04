@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
@@ -14,7 +15,7 @@ import pl.spigotplugin.utils.TagUtil;
 
 public class IncognitoCommand extends PlayerCommand {
 
-    public IncognitoCommand() {super("incognito", "/incognito", "spigot.incognito");}
+    public IncognitoCommand() {super("incognito", RankType.VIP);}
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -44,6 +45,6 @@ public class IncognitoCommand extends PlayerCommand {
 
         }, 20);
 
-        p.sendMessage((u.isIncognito() ? "&fTryb incognito zostal: &aWlaczony" : "&fTryb incognito zostal: &cWylaczony"));
+        p.sendMessage(ChatUtil.color(ChatUtil.color((u.isIncognito() ? "&fTryb incognito zostal: &aWlaczony" : "&fTryb incognito zostal: &cWylaczony"))));
     }
 }

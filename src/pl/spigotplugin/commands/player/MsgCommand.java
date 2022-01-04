@@ -6,15 +6,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class MsgCommand extends PlayerCommand {
-    public MsgCommand() { super("msg", "msg <gracz> <wiadomosc>", "", "tell"); }
+    public MsgCommand() { super("msg", RankType.GRACZ, "tell"); }
 
     private static final HashMap<UUID, UUID> lastMsg;
     private static final HashMap<UUID, Long> times;
@@ -35,42 +37,42 @@ public class MsgCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            core.usage(p, getUsage());
+            core.usage(p, "msg <gracz> <wiadomosc>");
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&cGracz nie jest online!");
+            p.sendMessage(ChatUtil.color("&cGracz nie jest online!"));
             return;
         }
         User user = UserManager.getUser(args[0]);
         if (user != null) {
             if (!user.isPrivateMessages()) {
-                p.sendMessage("&cTen gracz ma wylaczone prywatne wiadomosci.");
+                p.sendMessage(ChatUtil.color("&cTen gracz ma wylaczone prywatne wiadomosci."));
                 return;
             }
         }
         if (user != null) {
-            if (user.isIgnoreTell(p) && !p.hasPermission("core.tell.ignore")) {
-                p.sendMessage("&cTen gracz zablokowal od Ciebie prywatne wiadomosci!");
+            if (user.isIgnoreTell(p) && !GroupUtil.have(p, RankType.HELPER)) {
+                p.sendMessage(ChatUtil.color("&cTen gracz zablokowal od Ciebie prywatne wiadomosci!"));
                 return;
             }
         }
         String nickja = args[0];
         if (nickja.equalsIgnoreCase(p.getName())) {
-            p.sendMessage("&cNie mozesz pisac sam do siebie! ;(");
+            p.sendMessage(ChatUtil.color("&cNie mozesz pisac sam do siebie! ;("));
             return;
         }
         Long t = MsgCommand.times.get(p.getUniqueId());
         if (t != null && System.currentTimeMillis() - t < 3000L) {
-            p.sendMessage("&4Nie spamuj!");
+            p.sendMessage(ChatUtil.color("&4Nie spamuj!"));
             return;
         }
         String message = ChatColor.stripColor(ChatUtil.color(StringUtils.join(args, " ", 1, args.length)));
         MsgCommand.lastMsg.put(p.getUniqueId(), o.getUniqueId());
         MsgCommand.lastMsg.put(o.getUniqueId(), p.getUniqueId());
         MsgCommand.times.put(p.getUniqueId(), System.currentTimeMillis());
-        p.sendMessage("&9Ja \u00BB " + o.getName() + "&9:" + message);
+        p.sendMessage(ChatUtil.color("&9Ja \u00BB " + o.getName() + "&9:" + message));
         ChatUtil.sendHoverMessageCommand(o, "&9" + p.getName() + " \u00BB Ja: &9" + message, "&8(&fKliknij, aby odpisac&8)", "/msg " + p.getName());
     }
 }

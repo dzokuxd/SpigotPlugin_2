@@ -1,9 +1,8 @@
 package pl.spigotplugin.managers;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
-import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.objects.user.User;
 
 import java.sql.ResultSet;
@@ -31,15 +30,12 @@ public class UserManager {
         return u;
     }
 
-    public static boolean canPlaceByBorder(Location loc) {
-        return Math.abs(statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockZ()) >= 10 && Math.abs(statues.BORDER_WORLD - loc.getBlockX()) >= 10 && Math.abs(-statues.BORDER_WORLD - loc.getBlockZ()) >= 10;
-    }
-
     public static void loadUsers() {
         try {
             ResultSet rs = SpigotPlugin.getMySQL().select("users");
             while (rs.next()) {
                 User u = new User(rs);
+                u.setRankType(RankType.valueOf(rs.getString("rankType")));
                 users.put(u.getName().toLowerCase(), u);
                 TopsManager.add(u);
             }

@@ -74,6 +74,7 @@ public class RandomDropData implements DropData{
         if (u == null) return;
         if(block.getType() == Material.STONE) {
             u.setWykStone(u.getWykStone()+1);
+            player.playSound(player.getLocation(), Sound.ORB_PICKUP, 0.5f, (float)(Math.random() * 20.0) / 10.0f);
         }
         for (Drop d : RandomDropData.drops) {
             ItemStack itemDrop = d.getWhat().clone();

@@ -3,157 +3,133 @@ package pl.spigotplugin.utils;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
 import net.minecraft.server.v1_8_R3.Scoreboard;
 import net.minecraft.server.v1_8_R3.ScoreboardTeam;
-import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.User;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class TagUtil {
+
     private static final Scoreboard scoreboard = new Scoreboard();
 
     public static void createBoard(Player p) {
-        ScoreboardTeam team = null;
-        if (scoreboard.getPlayerTeam(Bukkit.getPlayer(p.getName()).getName()) == null) {
-            team = scoreboard.createTeam(p.getName());
-        }
-        assert team != null;
-        scoreboard.addPlayerToTeam(p.getName(), team.getName());
-
-        team.setPrefix("");
-        team.setDisplayName("");
-        team.setSuffix("");
-        PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 0);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-
-        for (Player pp : Bukkit.getOnlinePlayers()) {
-            if (pp == p) return;
-            ((CraftPlayer) pp).getHandle().playerConnection.sendPacket(packet);
-
-            ScoreboardTeam scoreboardTeam = scoreboard.getTeam(pp.getName());
-
-            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
+        try {
+            ScoreboardTeam team = null;
+            if (scoreboard.getPlayerTeam(p.getName()) == null) {
+                team = scoreboard.createTeam(p.getName());
+            }
+            scoreboard.addPlayerToTeam(p.getName(), team.getName());
+            team.setPrefix("");
+            team.setDisplayName("");
+            team.setSuffix("");
+            PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 0);
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+            for (Player pp : Bukkit.getOnlinePlayers()) {
+                if (pp == p) continue;
+                ((CraftPlayer) pp).getHandle().playerConnection.sendPacket(packet);
+                ScoreboardTeam t = scoreboard.getTeam(pp.getName());
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(t, 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     public static void updateBoard(Player p) {
-        if (p != null) {
-            ScoreboardTeam team = scoreboard.getPlayerTeam(p.getName());
-            team.setDisplayName("");
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                String validPrefix = getValidPrefix(p, player);
-                if (validPrefix.length() > 16) {
-                    validPrefix = validPrefix.substring(0, 15);
+        Bukkit.getScheduler().runTaskAsynchronously(SpigotPlugin.getPlugin(), () -> {
+                    for (Player online : Bukkit.getOnlinePlayers()) {
+                        updateOthersFor(p, online);
+                        updateOthersFor(online, p);
+                    }
                 }
-                team.setPrefix(validPrefix);
-                String suffix = "";
-                PermissionUser uu = PermissionsEx.getUser(p);
-                if (uu.inGroup("Prezes")) {
-                    suffix = ChatUtil.color(" &ePrezes");
-                }
-                if (uu.inGroup("H@")) {
-                    suffix = ChatUtil.color(" &4H@");
-                }
-                if (uu.inGroup("admin")) {
-                    suffix = " &cA";
-                }
-                if (uu.inGroup("mod")) {
-                    suffix = " &2Mod";
-                }
-                if (uu.inGroup("helper")) {
-                    suffix = " &3H";
-                }
-                if (uu.inGroup("easy")) {
-                    suffix = " &5EASY";
-                }
-                if (uu.inGroup("svip")) {
-                    suffix = " &dSVIP";
-                }
-                if (uu.inGroup("vip")) {
-                    suffix = " &6VIP";
-                }
-                if (uu.inGroup("gracz")) {
-                    suffix = "&f";
-                }
+        );
+    }
 
-                team.setSuffix(ChatUtil.color(suffix));
-
-                PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 2);
-                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            });
-        }
+    private static void updateOthersFor(Player send, Player p) {
+        ScoreboardTeam team = scoreboard.getPlayerTeam(p.getName());
+        User get = UserManager.getUser(p.getName());
+        User s = UserManager.getUser(send.getName());
+        team.setPrefix(getValidPrefix(get, s));
+        team.setSuffix(getValidSuffix(get));
+        ((CraftPlayer) send).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(team, 2));
     }
 
 
-    private static String getValidPrefix(Player get, Player send) {
-        String color = "&c";
-        User u = UserManager.getUser(get);
-        if (u == null) return "";
-        Guild g = GuildManager.getGuild(get);
-        Guild o = GuildManager.getGuild(send);
-        boolean chuj = false;
-        boolean shouldAddQuestionMark = false;
-        if (g != null && o != null) {
-            if (g.equals(o)) {
-                color = "&a";
-                chuj = true;
-            } else if (g.getAlly().contains(o.getTag())) {
-                color = "&9";
-                chuj = true;
+    private static String getValidPrefix(User get, User send) {
+        ChatColor color = ChatColor.RED;
+        Guild g = GuildManager.getGuild(get.getPlayer());
+        Guild gs = GuildManager.getGuild(send.getPlayer());
+        if (g != null && gs != null) {
+            if (g == gs) {
+                color = ChatColor.GREEN;
+            } else if (g.getAlly().contains(gs.getTag())) {
+                color = ChatColor.YELLOW;
             }
         }
         String tag = "";
         if (g != null) {
-            tag = "&8[" + color + g.getTag() + "&8] " + color;
-            shouldAddQuestionMark = true;
+            tag = color + "[" + g.getTag() + "] ";
         }
-        String tag1234;
-        if (!chuj && !send.hasPermission("spigotplugin.bypass")) {
-            tag1234 = "&k";
-        } else {
-            tag1234 = tag;
+        /*if (get.isIncognito() && send.getRankType()==RankType.HELPER)) {
+            return ChatUtil.fixColor(tag);
         }
-
-        if (shouldAddQuestionMark && !chuj) {
-            if (!send.hasPermission("spigotplugin.bypass")) {
-               tag1234 = "&8[&c?&8] &c&k ";
+        if (g != null && gs != null) {
+            if (g==gs) {
+                return ChatUtil.fixColor(tag);
             }
         }
+        if (get.isIncognito()) {
+            tag = tag + ChatColor.MAGIC;
+        }*/
+        return tag;
+    }
 
-        ChatColor nameColor = ChatColor.WHITE;
-        if (u.focused.equals(send.getName())) {
-            nameColor = ChatColor.LIGHT_PURPLE;
+    private static String getValidSuffix(User u) {
+        String suffix = "";
+        if (u.getRankType()==RankType.PREZES) {
+            suffix = "&4 W";
+        } else if (u.getRankType()==RankType.HA) {
+            suffix = "&4 HA";
+        } else if (u.getRankType()==RankType.ADMIN) {
+            suffix = "&4 A";
+        } else if (u.getRankType()==RankType.MOD) {
+            suffix = "&2 M";
+        } else if (u.getRankType()==RankType.HELPER) {
+            suffix = "&b H";
+        } else if (u.getRankType()==RankType.SVIP) {
+            suffix = "&e SVIP";
+        } else if (u.getRankType()==RankType.EASY) {
+            suffix = "&4 Y&fT";
+        } else if (u.getRankType()==RankType.VIP) {
+            suffix = "&6 VIP";
         }
-
-        get.sendMessage(nameColor.name());
-        get.sendMessage(u.focused);
-
-        return (u.isIncognito() ? ChatUtil.color(tag1234) + nameColor : ChatUtil.color(tag) + nameColor);
+        /*if (VanishManager.isVanish(u.getPlayer())) {
+            suffix += " &8[&bV&8]";
+        }*/
+        if (suffix.length() > 16) {
+            suffix = suffix.substring(0,16);
+        }
+        return ChatUtil.color(suffix);
     }
 
     public static void removeBoard(Player p) {
-        if (scoreboard.getPlayerTeam(Bukkit.getPlayer(p.getName()).getName()) == null) {
-            return;
-        }
-        ScoreboardTeam team = TagUtil.scoreboard.getPlayerTeam(p.getName());
+        ScoreboardTeam team = scoreboard.getPlayerTeam(p.getName());
         scoreboard.removePlayerFromTeam(p.getName(), team);
-
         PacketPlayOutScoreboardTeam packet = new PacketPlayOutScoreboardTeam(team, 1);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-
-        Bukkit.getOnlinePlayers().stream().filter(pp -> pp != p).forEach(pp -> {
+        for (Player pp : Bukkit.getOnlinePlayers()) {
+            if (pp == p) continue;
             ((CraftPlayer) pp).getHandle().playerConnection.sendPacket(packet);
-
-            ScoreboardTeam scoreboardTeam = TagUtil.scoreboard.getTeam(pp.getName());
-            PacketPlayOutScoreboardTeam packetHide = new PacketPlayOutScoreboardTeam(scoreboardTeam, 1);
-            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packetHide);
-        });
+            ScoreboardTeam t = scoreboard.getTeam(pp.getName());
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutScoreboardTeam(t, 1));
+        }
         scoreboard.removeTeam(team);
     }
 }

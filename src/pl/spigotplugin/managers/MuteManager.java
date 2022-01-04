@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.objects.user.Mute;
+import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.DataUtil;
 
 import java.sql.ResultSet;
@@ -39,7 +40,7 @@ public class MuteManager {
         getMutes().put(name, mute);
         Player p = Bukkit.getPlayer(name);
         if (p != null) {
-            p.sendMessage("&cZostales wyciszony przez &7" + mute.getAdmin() + "&c, " + ((mute.getTime() == 0L) ? "na zawsze" : ("&cwygasa za: &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
+            p.sendMessage(ChatUtil.color("&cZostales wyciszony przez &7" + mute.getAdmin() + "&c, " + ((mute.getTime() == 0L) ? "na zawsze" : ("&cwygasa za: &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason()));
         }
     }
 

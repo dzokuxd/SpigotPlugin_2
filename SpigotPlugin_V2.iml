@@ -9,7 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="spigot" level="project" />
     <orderEntry type="library" name="ProtocolLib" level="project" />
-    <orderEntry type="library" name="PermissionsEx" level="project" />
     <orderEntry type="library" name="citizensapi-2.0.18-20160521.141551-504" level="project" />
   </component>
 </module>

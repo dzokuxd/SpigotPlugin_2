@@ -35,7 +35,7 @@ public class CombatTask extends BukkitRunnable {
                     continue;
                 }
                 value.setAttacked(null);
-                p.sendMessage("&aKoniec walki!");
+                p.sendMessage(ChatUtil.color("&aKoniec walki!"));
                 CombatManager.getFightMap().remove(p);
             }
         }

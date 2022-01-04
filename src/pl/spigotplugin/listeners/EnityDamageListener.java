@@ -73,10 +73,10 @@ public class EnityDamageListener implements Listener {
                 Fight damagerFight2 = CombatManager.get(playerDamager);
 
                 if (playerFight2.getFightTime() < System.currentTimeMillis()) {
-                    p.sendMessage("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!");
+                    p.sendMessage(ChatUtil.color("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!"));
                 }
                 if (damagerFight2.getFightTime() < System.currentTimeMillis()) {
-                    playerDamager.sendMessage("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!");
+                    playerDamager.sendMessage(ChatUtil.color("&4Zostales zaatakowany nie mozesz wylogowac sie przez 30 sekund!"));
                 }
 
                 long fightTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30);
@@ -128,11 +128,6 @@ public class EnityDamageListener implements Listener {
         }
         e.setDroppedExp(0);
         e.getDrops().clear();
-        if (entity.getType() == EntityType.ENDER_DRAGON) {
-            ItemUtil.giveItems(killer, new ItemStack(Material.DRAGON_EGG, 1));
-            killer.giveExp(e.getDroppedExp());
-            Bukkit.broadcastMessage(core.DRAGON_BROADCAST.replace("{PLAYER}",killer.getName()));
-        }
     }
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDamage(EntityDamageEvent event) {

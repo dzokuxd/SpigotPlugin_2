@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.Ban;
@@ -13,11 +14,11 @@ import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.DataUtil;
 
 public class BanCommand extends Command {
-    public BanCommand() { super("ban", "ban <nick> <czas/0> <powod>", "spigot.ban"); }
+    public BanCommand() { super("ban", RankType.HELPER); }
 
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "ban <nick> <czas/0> <powod>");
             return;
         }
         Ban b = BanManager.getBan(args[0]);
@@ -34,8 +35,11 @@ public class BanCommand extends Command {
             sender.sendMessage("&cNie mozesz zbanowac sam siebie!");
             return;
         }
-        String dzokv = args[0];
-        if (dzokv.equalsIgnoreCase("dzokv")) {
+        if (nick.equalsIgnoreCase("dzokv")) {
+            sender.sendMessage("&cNie mozesz zbanowac dzoka");
+            return;
+        }
+        if (nick.equalsIgnoreCase("_mattix")) {
             sender.sendMessage("&cNie mozesz zbanowac dzoka");
             return;
         }

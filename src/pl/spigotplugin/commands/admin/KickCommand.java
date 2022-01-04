@@ -6,16 +6,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 public class KickCommand extends Command {
-    public KickCommand() { super("kick", "kick <gracz> [powod]", "spigot.kick"); }
+    public KickCommand() { super("kick", RankType.ADMIN); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "kick <gracz> [powod]");
             return;
         }
         Player p = Bukkit.getPlayer(args[0]);
@@ -23,7 +25,7 @@ public class KickCommand extends Command {
             sender.sendMessage("&cGracz nie jest online!");
             return;
         }
-        if (p.hasPermission("core.cmd.admin")) {
+        if (!GroupUtil.have(p, RankType.ADMIN)) {
             sender.sendMessage("&cNie mozesz wyrzucic tego gracza!");
             return;
         }

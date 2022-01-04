@@ -3,11 +3,12 @@ package pl.spigotplugin.commands.premium;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 
 public class ResetujRankingCommand extends PlayerCommand {
-    public ResetujRankingCommand() {super("resetujranking", "resetujranking", "spigotplugin.resetujranking", "rs");}
+    public ResetujRankingCommand() {super("resetujranking", RankType.GRACZ, "rs");}
 
     @Override
     public void onCommand(Player p, String[] args) {

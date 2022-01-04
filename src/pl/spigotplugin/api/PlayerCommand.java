@@ -2,11 +2,12 @@ package pl.spigotplugin.api;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import pl.spigotplugin.enums.RankType;
 
 public abstract class PlayerCommand extends Command
 {
-    public PlayerCommand(String name, String usage, String permission, String... aliases) {
-        super(name, usage, permission, aliases);
+    public PlayerCommand(String name, RankType permission, String... aliases) {
+        super(name, permission, aliases);
     }
 
     @Override

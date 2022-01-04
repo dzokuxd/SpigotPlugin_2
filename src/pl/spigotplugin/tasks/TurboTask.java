@@ -16,7 +16,7 @@ public class TurboTask extends BukkitRunnable {
                 continue;
             }
             if (statues.EVENTS_TURBO > System.currentTimeMillis()) {
-                ChatUtil.sendActionBar(p,"&eTURBODROP: ("+ DataUtil.secondsToString(statues.EVENTS_TURBO)+")");
+                ChatUtil.sendActionBar(p,"&fTURBODROP: (&d"+ DataUtil.secondsToString(statues.EVENTS_TURBO)+"&f)");
             }
         }
     }

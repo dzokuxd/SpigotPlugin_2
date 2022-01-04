@@ -5,8 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -17,13 +15,13 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.enums.AchievmentType;
 import pl.spigotplugin.enums.AchievmentTypeName;
 import pl.spigotplugin.enums.ArmorType;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.DataManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
@@ -58,7 +56,7 @@ public class InventoryListener implements Listener {
                 long time = Long.parseLong(is.getItemMeta().getDisplayName().substring(4));
                 Player o = Bukkit.getPlayer(name);
                 if (o == null) {
-                    p.sendMessage("&cGracz offline!");
+                    p.sendMessage(ChatUtil.color("&cGracz offline!"));
                     return;
                 }
                 try {
@@ -85,15 +83,14 @@ public class InventoryListener implements Listener {
                 if (meta != null) {
                     if (item.getType().equals(Material.SKULL_ITEM)) {
                         Player pl = Bukkit.getPlayer(meta.getDisplayName().replace("§6", ""));
-                        pl.sendMessage("&6Zostales uratowany z nozek przez &c" + p.getName() + "&6 dzieki &c&lAnty Nogi");
-                        p.sendMessage("&6Uratowales gracza &c" + pl.getName());
+                        pl.sendMessage(ChatUtil.color("&6Zostales uratowany z nozek przez &c" + p.getName() + "&6 dzieki &c&lAnty Nogi"));
+                        p.sendMessage(ChatUtil.color("&6Uratowales gracza &c" + pl.getName()));
                         pl.teleport(p.getLocation());
                         ChatUtil.sendTitleMessage(pl, ChatUtil.color("&7&lAnty Nogi"), ChatUtil.color("&cZostales uratowany z nozek!"), 2, 2, 2);
-                        Bukkit.broadcastMessage("&6Gracz &c" + pl.getName() + " &6zostal uratowany z nozek przez &c" + p.getName() + "&7!");
+                        Bukkit.broadcastMessage(ChatUtil.color("&6Gracz &c" + pl.getName() + " &6zostal uratowany z nozek przez &c" + p.getName() + "&7!"));
                         ItemBuilder anty = new ItemBuilder(Material.NAME_TAG, 1).setTitle(ChatUtil.color("&6&lAnty Nogi")).addLore(ChatUtil.color("")).addLore(ChatUtil.color("&8\u00bb &2Kliknij PPM, aby uratowac czlonka gildii!")).addEnchantment(Enchantment.DURABILITY, 2);
                         p.getInventory().removeItem(anty.build());
                         p.closeInventory();
-                        u.addCoins(100);
                         u.save();
                     }
                 }
@@ -157,7 +154,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "4:0-6:Cobblestone;152:0-2:Redstone";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -175,7 +172,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "49:0-6:Obsidian;41:0-2:Gold Block;152:0-1:redstone block;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -193,7 +190,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "49:0-8:Obsidian;368:0-1:Ender Pearl;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -211,7 +208,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "41:0-8:Gold Block;397:3-1:Glwoa Gracz;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -229,7 +226,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "20:0-8:Szklo;397:3-1:Glwoa Gracz;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -247,7 +244,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "266:0-8:Zloto;260:0-1:Jablko;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -265,7 +262,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "41:0-8:Blok Zlota;260:0-1:Jablko;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -283,7 +280,7 @@ public class InventoryListener implements Listener {
             if (slot == 0) {
                 String cost = "265:0-8:Zelazo;260:0-1:Jablko;";
                 if (!ItemUtil.checkItems(p, cost, 1)) {
-                    p.sendMessage("&cNie masz potrzebnych rzeczy!");
+                    p.sendMessage(ChatUtil.color("&cNie masz potrzebnych rzeczy!"));
                     return;
                 }
                 ItemUtil.removeItems(p, cost, 1);
@@ -338,7 +335,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -348,11 +345,11 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                             u.save();
                         } else {
-                            p.sendMessage("&cNie spelniasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie spelniasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -368,7 +365,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -378,10 +375,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -397,7 +394,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -407,10 +404,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -426,7 +423,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -436,10 +433,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -455,7 +452,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -465,10 +462,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -484,7 +481,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if(get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -494,10 +491,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(),itemStack);
                             }
                             u.setAchLvl(name,get+1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -513,7 +510,7 @@ public class InventoryListener implements Listener {
                         int lvl = e.getRawSlot() - 8;
                         int get = u.getAchLvl(name);
                         if (get >= lvl) {
-                            p.sendMessage("&cOdebrales juz nagrode za to osiagniecie!");
+                            p.sendMessage(ChatUtil.color("&cOdebrales juz nagrode za to osiagniecie!"));
                             AchievmentMenu.open(p);
                             return;
                         }
@@ -524,10 +521,10 @@ public class InventoryListener implements Listener {
                                 p.getLocation().getWorld().dropItemNaturally(p.getLocation(), itemStack);
                             }
                             u.setAchLvl(name, get + 1);
-                            p.sendMessage("&aPomyslnie odblokowales osiagniecie");
+                            p.sendMessage(ChatUtil.color("&aPomyslnie odblokowales osiagniecie"));
                             AchievmentMenu.open(p);
                         } else {
-                            p.sendMessage("&cNie posiadasz wymagan!");
+                            p.sendMessage(ChatUtil.color("&cNie posiadasz wymagan!"));
                             AchievmentMenu.open(p);
                         }
                     }
@@ -539,16 +536,16 @@ public class InventoryListener implements Listener {
             e.setResult(Event.Result.DENY);
             int slot = e.getSlot();
             if (slot == 2) {
-                if (!p.hasPermission("spigot.admin") && !statues.MANAGE_KIT) {
-                    p.sendMessage("&cKity sa tymczasowo wylaczone!");
+                if (!GroupUtil.have(p, RankType.ADMIN) && !statues.MANAGE_KIT) {
+                    p.sendMessage(ChatUtil.color("&cKity sa tymczasowo wylaczone!"));
                     return;
                 }
-                if (!p.hasPermission("spigot.admin") && !p.hasPermission("spigot.vip")) {
-                    p.sendMessage("&cNie posiadasz dostepu! Zakup range premium!");
+                if (!GroupUtil.have(p, RankType.ADMIN) && !GroupUtil.have(p, RankType.VIP)) {
+                    p.sendMessage(ChatUtil.color("&cNie posiadasz dostepu! Zakup range premium!"));
                     return;
                 }
-                if (u.isKitVip() && !p.hasPermission("spigot.admin")) {
-                    p.sendMessage("&7Kit vip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_vip()));
+                if (u.isKitVip() && !GroupUtil.have(p, RankType.ADMIN)) {
+                    p.sendMessage(ChatUtil.color("&7Kit vip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_vip())));
                     return;
                 }
                 u.setKit_vip(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
@@ -564,21 +561,21 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 30));
-                p.sendMessage("&aOtrzymales kit vip!");
+                p.sendMessage(ChatUtil.color("&aOtrzymales kit vip!"));
                 KitMenu.show(p);
                 return;
             }
             if (slot == 3) {
-                if (!p.hasPermission("spigot.admin") && !statues.MANAGE_KIT) {
-                    p.sendMessage("&8\u00bb &cKity sa tymczasowo wylaczone!");
+                if (!GroupUtil.have(p, RankType.ADMIN) && !statues.MANAGE_KIT) {
+                    p.sendMessage(ChatUtil.color("&8\u00bb &cKity sa tymczasowo wylaczone!"));
                     return;
                 }
-                if (!p.hasPermission("spigot.admin") && !p.hasPermission("spigot.svip")) {
-                    p.sendMessage("&8\u00bb &cAby posiadac dostepu! Zakup range!");
+                if (!GroupUtil.have(p, RankType.ADMIN) && !GroupUtil.have(p, RankType.SVIP)) {
+                    p.sendMessage(ChatUtil.color("&8\u00bb &cAby posiadac dostepu! Zakup range!"));
                     return;
                 }
-                if (u.isKitSvip() && !p.hasPermission("spigotplugin.admin")) {
-                    p.sendMessage("&8\u00bb &7Kit svip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_svip()));
+                if (u.isKitSvip() && !GroupUtil.have(p, RankType.ADMIN)) {
+                    p.sendMessage(ChatUtil.color("&8\u00bb &7Kit svip mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_svip())));
                     return;
                 }
                 u.setKit_svip(System.currentTimeMillis() + TimeUtil.HOUR.getTime(12));
@@ -598,13 +595,13 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemBuilder(Material.BOW).addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.ARROW_FIRE, 1).build());
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_PEARL, 4));
                 ItemUtil.giveItems(p, new ItemStack(Material.ARROW, 40));
-                p.sendMessage("&aOtrzymales kit svip!");
+                p.sendMessage(ChatUtil.color("&aOtrzymales kit svip!"));
                 KitMenu.show(p);
                 return;
             }
             if (slot == 1) {
-                if (u.isKitStart() && !p.hasPermission("spigot.admin")) {
-                    p.sendMessage("&8\u00bb &7Kit start mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_start()));
+                if (u.isKitStart() && !GroupUtil.have(p, RankType.ADMIN)) {
+                    p.sendMessage(ChatUtil.color("&8\u00bb &7Kit start mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_start())));
                     return;
                 }
                 u.setKit_start(System.currentTimeMillis() + TimeUtil.HOUR.getTime(1));
@@ -612,23 +609,23 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
                 ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
                 ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
-                p.sendMessage("&aOtrzymales kit start!");
+                p.sendMessage(ChatUtil.color("&aOtrzymales kit start!"));
                 KitMenu.show(p);
                 return;
             }
             if (slot == 0) {
-                if (u.isKitMieso() && !p.hasPermission("spigot.admin")) {
-                    p.sendMessage("&7Kit mieso mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
+                if (u.isKitMieso() && !GroupUtil.have(p, RankType.ADMIN)) {
+                    p.sendMessage(ChatUtil.color("&7Kit mieso mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso())));
                     return;
                 }
                 u.setKit_mieso(System.currentTimeMillis() + TimeUtil.SECOND.getTime(60));
                 ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 128));
-                p.sendMessage("&aOtrzymales kit mieso!");
+                p.sendMessage(ChatUtil.color("&aOtrzymales kit mieso!"));
                 KitMenu.show(p);
             }
             if (slot == 4) {
-                if (u.isKitTest() && !p.hasPermission("spigot.admin")) {
-                    p.sendMessage("&7Kit test mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso()));
+                if (u.isKitTest() && !GroupUtil.have(p, RankType.ADMIN)) {
+                    p.sendMessage(ChatUtil.color("&7Kit test mozesz uzyc dopiero za &c&l" + DataUtil.secondsToString(u.getKit_mieso())));
                     return;
                 }
                 u.setKit_test(System.currentTimeMillis() + TimeUtil.SECOND.getTime(30));
@@ -650,7 +647,7 @@ public class InventoryListener implements Listener {
                 ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 1, (short) 1));
                 ItemUtil.giveItems(p, new ItemStack(Material.GOLDEN_APPLE, 12));
                 ItemUtil.giveItems(p, new ItemStack(Material.WATER_BUCKET, 1));
-                p.sendMessage("&aOtrzymales kit test!");
+                p.sendMessage(ChatUtil.color("&aOtrzymales kit test!"));
                 KitMenu.show(p);
             }
             return;
@@ -710,13 +707,12 @@ public class InventoryListener implements Listener {
                         x.setKills(0);
                         x.setDeaths(0);
                         x.setAsysty(0);
-                        x.setCoins(0);
-                        ProfilMenu.show(p);
+                        p.closeInventory();
                         break;
                     case 1:
                         profilclear = "turbo";
                         x.setTurboDrop(0);
-                        ProfilMenu.show(p);
+                        p.closeInventory();
                         break;
                     case 2:
                         profilclear = "schowek";
@@ -724,7 +720,7 @@ public class InventoryListener implements Listener {
                         x.setStrzaly(0);
                         x.setPerly(0);
                         x.setRefile(0);
-                        ProfilMenu.show(p);
+                        p.closeInventory();
                         break;
                     default:
                         break;
@@ -764,15 +760,17 @@ public class InventoryListener implements Listener {
                     default:
                         break;
                 }
-
                 String name = e.getInventory().getName().replace("Grupa dla: ", "");
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
+                User user = UserManager.getUser(name);
+                user.setRankType(RankType.valueOf(groupToGive));
+                user.updateGroup();
+                //Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "pex user " + name + " group set " + groupToGive);
                 p.sendMessage("&fNadales grupe &d"+groupToGive+ " &fdla gracz &d"+name);
-                TagUtil.updateBoard(p);
+                TagUtil.updateBoard(user.getPlayer());
             }
             return;
         }
-        if (p.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSprawdzanie"))) {
+        if (e.getInventory().getName().equalsIgnoreCase(ChatUtil.color("&7&lSprawdzanie"))) {
             e.setCancelled(true);
             if (e.getSlot() == 11) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"ban "+p.getName() + " 1d");
@@ -919,7 +917,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
                 if (gl != gl) {
-                    p.sendMessage("&cWithera mozesz zrepisc na terenie gildii swojej!");
+                    p.sendMessage("&cWithera mozesz zrepisc na terenie swojej gildii!");
                     return;
                 }
                 p.getInventory().removeItem(guild.COST_WITHER);
@@ -1235,6 +1233,15 @@ public class InventoryListener implements Listener {
                         string.set(0, ChatUtil.color(" &8\u00bb &7Drop: &" + (RandomDropData.isNoCobble(e.getWhoClicked().getUniqueId()) ? "cNie" : "aTak")));
                         meta.setLore(string);
                         item.setItemMeta(meta);
+                    }
+                    if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&d&lEventy"))) {
+                        EventMenu.show(p);
+                    }
+                    if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&d&lDrop z Easy6/1/1"))) {
+                        StoneMenu.easy611((Player) e.getWhoClicked());
+                    }
+                    if (meta.getDisplayName() != null && meta.getDisplayName().equals(ChatUtil.color("&d&lDrop z Case"))) {
+                        StoneMenu.easycase((Player) e.getWhoClicked());
                     }
                 }
             }

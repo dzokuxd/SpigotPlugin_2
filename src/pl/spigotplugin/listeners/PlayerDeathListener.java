@@ -101,7 +101,6 @@ public class PlayerDeathListener implements Listener {
             uu.setPoints(uu.getPoints() + plusRank);
             uu.setKills(uu.getKills() + 1);
             uu.setKs(uu.getKs() + 1);
-            uu.setCoins(uu.getCoins() + 200);
             ChatUtil.sendTitleMessage(k, "&6Zabojstwo!", "&c" + (g == null ? "" : g.getTag()) + " " + p.getName() + " &7+" + plusRank, 30, 70, 40);
             k.playSound(p.getLocation(), Sound.LEVEL_UP, 5.0f, 3.0f);
             k.getWorld().strikeLightningEffect(k.getLocation());

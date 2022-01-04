@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.holder.ItemHolder;
 import pl.spigotplugin.managers.DropManager;
 import pl.spigotplugin.managers.UserManager;
@@ -14,6 +15,7 @@ import pl.spigotplugin.objects.drop.RandomDropData;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.configs.Settings;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 import pl.spigotplugin.utils.ItemBuilder;
 
 import java.util.List;
@@ -21,14 +23,14 @@ import java.util.Map;
 
 public class StoneMenu {
     public static void stone(Player p) {
-        Inventory inv = Bukkit.createInventory(p, 36, ChatUtil.color("&7&lDrop z Stone"));
+        Inventory inv = Bukkit.createInventory(p, 27, ChatUtil.color("&7&lDrop z Stone"));
         User u = UserManager.getUser(p);
         if (u == null) return;
         for (Drop d : RandomDropData.getDrops()) {
             double chance = d.getChance();
-            if (p.hasPermission("core.drop.svip")) {
+            if (!GroupUtil.have(p, RankType.SVIP)) {
                 chance += 1.0;
-            } else if (p.hasPermission("core.drop.vip")) {
+            } else if (!GroupUtil.have(p, RankType.VIP)) {
                 chance += 0.50;
             }
             if (statues.EVENTS_TURBO > System.currentTimeMillis() || u.getTurboDrop() > System.currentTimeMillis()) {
@@ -37,27 +39,29 @@ public class StoneMenu {
             double bonus = d.getChance() / 100.0 * (100.0 + u.getLvl() * 1.2) - d.getChance();
             ItemBuilder b = new ItemBuilder(d.getWhat().getType(), 1);
             b.setTitle("&7&l" + d.getName());
-            b.addLore(" &7\u00bb &6Szansa na drop: &c" + ChatUtil.xD(chance, 3));
-            b.addLore(" &7\u00bb &6Bonus: &c" + ChatUtil.xD(bonus, 3));
-            b.addLore(" &7\u00bb &6Wypada ponizej: &c" + d.getMaxHeight() + " &6poziomu");
-            b.addLore(" &7\u00bb &6Fortune: " + (d.isFortune() ? "&aTak" : "&cNie"));
-            b.addLore(" &7\u00bb &6Drop: " + (d.isDisabled(p.getUniqueId()) ? "&cWylaczony" : "&aWlaczony"));
-            b.addLore(" &7\u00bb &6Wykopane: &c" + u.getDrops().getOrDefault(d.getWhat().getType(), 0) + " &6szt.").setGlow(!d.isDisabled(p.getUniqueId())).build();
+            b.addLore(" &7\u00bb &fSzansa na drop: &d" + ChatUtil.xD(chance, 3));
+            b.addLore(" &7\u00bb &fBonus: &d" + ChatUtil.xD(bonus, 3));
+            b.addLore(" &7\u00bb &fWypada ponizej: &d" + d.getMaxHeight() + " &fpoziomu");
+            b.addLore(" &7\u00bb &fFortune: " + (d.isFortune() ? "&aTak" : "&dNie"));
+            b.addLore(" &7\u00bb &fDrop: " + (d.isDisabled(p.getUniqueId()) ? "&cWylaczony" : "&aWlaczony"));
+            b.addLore(" &7\u00bb &fWykopane: &d" + u.getDrops().getOrDefault(d.getWhat().getType(), 0) + " &fszt.").setGlow(!d.isDisabled(p.getUniqueId())).build();
             inv.addItem(b.build());
         }
         ItemBuilder cbl = new ItemBuilder(Material.COBBLESTONE,1).setTitle("&7&lCobblestone").addLore(" &7\u00bb &7Drop: &"+(RandomDropData.isNoCobble(p.getUniqueId()) ? "cNie" : "aTak"));
         ItemBuilder on = new ItemBuilder(Material.STAINED_CLAY, (short) 5).setTitle("&aWlacz Wszystkie Dropy");
         ItemBuilder off = new ItemBuilder(Material.STAINED_CLAY, (short) 14).setTitle("&cWylacz Wszystkie Dropy");
-        ItemBuilder itemBuilder = new ItemBuilder(Material.EXP_BOTTLE).setTitle("&7&lDoswiadczenie");
+        ItemBuilder eventy = new ItemBuilder(Material.BEACON).setTitle("&d&lEventy").addLore("&7Kliknij, aby przejsc dalej!");
+        ItemBuilder case6 = new ItemBuilder(Material.CHEST).setTitle("&d&lDrop z Easy6/1/1").addLore("&7Kliknij, aby przejsc dalej!");
+        ItemBuilder easycase = new ItemBuilder(Material.ENDER_CHEST).setTitle("&d&lDrop z Case").addLore("&7Kliknij, aby przejsc dalej!");
         for (Map.Entry<Material, Integer> en : DropManager.getExps().entrySet()) {
-            int exp = en.getValue();
-            itemBuilder.addLore("&7\u00bb &7" + en.getKey() + ": &c" + exp);
         }
-        inv.setItem(28, off.build());
-        inv.setItem(27, on.build());
-        inv.setItem(34, cbl.build());
-        inv.setItem(31, itemBuilder.build());
-        inv.setItem(35, ItemHolder.get("gui.back"));
+        inv.setItem(19, off.build());
+        inv.setItem(18, on.build());
+        inv.setItem(20, cbl.build());
+        inv.setItem(23, easycase.build());
+        inv.setItem(24, case6.build());
+        inv.setItem(25, eventy.build());
+        inv.setItem(26, ItemHolder.get("gui.back"));
         p.openInventory(inv);
     }
     public static void inventory(Player player) {

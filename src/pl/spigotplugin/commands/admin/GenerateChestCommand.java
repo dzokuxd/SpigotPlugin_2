@@ -7,15 +7,17 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.RandomUtil;
 
 public class GenerateChestCommand extends PlayerCommand {
-    public GenerateChestCommand() {super("generatechest", "generatechest <ilosc>", "spigot.generatechest");}
+    public GenerateChestCommand() {super("generatechest", RankType.ADMIN);}
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 1) {
-            core.usage(p, getUsage());
+            core.usage(p, "generatechest <ilosc>");
             return;
         }
         int i;
@@ -23,7 +25,7 @@ public class GenerateChestCommand extends PlayerCommand {
             i = Integer.parseInt(args[0]);
         }
         catch (NumberFormatException e) {
-            p.sendMessage("&c/generatechest <ilosc>");
+            p.sendMessage(ChatUtil.color("&c/generatechest <ilosc>"));
             return;
         }
         int border = (int) Bukkit.getWorld("world").getWorldBorder().getSize() / 2;

@@ -4,9 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 public class HealCommand extends PlayerCommand {
-    public HealCommand() { super("heal", "heal <gracz>", "spigot.heal"); }
+    public HealCommand() { super("heal",  RankType.HELPER); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,16 +20,16 @@ public class HealCommand extends PlayerCommand {
             for (PotionEffect effect : p.getActivePotionEffects()) {
                 p.removePotionEffect(effect.getType());
             }
-            p.sendMessage("&aZostales uleczony!");
+            p.sendMessage(ChatUtil.color("&aZostales uleczony!"));
             return;
         }
-        if (!p.hasPermission("core.cmd.admin")) {
-            p.sendMessage("&cNie masz dostepu!");
+        if (!(GroupUtil.have(p, RankType.MOD))) {
+            p.sendMessage(ChatUtil.color("&cNie masz dostepu!"));
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&cGracz jest offline!");
+            p.sendMessage(ChatUtil.color("&cGracz jest offline!"));
             return;
         }
         o.setFireTicks(0);
@@ -35,7 +38,7 @@ public class HealCommand extends PlayerCommand {
         for (PotionEffect effect : o.getActivePotionEffects()) {
             o.removePotionEffect(effect.getType());
         }
-        o.sendMessage("&fZostales uleczony przez &d" + p.getName());
-        p.sendMessage("&fUleczyles &d" + o.getName());
+        o.sendMessage(ChatUtil.color("&fZostales uleczony przez &d" + p.getName()));
+        p.sendMessage(ChatUtil.color("&fUleczyles &d" + o.getName()));
     }
 }

@@ -4,9 +4,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class TopCommand extends PlayerCommand {
-    public TopCommand() { super("top ", "/op", "spigot.top"); }
+    public TopCommand() { super("top ", RankType.MOD); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -17,6 +19,6 @@ public class TopCommand extends PlayerCommand {
         }
         location.setY(y);
         p.teleport(location);
-        p.sendMessage(core.TOP);
+        p.sendMessage(ChatUtil.color(core.TOP));
     }
 }

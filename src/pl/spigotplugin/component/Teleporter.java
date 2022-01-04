@@ -4,8 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,14 +21,14 @@ public class Teleporter {
         User u = UserManager.getUser(p);
         if (u.getCurrentTeleport() != null) return;
 
-        if (p.hasPermission("spigot.admin")) {
+        if (!GroupUtil.have(p, RankType.ADMIN)) {
             p.teleport(location);
             return;
         }
 
         Location first = p.getLocation();
         AtomicInteger atomicInteger = new AtomicInteger(1);
-        p.sendMessage(PENDING_MESSAGE);
+        p.sendMessage(ChatUtil.color(PENDING_MESSAGE));
 
         u.setCurrentTeleport(Bukkit.getScheduler().runTaskTimer(SpigotPlugin.getPlugin(), () -> {
 
@@ -38,12 +41,12 @@ public class Teleporter {
             if (first.distance(p.getLocation()) > 8) {
                 u.getCurrentTeleport().cancel();
                 u.setCurrentTeleport(null);
-                p.sendMessage(ERROR_MESSAGE);
+                p.sendMessage(ChatUtil.color(ERROR_MESSAGE));
                 return;
             }
 
             if (atomicInteger.getAndIncrement() >= 10) {
-                p.sendMessage(SUCCESS_MESSAGE);
+                p.sendMessage(ChatUtil.color(SUCCESS_MESSAGE));
                 u.getCurrentTeleport().cancel();
                 u.setCurrentTeleport(null);
                 p.teleport(location);

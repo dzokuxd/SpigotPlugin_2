@@ -1,24 +1,24 @@
 package pl.spigotplugin.api;
 
 import org.bukkit.command.CommandSender;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.GroupUtil;
 
 import java.util.Arrays;
 
 public abstract class Command extends org.bukkit.command.Command
 {
     private String name;
-    private String usage;
-    private String permission;
+    private RankType permission;
 
-    public Command(String name, String usage, String permission, String... aliases) {
-        super(name, "", usage, Arrays.asList(aliases));
+    public Command(String name, RankType permission, String... aliases) {
+        super(name, "", "xd", Arrays.asList(aliases));
         this.name = name;
-        this.usage = usage;
         this.permission = permission;
     }
 
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!this.permission.isEmpty() && !sender.hasPermission(this.permission)) {
+        if (!GroupUtil.have(sender, this.permission)) {
             sender.sendMessage("&cNie masz dostepu!");
             return false;
         }
@@ -30,13 +30,5 @@ public abstract class Command extends org.bukkit.command.Command
 
     public String getName() {
         return this.name;
-    }
-
-    public String getUsage() {
-        return this.usage;
-    }
-
-    public String getPermission() {
-        return this.permission;
     }
 }

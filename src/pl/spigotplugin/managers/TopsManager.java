@@ -18,7 +18,6 @@ public class TopsManager {
     public static List<User> pearls = new ArrayList<>();
     public static List<User> arrows = new ArrayList<>();
     public static List<User> lvl = new ArrayList<>();
-    public static List<User> coins = new ArrayList<>();
     public static List<User> easycase = new ArrayList<>();
     public static List<User> case6 = new ArrayList<>();
     public static List<User> kills = new ArrayList<>();
@@ -34,7 +33,6 @@ public class TopsManager {
         pearls.add(u);
         arrows.add(u);
         lvl.add(u);
-        coins.add(u);
         easycase.add(u);
         case6.add(u);
         kills.add(u);
@@ -51,7 +49,6 @@ public class TopsManager {
         pearls.sort((o1, o2) -> Integer.compare(o2.getPearlThrown(), o1.getPearlThrown()));
         arrows.sort((o1, o2) -> Integer.compare(o2.getArrowsShoten(), o1.getArrowsShoten()));
         lvl.sort((o1, o2) -> Integer.compare(o2.getLvl(), o1.getLvl()));
-        coins.sort((o1, o2) -> Integer.compare(o2.getCoins(), o1.getCoins()));
         easycase.sort((o1, o2) -> Integer.compare(o2.getEasycase(), o1.getEasycase()));
         case6.sort((o1, o2) -> Integer.compare(o2.getCase611(), o1.getCase611()));
         kills.sort((o1, o2) -> Integer.compare(o2.getKills(), o1.getKills()));

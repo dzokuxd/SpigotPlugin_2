@@ -70,8 +70,8 @@ public class EntityExplodeListener implements Listener {
         }
         Guild g = GuildManager.getGuild(e.getEntity().getLocation());
         if (g != null) {
-            g.setLastExplodeTime(System.currentTimeMillis() + TimeUtil.MINUTE.getTime(0));
-            g.message("&4Na terenie gildii wybuchlo tnt!");
+            g.setLastExplodeTime(System.currentTimeMillis() + TimeUtil.MINUTE.getTime(120));
+            g.message(ChatUtil.color("&4Na terenie gildii wybuchlo tnt!"));
             if (g.getCreateTime() + TimeUtil.HOUR.getTime(24) > System.currentTimeMillis()) {
                 e.setCancelled(true);
                 return;

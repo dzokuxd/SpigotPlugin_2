@@ -5,16 +5,18 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 public class TpCommand extends PlayerCommand {
-    public TpCommand() { super("tp", "tp <do kogo/x,y,z>", "spigot.tp"); }
+    public TpCommand() { super("tp", RankType.HELPER); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         switch (args.length) {
             case 0: {
-                core.usage(p, getUsage());
+                core.usage(p, "tp <do kogo/x,y,z>");
                 return;
             }
             case 1: {
@@ -28,7 +30,7 @@ public class TpCommand extends PlayerCommand {
                 return;
             }
             case 2: {
-                if (!p.hasPermission("spigot.admin")) {
+                if (!GroupUtil.have(p, RankType.MOD)) {
                     p.sendMessage("&cNie masz dostepu!");
                     return;
                 }
@@ -49,7 +51,7 @@ public class TpCommand extends PlayerCommand {
                 return;
             }
             case 3: {
-                if (!p.hasPermission("spigot.admin")) {
+                if (!GroupUtil.have(p, RankType.MOD)) {
                     p.sendMessage("&cNie masz dostepu!");
                     return;
                 }
@@ -65,7 +67,7 @@ public class TpCommand extends PlayerCommand {
                 return;
             }
             case 4: {
-                if (!p.hasPermission("spigot.admin")) {
+                if (!GroupUtil.have(p, RankType.MOD)) {
                     p.sendMessage("&cNie masz dostepu!");
                     return;
                 }

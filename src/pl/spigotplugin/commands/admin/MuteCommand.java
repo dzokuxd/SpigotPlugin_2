@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.MuteManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.Mute;
@@ -14,12 +15,12 @@ import pl.spigotplugin.utils.DataUtil;
 
 public class MuteCommand extends Command {
     public MuteCommand() {
-        super("mute", "mute <gracz> [czas] [powod]", "spigot.mute");
+        super("mute", RankType.HELPER);
     }
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "mute <gracz> [czas] [powod]");
             return;
         }
         Mute m = MuteManager.getMute(args[0]);

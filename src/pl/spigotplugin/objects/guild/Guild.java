@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.helper.JSONHelper;
 import pl.spigotplugin.holder.SaveHolder;
+import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.mysql.MySQLUtil;
 import pl.spigotplugin.utils.LocationParser;
 import pl.spigotplugin.utils.TimeUtil;
@@ -15,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Guild {
@@ -38,7 +41,6 @@ public class Guild {
     public String regen = "";
     private int blocksToRegen = 0;
     private int gold = 0;
-    private String center;
     private boolean startedRegen = false;
     private boolean needsaveregen = false;
     private long hpLastAttack = System.currentTimeMillis() + TimeUtil.HOUR.getTime(24);
@@ -225,8 +227,6 @@ public class Guild {
         return allyInvites;
     }
 
-    public String getCenter() {return this.center;}
-
     public Location getHome() { return home; }
 
     public void addSize(int size) {
@@ -359,6 +359,7 @@ public class Guild {
         this.leader = leader;
         putForSave();
     }
+
     public void message(String msg) {
         for (Player p : this.getOnlineMembers()) {
             p.sendMessage(msg);

@@ -5,9 +5,11 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class GamemodeCommand extends PlayerCommand {
-    public GamemodeCommand() { super("gamemode", "gamemode (gracz | tryb)", "spigot.gamemode", "gm");
+    public GamemodeCommand() { super("gamemode", RankType.MOD, "gm");
     }
 
     @Override
@@ -16,31 +18,31 @@ public class GamemodeCommand extends PlayerCommand {
             case 1:{
                 GameMode mode = getMode(args[0]);
                 if (mode == null) {
-                    p.sendMessage("&cNie odnaleziono tego trybu gry!");
+                    p.sendMessage(ChatUtil.color("&cNie odnaleziono tego trybu gry!"));
                     return;
                 }
                 p.setGameMode(mode);
-                p.sendMessage(core.GAMEMODE_GM.replace("{GAMEMODE}",mode.name()));
+                p.sendMessage(ChatUtil.color(core.GAMEMODE_GM.replace("{GAMEMODE}",mode.name())));
                 break;
             }
             case 2:{
                 GameMode mode = getMode(args[0]);
                 if (mode == null) {
-                    p.sendMessage("&cNie odnaleziono tego trybu gry!");
+                    p.sendMessage(ChatUtil.color("&cNie odnaleziono tego trybu gry!"));
                     return;
                 }
                 Player x = Bukkit.getPlayer(args[1]);
                 if (x == null) {
-                    p.sendMessage("&cGracz jest offline");
+                    p.sendMessage(ChatUtil.color("&cGracz jest offline"));
                     return;
                 }
                 x.setGameMode(mode);
-                x.sendMessage(core.GAMEMODE_PLAYER.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",p.getName()));
-                p.sendMessage(core.GAMEMODE_YOU.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",x.getName()));
+                x.sendMessage(ChatUtil.color(core.GAMEMODE_PLAYER.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",p.getName())));
+                p.sendMessage(ChatUtil.color(core.GAMEMODE_YOU.replace("{GAMEMODESTATUS}",mode.name()).replace("{GAMEMODEPLAYER}",x.getName())));
                 break;
             }
             default: {
-                core.usage(p, getUsage());
+                core.usage(p, "gamemode <gracz> <tryb>");
                 break;
             }
         }

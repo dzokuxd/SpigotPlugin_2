@@ -2,7 +2,9 @@ package pl.spigotplugin.mysql;
 
 import org.bukkit.Bukkit;
 import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.configs.DropFile;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.managers.*;
 
 import java.sql.*;
 
@@ -20,7 +22,7 @@ public class MySQL {
         this.password = statues.password;
         connect();
 
-        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT, koxy INT, refile INT, perly INT, strzaly INT, koxEaten INT, refilEaten INT, pearlThrown INT, arrowsShoten INT, coins INT, easycase INT, case611 INT, kills INT, asysty INT, points INT,deaths INT,ks INT,maxks INT, time BIGINT, os TEXT, guild TEXT, enderchest TEXT)");
+        update("CREATE TABLE IF NOT EXISTS users (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name TEXT, rankType TEXT, turboDrop BIGINT, kit_start BIGINT, kit_vip BIGINT, kit_svip BIGINT, lvl BIGINT, exp BIGINT, wykStone BIGINT, wykObsidian BIGINT,drops TEXT, koxy INT, refile INT, perly INT, strzaly INT, koxEaten INT, refilEaten INT, pearlThrown INT, arrowsShoten INT, easycase INT, case611 INT, kills INT, asysty INT, points INT,deaths INT,ks INT,maxks INT, time BIGINT, os TEXT, guild TEXT, enderchest TEXT)");
         update("CREATE TABLE IF NOT EXISTS guilds (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, tag TEXT, name TEXT, leader TEXT, deputy TEXT, members TEXT, region TEXT, home TEXT, prolong BIGINT, playerslimit INT, ally TEXT, kills int NOT NULL,deaths int NOT NULL, life int NOT NULL, points int, hp int, createTime BIGINT, gold int, regen TEXT, hpLastAttack BIGINT, wars TEXT)");
         update("CREATE TABLE IF NOT EXISTS `{P}savedGuilds` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `tag` text NOT NULL);");
 

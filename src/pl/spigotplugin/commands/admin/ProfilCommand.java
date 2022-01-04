@@ -2,13 +2,14 @@ package pl.spigotplugin.commands.admin;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.ProfilMenu;
 import pl.spigotplugin.objects.user.User;
 
 public class ProfilCommand extends PlayerCommand {
     public ProfilCommand() {
-        super("profil", "profil <gracz>", "spigot.profil");
+        super("profil", RankType.HA);
     }
 
     @Override
@@ -18,6 +19,6 @@ public class ProfilCommand extends PlayerCommand {
             p.sendMessage("&cTakiego gracza nie bylo nigdy na serwerze");
             return;
         }
-        ProfilMenu.show(p);
+        ProfilMenu.show(p, u);
     }
 }

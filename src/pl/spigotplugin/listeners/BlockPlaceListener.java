@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
@@ -30,7 +31,7 @@ public class BlockPlaceListener implements Listener {
         Player p = e.getPlayer();
         Block b = e.getBlock();
         if (e.getBlockPlaced().getType() == Material.BREWING_STAND) {
-            p.sendMessage("&cAlchemia zostala zablokowana!");
+            p.sendMessage(ChatUtil.color("&cAlchemia zostala zablokowana!"));
             e.setCancelled(true);
             return;
         }
@@ -38,10 +39,16 @@ public class BlockPlaceListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && (CuboidUtil.cuboid1(b.getLocation())) && (CuboidUtil.cuboid2(b.getLocation())) && !p.hasPermission("spigot.bypass")) {
+        if (CuboidUtil.cuboid1(b.getLocation()) && (CuboidUtil.cuboid1(b.getLocation()) && !GroupUtil.have(p, RankType.ADMIN))) {
             e.setBuild(false);
             e.setCancelled(true);
-            p.sendMessage("&cTa interakcja jest zablokowana!");
+            p.sendMessage(ChatUtil.color("&cTa interakcja jest zablokowana!"));
+            return;
+        }
+        if (CuboidUtil.isOutsideSpawn(b.getLocation()) && (CuboidUtil.isOutsideSpawn(b.getLocation()) && !GroupUtil.have(p, RankType.ADMIN))) {
+            e.setBuild(false);
+            e.setCancelled(true);
+            p.sendMessage(ChatUtil.color("&cTa interakcja jest zablokowana!"));
             return;
         }
         if (e.getBlockPlaced().getType() == Material.SPONGE){
@@ -52,27 +59,27 @@ public class BlockPlaceListener implements Listener {
             e.setCancelled(true);
             e.getBlockPlaced().setType(Material.AIR);
             List<ItemStack> dropList = Settings.normalDropList;
-            if (p.hasPermission("cobblex.premiumDrop")) {
+            if (!GroupUtil.have(p, RankType.VIP)) {
                 dropList = Settings.premiumDropList;
             }
             ItemUtil.giveDrop(e.getBlockPlaced().getLocation(), dropList);
             p.getInventory().removeItem(Settings.cobblexItem);
         }
         if (e.getBlockPlaced().getType() == Material.OBSIDIAN) {
-            if (p.hasPermission("spigot.bypass")) {
+            if (!GroupUtil.have(p, RankType.ADMIN)) {
                 return;
             }
             e.setBuild(false);
             e.setCancelled(true);
-            p.sendMessage("&cObsydianu mozesz uzywac tylko na terenie gildii");
+            p.sendMessage(ChatUtil.color("&cObsydianu mozesz postawic tylko na terenie gildii"));
         }
         if (b.getLocation().getBlockY() >= 90) {
-            if (p.hasPermission("spigot.bypass")) {
+            if (!GroupUtil.have(p, RankType.ADMIN)) {
                 return;
             }
             if (CombatManager.isFighting(p)) {
                 e.setCancelled(true);
-                p.sendMessage("&cJestes podczas walki! Nie mozesz stawiac powyzej 90 poziomu!");
+                p.sendMessage(ChatUtil.color("&cJestes podczas walki! Nie mozesz stawiac powyzej 90 poziomu!"));
             }
         }
         Guild guild = GuildManager.getGuild(b.getLocation());
@@ -87,7 +94,7 @@ public class BlockPlaceListener implements Listener {
                 if (guild != null) {
                     if (!guild.isMember(e.getPlayer().getName())) {
                         if (!CombatManager.isFighting(p)) {
-                            p.sendMessage("&cJestes podczas walki nie mozesz postawic stoniarki!");
+                            p.sendMessage(ChatUtil.color("&cJestes podczas walki nie mozesz postawic stoniarki!"));
                             e.setCancelled(true);
                             e.getBlock().setType(Material.AIR);
                             return;
@@ -99,7 +106,7 @@ public class BlockPlaceListener implements Listener {
             }
         }
         if (guild != null) {
-            if (p.hasPermission("spigot.bypass"))
+            if (!GroupUtil.have(p, RankType.ADMIN))
                 return;
             User user = UserManager.getUser(p);
             if (user == null) {
@@ -113,20 +120,20 @@ public class BlockPlaceListener implements Listener {
                 return;
             }
             if (guild.getLastExplodeTime() + TimeUtil.SECOND.getTime(120) > System.currentTimeMillis()) {
-                p.sendMessage("&cNa terenie gildii wybuchlo tnt nie mozesz budowac!!");
+                p.sendMessage(ChatUtil.color("&cNa terenie gildii wybuchlo tnt nie mozesz budowac!!"));
                 e.setCancelled(true);
                 return;
             }
             if (guild.isMember(p.getName()) && guild.getRegion().isInCentrum(e.getBlock().getLocation(), 3, 2, 3)) {
                 e.setCancelled(true);
-                p.sendMessage("&cNie mozesz budowac w centrum gildii!");
+                p.sendMessage(ChatUtil.color("&cNie mozesz budowac w centrum gildii!"));
                 return;
             }
             if (b.getLocation().getBlockY() >= 60) {
                 if (e.getBlockPlaced().getType() == Material.CHEST) {
                     e.setBuild(false);
                     e.setCancelled(true);
-                    p.sendMessage("&cSkrzynie mozesz postawic ponizej 60 poziomu");
+                    p.sendMessage(ChatUtil.color("&cSkrzynie mozesz postawic ponizej 60 poziomu"));
                     return;
                 }
             }
@@ -218,7 +225,7 @@ public class BlockPlaceListener implements Listener {
                 return;
             }
             if (e.getBlock().getY() > 70) {
-                p.sendMessage("&cBoyFarmera mozesz postawic tylko do 70 poziomu!");
+                p.sendMessage(ChatUtil.color("&cBoyFarmera mozesz postawic tylko do 70 poziomu!"));
                 e.setCancelled(true);
                 return;
             }
@@ -237,7 +244,7 @@ public class BlockPlaceListener implements Listener {
         }
     }
     private ItemStack getCaseItem() {
-        ItemStack item = new ItemStack(Material.CHEST, 1);
+        ItemStack item = new ItemStack(Material.ENDER_CHEST, 1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatUtil.color("&c&lSkrzynia Easy6/1/1"));
         item.setItemMeta(meta);

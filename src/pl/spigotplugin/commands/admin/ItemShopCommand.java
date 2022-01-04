@@ -5,17 +5,19 @@ import org.bukkit.command.CommandSender;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.TagUtil;
 
 public class ItemShopCommand extends Command {
-    public ItemShopCommand() { super("itemshop", "is <gracz> <VIP, SVIP, UNBAN, COINS, TURBODROP, EASYCASE, CASE611>", "spigot.itemshop","is"); }
+    public ItemShopCommand() { super("itemshop", RankType.ADMIN,"is"); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "is <gracz> <VIP, SVIP, UNBAN, TURBODROP, EASYCASE, CASE611>");
             return;
         }
         String name = args[0];
@@ -56,28 +58,6 @@ public class ItemShopCommand extends Command {
                 Bukkit.broadcastMessage("         &aDziekujemy za wsparcie!");
                 Bukkit.broadcastMessage("&7&m-------------------------------------");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "unban " + name);
-                return;
-            }
-            case "coins": {
-                if (args.length < 3) {
-                    sender.sendMessage("&c/is <gracz> coins <ilosc>");
-                }
-                if (!ChatUtil.isInteger(args[2])) {
-                    sender.sendMessage("&cWartosc nie jest liczba!");
-                    return;
-                }
-                int amout = Integer.parseInt(args[2]);
-                User u = UserManager.getUser(name);
-                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
-                Bukkit.broadcastMessage((""));
-                Bukkit.broadcastMessage(("&fGracz &d" + name + " &fzakupil &c&lCoinsy! x" + amout));
-                Bukkit.broadcastMessage((""));
-                Bukkit.broadcastMessage(("&fNasz sklep: &dwww." + (statues.IP)));
-                Bukkit.broadcastMessage((""));
-                Bukkit.broadcastMessage(("         &aDziekujemy za wsparcie!"));
-                Bukkit.broadcastMessage(("&7&m-------------------------------------"));
-                u.addCoins(amout);
-                u.save();
                 return;
             }
             case "easycase": {
@@ -151,7 +131,7 @@ public class ItemShopCommand extends Command {
                 return;
             }
             default: {
-                sender.sendMessage("&7\u00bb &7Dostepne uslugi: &bVIP, SVIP, UNBAN, COINS, TURBODROP, EASYCASE, 6/1/1");
+                sender.sendMessage("&7\u00bb &7Dostepne uslugi: &bVIP, SVIP, UNBAN, TURBODROP, EASYCASE, 6/1/1");
             }
         }
     }

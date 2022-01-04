@@ -6,16 +6,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BroadcastCommand extends Command {
-    public BroadcastCommand() { super("broadcast", "broadcast <chat/title> <text>", "spigot.broadcast", "bc");
+    public BroadcastCommand() { super("broadcast", RankType.MOD, "bc");
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "broadcast <chat/title> <text>");
             return;
         }
         if (args[0].equalsIgnoreCase("chat")) {

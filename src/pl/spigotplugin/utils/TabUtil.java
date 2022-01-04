@@ -3,30 +3,16 @@ package pl.spigotplugin.utils;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedSignedProperty;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import pl.spigotplugin.configs.guild;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.TabManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.guild.GuildWar;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.protocoltab.ProtocolTabAPI;
-import pl.spigotplugin.protocoltab.manager.ProtocolTab;
-import ru.tehkode.permissions.PermissionEntity;
-import ru.tehkode.permissions.PermissionGroup;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.PermissionsData;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class TabUtil {
@@ -144,10 +130,9 @@ public class TabUtil {
     }
 
     public void update(Player player) {
-        PermissionUser uu = PermissionsEx.getUser(player);
         Guild g = GuildManager.getGuild(player);
         this.setSLOT(0, 3, "&fNick: &d"+this.getPlayerData().getName());
-        this.setSLOT(0, 4, "&fGrupa: &d"+ Arrays.toString(uu.getGroupsNames()).replace("]", "").replace("[", ""));
+        this.setSLOT(0, 4, "&fGrupa: &d"+ this.getPlayerData().getRankType().name());
         this.setSLOT(0, 5, "&fIncognito: &d"+(this.getPlayerData().isIncognito() ? "&aWlaczone" : "&cWylaczone"));
         this.setSLOT(0, 6, "&fRanking: &d"+this.getPlayerData().getPoints());
         this.setSLOT(0, 7, "&fZabojstwa: &d"+this.getPlayerData().getKills());

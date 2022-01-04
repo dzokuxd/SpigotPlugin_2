@@ -15,6 +15,7 @@ import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.DropFile;
 import pl.spigotplugin.configs.core;
 import pl.spigotplugin.configs.guild;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.BanManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.MuteManager;
@@ -24,13 +25,13 @@ import pl.spigotplugin.utils.ChatUtil;
 import java.util.ArrayList;
 
 public class ConfigCommand extends Command {
-    public ConfigCommand() { super("config", "config <reload/book>", "spigot.config", "cfg");
+    public ConfigCommand() { super("config", RankType.PREZES, "cfg");
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "config <reload/book>");
             return;
         }
         switch (args[0]) {

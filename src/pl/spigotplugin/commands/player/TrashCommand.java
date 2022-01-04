@@ -4,10 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class TrashCommand extends PlayerCommand {
-    public TrashCommand() { super("smietnik", "smietnik", "", "kosz");
+    public TrashCommand() { super("smietnik", RankType.GRACZ, "kosz");
     }
 
     @Override

@@ -5,15 +5,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.DajUtil;
 
 public class DajCommand extends Command {
-    public DajCommand() { super("daj", "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|case611> <ilosc>", "spigot.daj", ""); }
+    public DajCommand() { super("daj", RankType.ADMIN); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "daj <gracz|*> <boyfarmer|antynogi|stoniarka|easycase|case611> <ilosc>");
             return;
         }
         if (args[1].equalsIgnoreCase("boyfarmer")) {

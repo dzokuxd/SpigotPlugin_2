@@ -6,21 +6,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.CombatManager;
 import pl.spigotplugin.utils.ChatUtil;
+import pl.spigotplugin.utils.GroupUtil;
 
 public class KickAllCommand extends Command {
-    public KickAllCommand() { super("kickall", "kickall powod", "spigot.kickall"); }
+    public KickAllCommand() { super("kickall", RankType.PREZES); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "kickall powod");
             return;
         }
         String kick = "\n&cZostales wyrzocony z serwera przez: " + sender.getName() + "\n&cPowod: " + StringUtils.join(args, " ");
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!p.hasPermission("core.cmd.mod")) {
+            if (!GroupUtil.have(p, RankType.HELPER)) {
                 CombatManager.getFightMap().clear();
                 p.kickPlayer(ChatUtil.color(kick));
             }

@@ -60,22 +60,22 @@ public class Backup {
                 case 0: {
                     p.getInventory().setArmorContents(ItemSerializer.stringToItems(rs.getString("armor")));
                     p.getInventory().setContents(ItemSerializer.stringToItems(rs.getString("inventory")));
-                    p.sendMessage("&6Twoj ekwipunek zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName());
-                    o.sendMessage("&6Cofneles ekwipunek do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName());
+                    p.sendMessage(ChatUtil.color("&6Twoj ekwipunek zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName()));
+                    o.sendMessage(ChatUtil.color("&6Cofneles ekwipunek do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName()));
                     break;
                 }
                 case 1: {
                     p.getInventory().setArmorContents(ItemSerializer.stringToItems(rs.getString("armor")));
                     p.getInventory().setContents(ItemSerializer.stringToItems(rs.getString("inventory")));
                     p.getEnderChest().setContents(ItemSerializer.stringToItems(rs.getString("enderchest")));
-                    p.sendMessage("&6Twoj ekwipunek + enderchest zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName());
-                    o.sendMessage("&6Cofneles ekwipunek + enderchest do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName());
+                    p.sendMessage(ChatUtil.color("&6Twoj ekwipunek + enderchest zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName()));
+                    o.sendMessage(ChatUtil.color("&6Cofneles ekwipunek + enderchest do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName()));
                     break;
                 }
                 case 2: {
                     p.getEnderChest().setContents(ItemSerializer.stringToItems(rs.getString("enderchest")));
-                    p.sendMessage("&6Twoj enderchest zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName());
-                    o.sendMessage("&6Cofneles enderchest do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName());
+                    p.sendMessage(ChatUtil.color("&6Twoj enderchest zostal cofniety do &c" + DataUtil.getDate(time) + " &6przez &c" + o.getName()));
+                    o.sendMessage(ChatUtil.color("&6Cofneles enderchest do &c" + DataUtil.getDate(time) + " &6graczowi &c" + p.getName()));
                     break;
                 }
             }

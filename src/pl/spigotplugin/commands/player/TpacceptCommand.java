@@ -4,17 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.component.Teleporter;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class TpacceptCommand extends PlayerCommand {
-    public TpacceptCommand() { super("tpaccept", "", ""); }
+    public TpacceptCommand() { super("tpaccept", RankType.GRACZ); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         Player o = Bukkit.getPlayer(args[0]);
         if (o == null) {
-            p.sendMessage("&cGracz jest offline!");
+            p.sendMessage(ChatUtil.color("&cGracz jest offline!"));
             return;
         }
         User u = UserManager.getUser(p);
@@ -24,10 +26,10 @@ public class TpacceptCommand extends PlayerCommand {
         if (u.getTpa().contains(o)) {
             Teleporter.sendRequest(o, p.getLocation());
             u.getTpa().remove(o);
-            p.sendMessage("&6Zaakceptowales prosbe o teleport do ciebie od gracza &c" + o.getName() + "&7!");
-            o.sendMessage("&6Gracz &c" + p.getName() + " &6zaakceptowal twoja prosbe o teleport do niego!");
+            p.sendMessage(ChatUtil.color("&fZaakceptowales prosbe o teleport do ciebie od gracza &d" + o.getName()));
+            o.sendMessage(ChatUtil.color("&fGracz &d" + p.getName() + " &fzaakceptowal twoja prosbe o teleport do niego!"));
             return;
         }
-        p.sendMessage("&cNie masz zaproszenia do teleportacji od gracza " + o.getName() + "&7!");
+        p.sendMessage(ChatUtil.color("&cNie masz zaproszenia do teleportacji od gracza " + o.getName()));
     }
 }

@@ -5,15 +5,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.EnderChestUtil;
 
 public class OpenCommand extends PlayerCommand {
-    public OpenCommand() { super("open", "open <nick> <inv/ender/armor>", "spigot.open"); }
+    public OpenCommand() { super("open", RankType.ADMIN); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length != 2) {
-            core.usage(p, getUsage());
+            core.usage(p, "open <nick> <inv/ender/armor>");
             return;
         }
         Player o = Bukkit.getPlayer(args[0]);

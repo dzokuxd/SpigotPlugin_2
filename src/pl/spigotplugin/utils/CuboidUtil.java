@@ -33,7 +33,7 @@ public class CuboidUtil
         return false;
     }
     public static boolean cuboid1(Location location) {
-        String cuboidCenter = ("world@0@256@0@400@400");
+        String cuboidCenter = ("world@400@256@400@0@0");
         int cuboid1 = (statues.REGION_SIZE_400cuboid);
         Location center = LocationParser.parseStringToLocation(cuboidCenter);
         if (location.getWorld().getName().equals(center.getWorld().getName())) {
@@ -46,7 +46,7 @@ public class CuboidUtil
         return false;
     }
     public static boolean cuboid2(Location location) {
-        String cuboidCenter = ("world@0@256@0@-400@-400");
+        String cuboidCenter = ("world@-400@256@-400@0@0");
         int cuboid2 = (statues.REGION_SIZE_minus400cuboid);
         Location center = LocationParser.parseStringToLocation(cuboidCenter);
         if (location.getWorld().getName().equals(center.getWorld().getName())) {

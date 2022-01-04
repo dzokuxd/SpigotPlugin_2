@@ -5,18 +5,19 @@ import org.bukkit.command.CommandSender;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.ChatManager;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class ChatCommand extends Command {
     public ChatCommand() {
-        super("chat", "chat <cc/on/off/lvl/vip/slow>", "spigot.chat");
+        super("chat", RankType.HELPER);
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "chat <cc/on/off/lvl/vip/slow>");
             return;
         }
         switch (args[0]) {

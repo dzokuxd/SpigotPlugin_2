@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class ClearCommand extends PlayerCommand {
-    public ClearCommand() { super("clear", "clear", "spigot.clear", "ci"); }
+    public ClearCommand() { super("clear", RankType.MOD, "ci"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
@@ -16,12 +18,12 @@ public class ClearCommand extends PlayerCommand {
             p.getInventory().setLeggings(null);
             p.getInventory().setBoots(null);
             p.getInventory().clear();
-            p.sendMessage(core.CLEAR_YOU);
+            p.sendMessage(ChatUtil.color(core.CLEAR_YOU));
             return;
         }
         Player x = Bukkit.getPlayer(args[0]);
         if (x == null) {
-            p.sendMessage("&cGracz jest offline");
+            p.sendMessage(ChatUtil.color("&cGracz jest offline"));
             return;
         }
         x.getInventory().setHelmet(null);
@@ -29,7 +31,7 @@ public class ClearCommand extends PlayerCommand {
         x.getInventory().setChestplate(null);
         x.getInventory().setBoots(null);
         x.getInventory().clear();
-        x.sendMessage(core.CLEAR_OTHER.replace("{PLAYER}", p.getName()));
-        p.sendMessage(core.CLEAR_PLAYER.replace("{PLAYER1}",x.getName()));
+        x.sendMessage(ChatUtil.color(core.CLEAR_OTHER.replace("{PLAYER}", p.getName())));
+        p.sendMessage(ChatUtil.color(core.CLEAR_PLAYER.replace("{PLAYER1}",x.getName())));
     }
 }

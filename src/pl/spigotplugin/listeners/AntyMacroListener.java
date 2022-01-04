@@ -11,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.spigotplugin.SpigotPlugin;
+import pl.spigotplugin.utils.ChatUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -59,9 +60,9 @@ public class AntyMacroListener extends PacketAdapter implements Listener {
             if (cheatData.invalidPackets > 30) {
                 event.setCancelled(true);
                 cheatData.canceledUntil = now + TimeUnit.SECONDS.toMillis(2L);
-                p.sendMessage("&8» &6Posiadasz za szybkie macro &7(&c13&7)");
-                p.sendMessage("&8» &6Zablokowano bicie na &c2 sekundy");
-                p.sendMessage("&8» &6Optymalne: 10-12 CPS!");
+                p.sendMessage(ChatUtil.color("&8» &6Posiadasz za szybkie macro &7(&c13&7)"));
+                p.sendMessage(ChatUtil.color("&8» &6Zablokowano bicie na &c2 sekundy"));
+                p.sendMessage(ChatUtil.color("&8» &6Optymalne: 10-12 CPS!"));
             }
         }
         else if (cheatData.invalidPackets > 0) {

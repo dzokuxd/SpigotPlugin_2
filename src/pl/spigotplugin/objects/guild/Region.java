@@ -41,6 +41,17 @@ public class Region {
         return distancex - 1 <= this.getSize() && distancez - 1 <= this.getSize();
     }
 
+    public boolean isInCuboidByLoc(Location loc, int dis) {
+
+        if (!loc.getWorld().getName().equals("world")) {
+            return false;
+        }
+
+        int distancex = Math.abs(loc.getBlockX() - this.getX());
+        int distancez = Math.abs(loc.getBlockZ() - this.getZ());
+        return distancex - dis <= this.getSize() && distancez - dis <= this.getSize();
+    }
+
     public boolean isInCentrum(Location loc, int top, int down, int wall) {
         Location c = this.getLocation().clone();
         return c.getBlockY() - down <= loc.getBlockY() && c.getBlockY() + top >= loc.getBlockY() &&

@@ -5,13 +5,15 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
+import pl.spigotplugin.utils.GroupUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VanishCommand extends PlayerCommand {
     public VanishCommand() {
-        super("vanish", "vanish", "spigot.vanish", "v");
+        super("vanish", RankType.HELPER, "v");
     }
 
     public static final List<Player> using = new ArrayList<>();
@@ -22,12 +24,10 @@ public class VanishCommand extends PlayerCommand {
             if (using.contains(p)) {
                 using.remove(p);
                 if (p.getGameMode() == GameMode.SPECTATOR) {
-                    p.setGameMode(GameMode.SURVIVAL);
-                    if (p.hasPermission("spigot.vanishsee"))
-                        p.setGameMode(GameMode.CREATIVE);
+                    p.setGameMode(GroupUtil.have(p, RankType.MOD) ? GameMode.CREATIVE : GameMode.SURVIVAL);
                     p.sendMessage(core.VANISH_FALSE);
                     for (Player admins : Bukkit.getOnlinePlayers()) {
-                        if (admins.hasPermission("vanish")) {
+                        if (GroupUtil.have(admins, RankType.HELPER)) {
                             admins.sendMessage(core.VANISH_SEEFALSE.replace("{VANISHPLAYER}", p.getName()));
                         }
                     }
@@ -37,7 +37,7 @@ public class VanishCommand extends PlayerCommand {
                 p.setGameMode(GameMode.SPECTATOR);
                 p.sendMessage(core.VANISH_TRUE);
                 for (Player admins : Bukkit.getOnlinePlayers()) {
-                    if (admins.hasPermission("spigot.vanishsee")) {
+                    if (GroupUtil.have(admins, RankType.HELPER)) {
                         admins.sendMessage(core.VANISH_SEETRUE.replace("{VANISHPLAYER}", p.getName()));
                     }
                 }

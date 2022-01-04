@@ -4,16 +4,17 @@ import org.bukkit.command.CommandSender;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.listeners.BorderListener;
 import pl.spigotplugin.utils.ChatUtil;
 
 public class BorderCommand extends Command {
-    public BorderCommand() { super("border", "border <world/gtp> <liczba>", "spigot.border"); }
+    public BorderCommand() { super("border", RankType.ADMIN); }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "border <world/gtp> <liczba>");
             return;
         }
         if (!ChatUtil.isInteger(args[1])) {

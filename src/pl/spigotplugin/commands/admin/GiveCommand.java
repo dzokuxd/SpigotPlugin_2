@@ -6,16 +6,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.ItemUtil;
 
 public class GiveCommand extends PlayerCommand {
-    public GiveCommand() { super("give", "give <gracz> <id[:base]> [ilosc]", "spigot.give"); }
+    public GiveCommand() { super("give", RankType.HA); }
 
     @Override
     public void onCommand(Player sender, String[] args) {
         if (args.length < 2) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "give <gracz> <id[:base]> [ilosc]");
             return;
         }
         Player p = Bukkit.getPlayer(args[0]);

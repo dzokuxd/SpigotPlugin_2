@@ -17,7 +17,7 @@ public class ItemHolder {
         put("gui.back", new ItemBuilder(Material.FENCE_GATE, 1, (short) 14).setTitle("&4Wroc do poprzedniej strony!").build());
         put("gui.drop.main.stone", new ItemBuilder(Material.STONE).setTitle("&7Drop z &c&lStone").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!").build());
         put("gui.drop.main.cx", new ItemBuilder(Material.MOSSY_COBBLESTONE).setTitle("&7Drop z &c&lCobbleX").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!").build());
-        put("gui.drop.main.611", new ItemBuilder(Material.CHEST).setTitle("&7Drop z &c&lEasy6/1/1").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!").build());
+        put("gui.drop.main.611", new ItemBuilder(Material.ENDER_CHEST).setTitle("&7Drop z &c&lEasy6/1/1").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!").build());
         put("gui.drop.main.easycase", new ItemBuilder(Material.CHEST).setTitle("&7Drop z &c&lEasyCase").addLore("").addLore(" &7\u00bb &6Kliknij, aby przejsc dalej!").build());
         put("gui.drop.easy611.611", new ItemBuilder(Material.DIAMOND_PICKAXE).setTitle("&4&lKilof 6/1/1").addLore("&7\u00bb &6Szansa: &c2.0").addEnchantment(Enchantment.DIG_SPEED,5).addEnchantment(Enchantment.DURABILITY,1).addEnchantment(Enchantment.LOOT_BONUS_BLOCKS,1).build());
         put("gui.drop.easy611.gold", new ItemBuilder(Material.GOLD_INGOT).setTitle("&e&lNagroda pocieszenia").addLore("&7\u00bb &6Szansa: &c49.0").build());
@@ -46,15 +46,6 @@ public class ItemHolder {
         put("gui.drop.easycase.gold16", new ItemBuilder(Material.GOLD_INGOT ,16).setTitle("&e&lZloto").addLore("&6Szansa: &c20.0").build());
         put("gui.drop.easycase.anvil", new ItemBuilder(Material.ANVIL ,8).setTitle("&e&lKowadla").addLore("&6Szansa: &c20.0").build());
         put("gui.drop.easycase.dirt", new ItemBuilder(Material.DIRT ,64).setTitle("&e&lZiemia").addLore("&6Szansa: &c20.0").setGlow(true).build());
-        put("gui.shop.main.buy", new ItemBuilder(Material.BEACON).setTitle("&7&lWymiana za coinsy!").addLore("&7\u00bb &6Kliknij aby przejsc dalej!").build());
-        put("gui.shop.main.sell", new ItemBuilder(Material.HOPPER).setTitle("&7&lSprzedaz itemow za coinsy!").addLore("&7\u00bb &6Kliknij aby przejsc dalej!").build());
-        put("gui.shop.sell.diamond", new ItemBuilder(Material.DIAMOND).setTitle("&7&lDIAMENTY").addLore("&7\u00bb &6Sprzedaj za: &c40 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.emerald", new ItemBuilder(Material.EMERALD).setTitle("&7&lSZMARAGDY").addLore("&7\u00bb &6Sprzedaj za: &c40 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.iron", new ItemBuilder(Material.IRON_INGOT).setTitle("&7&lSZTABKI ZELAZA").addLore("&7\u00bb &6Sprzedaj za: &c25 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.gold", new ItemBuilder(Material.GOLD_INGOT).setTitle("&7&lSZTABKI ZLOTA").addLore("&7\u00bb &6Sprzedaj za: &c50 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.gunpowder", new ItemBuilder(Material.SULPHUR).setTitle("&7&lPROCH").addLore("&7\u00bb &6Sprzedaj za: &c80 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.obsidian", new ItemBuilder(Material.OBSIDIAN).setTitle("&7&lOBSYDIAN").addLore("&7\u00bb &6Sprzedaj za: &c80 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
-        put("gui.shop.sell.cobble", new ItemBuilder(Material.COBBLESTONE).setTitle("&7&lBRUK").addLore("&7\u00bb &6Sprzedaj za: &c20 coinsow").addLore("&7\u00bb &6Ilosc: &c64").addLore(" ").addLore("&7\u00bb &2Kliknij na przedmiot, aby sprzedac!").build());
         put("gui.gameplay.tnt", new ItemBuilder(Material.TNT).setTitle("&cTNT &7dziala w godzinach &c12 &7- &c22").addLore("&7Od poziomu &c60 &7w dol").build());
         put("gui.gameplay.luk", new ItemBuilder(Material.BOW).setTitle("&7LUK &c4/1/1").addEnchantment(Enchantment.ARROW_DAMAGE, 4).addEnchantment(Enchantment.ARROW_FIRE, 1).addEnchantment(Enchantment.DURABILITY, 1).build());
         put("gui.gameplay.miecz", new ItemBuilder(Material.DIAMOND_SWORD).setTitle("&7MIECZ &c4/3/1").addEnchantment(Enchantment.DAMAGE_ALL, 4).addEnchantment(Enchantment.FIRE_ASPECT, 1).addEnchantment(Enchantment.DURABILITY, 3).build());

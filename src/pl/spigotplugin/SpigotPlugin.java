@@ -47,7 +47,6 @@ public class SpigotPlugin extends JavaPlugin {
         guild.reloadLang();
         statues.reloadLang();
         DropFile.reloadConfig();
-        Settings.loadMaterials();
         try {
             mySQL = new MySQL();
         } catch (SQLException e) {
@@ -62,7 +61,6 @@ public class SpigotPlugin extends JavaPlugin {
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.handleCreateWorld("gtp"), 100);
         getServer().getScheduler().runTaskLater(this, () -> CreateWorldHandler.jebanyend("end"), 100);
         ProtocolLibrary.getProtocolManager().addPacketListener(new AntyMacroListener(this));
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         TopsManager.sortUser();
         TopsManager.sortGuild();
         ItemHolder.init();
@@ -142,7 +140,6 @@ public class SpigotPlugin extends JavaPlugin {
 
     private void registerCommands() {
         registerCommand(new DiscoCommand());
-        registerCommand(new SpawnerCommand());
         registerCommand(new ResetujRankingCommand());
         registerCommand(new BlocksCommand());
         registerCommand(new FocusCommand());

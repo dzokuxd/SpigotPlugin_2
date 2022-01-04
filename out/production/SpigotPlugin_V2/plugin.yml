@@ -2,6 +2,5 @@ main: pl.spigotplugin.SpigotPlugin
 name: SpigotPlugin
 version: 0.1
 depend:
-  - PermissionsEx
   - ProtocolLib
   - Citizens

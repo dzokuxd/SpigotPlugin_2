@@ -5,17 +5,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.Command;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.utils.VoucherUtil;
 
 public class VoucherCommand extends Command {
     public VoucherCommand() {
-        super("voucher", "voucher <nick> <vip/svip/turbo> <ilosc>", "spigot.voucher");
+        super("voucher", RankType.PREZES);
     }
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            core.usage(sender, getUsage());
+            core.usage(sender, "voucher <nick> <vip/svip/turbo> <ilosc>");
             return;
         }
         Player target = Bukkit.getPlayer(args[0]);

@@ -4,58 +4,60 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.menu.CheckMenu;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.CheckUtil;
 
 public class CheckCommand extends PlayerCommand {
-    public CheckCommand() { super("check", "check nick \ncheck czysty nick \ncheck cheaty nick", "spigot.check");
+    public CheckCommand() { super("check", RankType.HELPER);
     }
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 1) {
-            p.sendMessage("&cPrawidlowe uzycie:");
-            p.sendMessage("&c/sprawdz [nick]");
-            p.sendMessage("&c/sprawdz czysty [nick]");
-            p.sendMessage("&c/sprawdz czity [nick]");
+            p.sendMessage(ChatUtil.color("&cPrawidlowe uzycie:"));
+            p.sendMessage(ChatUtil.color("&c/sprawdz [nick]"));
+            p.sendMessage(ChatUtil.color("&c/sprawdz czysty [nick]"));
+            p.sendMessage(ChatUtil.color("&c/sprawdz czity [nick]"));
             return;
         }
         if (args[0].equalsIgnoreCase("czysty")) {
             if (args.length != 2) {
-                p.sendMessage("&cPrawidlowe uzycie:");
-                p.sendMessage("&c/sprawdz [nick]");
-                p.sendMessage("&c/sprawdz czysty [nick]");
-                p.sendMessage("&c/sprawdz czity [nick]");
+                p.sendMessage(ChatUtil.color("&cPrawidlowe uzycie:"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz [nick]"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz czysty [nick]"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz czity [nick]"));
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                p.sendMessage("&cGracz jest offline");
+                p.sendMessage(ChatUtil.color("&cGracz jest offline"));
                 return;
             }
             if (!CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&cTen gracz jest czysty");
+                p.sendMessage(ChatUtil.color("&cTen gracz jest czysty"));
                 return;
             }
             CheckUtil.checkedPlayers.remove(target);
             Bukkit.broadcastMessage("&7\u00bb &fGracz &d" + target.getName() + " &fzostal sprawdzony i nie posiadal cheatow!");
         } else if (args[0].equalsIgnoreCase("cheaty")) {
             if (args.length != 2) {
-                p.sendMessage("&cPrawidlowe uzycie:");
-                p.sendMessage("&c/sprawdz [nick]");
-                p.sendMessage("&c/sprawdz czysty [nick]");
-                p.sendMessage("&c/sprawdz czity [nick]");
+                p.sendMessage(ChatUtil.color("&cPrawidlowe uzycie:"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz [nick]"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz czysty [nick]"));
+                p.sendMessage(ChatUtil.color("&c/sprawdz czity [nick]"));
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                p.sendMessage("&cPodana osoba jest offline.");
+                p.sendMessage(ChatUtil.color("&cPodana osoba jest offline."));
                 return;
             }
             if (!CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&cOsoba nie jest sprawdzany.");
+                p.sendMessage(ChatUtil.color("&cOsoba nie jest sprawdzany."));
                 return;
             }
             CheckUtil.checkedPlayers.remove(target);
@@ -67,11 +69,11 @@ public class CheckCommand extends PlayerCommand {
             }
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                p.sendMessage("&cPodana osoba jest offline.");
+                p.sendMessage(ChatUtil.color("&cPodana osoba jest offline."));
                 return;
             }
             if (CheckUtil.checkedPlayers.contains(target)) {
-                p.sendMessage("&cOsoba jest juz sprawdzana.");
+                p.sendMessage(ChatUtil.color("&cOsoba jest juz sprawdzana."));
                 return;
             }
             CheckUtil.checkedPlayers.add(target);

@@ -6,6 +6,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.spigotplugin.configs.guild;
+import pl.spigotplugin.enums.RankType;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,23 +14,23 @@ import java.util.List;
 public class GuildUtil {
 
     public static boolean hasItems(Player p){
-        if (p.hasPermission("spigot.itemy"))
+        if (!GroupUtil.have(p, RankType.GRACZ))
             return true;
         List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
-            int amount = (int)(p.hasPermission("spigot.premium") ? item.getAmount() * .5 : item.getAmount());
+            int amount = (int)(!GroupUtil.have(p, RankType.VIP) ? item.getAmount() * .5 : item.getAmount());
             if(p.getInventory().containsAtLeast(item,amount))
                 return true;
         }
-        p.sendMessage("&cNie posiadasz potrzebnych itemow na gildie /g itemy");
+        p.sendMessage(ChatUtil.color("&cNie posiadasz potrzebnych itemow na gildie /g itemy"));
         return false;
     }
     public static void removeItems(Player p){
-        if (p.hasPermission("spigotplugin.itemy"))
+        if (!GroupUtil.have(p, RankType.GRACZ))
             return;
         List<ItemStack> items = guild.CREATE_COST;
         for (ItemStack item : items) {
-            int amount = (int)(p.hasPermission("spigot.premium") ? item.getAmount() * .5 : item.getAmount());
+            int amount = (int)(!GroupUtil.have(p, RankType.VIP) ? item.getAmount() * .5 : item.getAmount());
             ItemStack cloned = item.clone();
             cloned.setAmount(amount);
             p.getInventory().removeItem(cloned);

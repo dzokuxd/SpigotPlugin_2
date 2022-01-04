@@ -11,13 +11,12 @@ import org.bukkit.inventory.ItemStack;
 import pl.spigotplugin.api.BossBarApi;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.Settings;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.User;
-import pl.spigotplugin.utils.CheckUtil;
-import pl.spigotplugin.utils.DataUtil;
-import pl.spigotplugin.utils.LocationUtil;
+import pl.spigotplugin.utils.*;
 
 public class PlayerMoveListener implements Listener {
 
@@ -29,27 +28,27 @@ public class PlayerMoveListener implements Listener {
         Player p = e.getPlayer();
         if (CheckUtil.checkedPlayers.contains(p)) {
             e.setTo(e.getFrom());
-            p.sendMessage("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (statues.IP));
+            p.sendMessage(ChatUtil.color("&c&lJestes aktualnie sprawdzany! Nie wylogowywuj sie z gry! Wejdz na TS3: &4&lts." + (statues.IP)));
             return;
         }
         User u = UserManager.getUser(p);
         if (GuildManager.getGuild(p.getLocation()) == null) {
             if (u.isOnCuboid()) {
                 u.setOnCuboid(false);
-                p.sendMessage("&cOpusciles teren gildii!");
+                p.sendMessage(ChatUtil.color("&cOpusciles teren gildii!"));
                 BossBarApi.removeBar(e.getPlayer());
+                BossBarApi.updateText(e.getPlayer(), e.getEventName());
             }
         } else {
             Guild guild = GuildManager.getGuild(p.getLocation());
-
             if (guild == null) {
                 return;
             }
+            isCheck(e.getPlayer(), e.getFrom(), e.getTo());
 
             if (u.isOnCuboid()) {
                 return;
             }
-
             String text = ChatColor.RED + "Znajdujesz sie na terenie wrogiej gildii!";
 
             if (!u.getGuild().isEmpty()) {
@@ -57,21 +56,18 @@ public class PlayerMoveListener implements Listener {
                     text = ChatColor.GREEN + "Znajdujesz sie na terenie swojej gildii!";
                 } else {
                     Guild guild1 = GuildManager.getGuild(u.getGuild());
-
                     if (guild1 != null && guild1.getAlly().contains(guild.getTag())) {
                         text = ChatColor.BLUE + "Znajdujesz sie na terenie sojuszniczej gildii!";
                     }
                 }
-
             }
-
             BossBarApi.setBar(e.getPlayer(), text, 100);
-            p.sendMessage(text);
+            p.sendMessage(ChatUtil.color(text));
             if (guild.isProtected()){
-                p.sendMessage("&fTa gildia posiada ochrone jeszcze przez &d" + DataUtil.secondsToString(guild.getprottime()));
+                p.sendMessage(ChatUtil.color("&fTa gildia posiada ochrone jeszcze przez &d" + DataUtil.secondsToString(guild.getprottime())));
             }
             u.setOnCuboid(true);
-            if (p.hasPermission("spigot.admin")) {
+            if (!GroupUtil.have(p, RankType.ADMIN)) {
                 return;
             }
             if (guild.getMembers().contains(p.getName())) {
@@ -81,23 +77,11 @@ public class PlayerMoveListener implements Listener {
                 if (onlineMember == null) {
                     continue;
                 }
-                onlineMember.sendMessage("&4Wrog wkroczyl na teren twojej gildii "+p.getName());
+                onlineMember.sendMessage(ChatUtil.color("&4Wrog wkroczyl na teren twojej gildii "+p.getName()));
             }
         }
-        Location to = e.getTo();
-        Location from = e.getFrom();
-        if(p.isBlocking())
-            if ((to.getBlockX() != from.getBlockX() || to.getBlockY() != from.getBlockY() || to.getBlockZ() != from.getBlockZ())) {
-                final ItemStack s = p.getItemInHand();
-                p.setItemInHand(s);
-            }
     }
-    @EventHandler
     public static void isCheck(Player player, Location from, Location to){
-        Guild g = GuildManager.getGuild(player);
-        if (g == null) {
-            return;
-        }
         if(to.getBlock().isEmpty()||to.clone().add(0.0, 1.0, 0.0).getBlock().isEmpty()){
             return;
         }
@@ -111,8 +95,8 @@ public class PlayerMoveListener implements Listener {
         teleport.subtract(-0.5, 0.0, -0.5);
         player.teleport(teleport);
         for (Player admins : Bukkit.getOnlinePlayers()) {
-            if (admins.hasPermission("spigot.admin")) {
-                admins.sendMessage("shadowblock" + player);
+            if (!GroupUtil.have(admins, RankType.ADMIN)) {
+                admins.sendMessage(ChatUtil.color("shadowblock" + player));
             }
         }
     }

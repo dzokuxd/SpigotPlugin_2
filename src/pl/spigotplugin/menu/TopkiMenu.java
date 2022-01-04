@@ -91,16 +91,6 @@ public class TopkiMenu {
                 lvl.addLore(" &7" + i2 + ". &cBrak");
             }
         }
-        ItemBuilder coins = new ItemBuilder(Material.GOLD_NUGGET);
-        coins.setTitle("&7&lTOP COINSOW");
-        for (int i2 = 1; i2 < 11; ++i2) {
-            if (TopsManager.coins.size() >= i2) {
-                User user4 = TopsManager.coins.get(i2 - 1);
-                coins.addLore(" &7" + i2 + ". &6" + user4.getName() + ": &c" + user4.getCoins());
-            } else {
-                coins.addLore(" &7" + i2 + ". &cBrak");
-            }
-        }
         ItemBuilder easycase = new ItemBuilder(Material.CHEST);
         easycase.setTitle("&7&lTOP OTWARTYCH EASYCASE");
         for (int i2 = 1; i2 < 11; ++i2) {
@@ -167,7 +157,6 @@ public class TopkiMenu {
                 .addLore(" &7\u00bb &6Asysty: &c"+u.getAsysty())
                 .addLore(" &7\u00bb &6Smierci: &c"+u.getDeaths())
                 .addLore(" &7\u00bb &6Twoj lvl: &c" + u.getLvl())
-                .addLore(" &7\u00bb &6Coinsy: &c" + u.getCoins())
                 .addLore(" &7\u00bb &6Zjedzone koxy: &c" + u.getKoxEaten())
                 .addLore(" &7\u00bb &6Zjedzone refile: &c" + u.getRefilEaten())
                 .addLore(" &7\u00bb &6Wyrzucone perly: &c" + u.getPearlThrown())
@@ -188,7 +177,6 @@ public class TopkiMenu {
         inv.setItem(28, stone.build());
         inv.setItem(29, obsidian.build());
         inv.setItem(30, lvl.build());
-        inv.setItem(31, coins.build());
         inv.setItem(32, easycase.build());
         inv.setItem(33, case6.build());
         inv.setItem(34, time.build());

@@ -2,10 +2,11 @@ package pl.spigotplugin.commands.player;
 
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.menu.AchievmentMenu;
 
 public class AchievementCommand extends PlayerCommand {
-    public AchievementCommand() { super("osiagniecia", "os", "", "os"); }
+    public AchievementCommand() { super("osiagniecia",  RankType.GRACZ, "os"); }
 
     @Override
     public void onCommand(Player p, String[] args) {

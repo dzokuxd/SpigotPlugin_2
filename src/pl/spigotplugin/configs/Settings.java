@@ -70,19 +70,7 @@ public class Settings {
     );
     public static List<Material> materialList=new ArrayList<>();
     public static boolean isContains(Material material){
-        if(materialList.isEmpty()){
-            return false;
-        }
-        return materialList.contains(material);
-    }
-    public static void loadMaterials(){
-        SpigotPlugin.getPlugin().getConfig().getStringList("shadow-block.blocks").forEach(value->{
-            try {
-                materialList.add(Material.matchMaterial(value));
-            }catch (Exception ex){
-                System.out.println("Problem z materialem :="+value);
-            }
-        });
+        return material.equals(Material.STONE) || material.equals(Material.OBSIDIAN);
     }
 }
 

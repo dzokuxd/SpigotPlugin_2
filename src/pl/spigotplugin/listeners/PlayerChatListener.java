@@ -7,6 +7,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import pl.spigotplugin.configs.statues;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.ChatManager;
 import pl.spigotplugin.managers.GuildManager;
 import pl.spigotplugin.managers.MuteManager;
@@ -16,8 +17,8 @@ import pl.spigotplugin.objects.user.Mute;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.ChatUtil;
 import pl.spigotplugin.utils.DataUtil;
+import pl.spigotplugin.utils.GroupUtil;
 import pl.spigotplugin.utils.TimeUtil;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.regex.Pattern;
 
@@ -50,84 +51,122 @@ public class PlayerChatListener implements Listener {
             if (mute.getTime() != 0L && mute.getTime() <= System.currentTimeMillis()) {
                 MuteManager.unmute(mute);
             }
-            if (!p.hasPermission("spigot.bypass")) {
-                p.sendMessage("&6Zostales wyciszony przez &c" + mute.getAdmin() + "&c, wygasa: &6" + ((mute.getTime() == 0L) ? "nigdy" : ("&cza &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason());
+            if (!GroupUtil.have(p, RankType.HELPER)) {
+                p.sendMessage(ChatUtil.color("&6Zostales wyciszony przez &c" + mute.getAdmin() + "&c, wygasa: &6" + ((mute.getTime() == 0L) ? "nigdy" : ("&cza &7" + DataUtil.secondsToString(mute.getTime()))) + "&c. Powod: &7" + mute.getReason()));
                 e.setCancelled(true);
                 return;
             }
         }
-        if ((!p.hasPermission("spigot.bypass") && PlayerChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!p.hasPermission("core.chat.bypass") && PlayerChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
-            p.sendMessage("&cTwoja wiadomosc zawiera niedozwolone tresci!");
+        if ((!GroupUtil.have(p, RankType.HELPER) && PlayerChatListener.URL_PATTERN.matcher(e.getMessage()).find()) || (!GroupUtil.have(p, RankType.MOD) && PlayerChatListener.IPPATTERN.matcher(e.getMessage()).find()) || (!GroupUtil.have(p, RankType.MOD) && PlayerChatListener.BANNED_WORDS.matcher(e.getMessage().toLowerCase()).find())) {
+            p.sendMessage(ChatUtil.color("&cTwoja wiadomosc zawiera niedozwolone tresci!"));
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigot.bypass") && statues.LVL > u.getLvl()) {
-            p.sendMessage("&7Czat jest dostepy od &c" + statues.LVL + " &7poziomu!");
+        if (!GroupUtil.have(p, RankType.HELPER) && statues.LVL > u.getLvl()) {
+            p.sendMessage(ChatUtil.color("&7Czat jest dostepy od &c" + statues.LVL + " &7poziomu!"));
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigot.chatvip") && ChatManager.vipChat) {
-            p.sendMessage("&cChat jest dostepny tylko dla rang premium");
+        if (!GroupUtil.have(p, RankType.VIP) && ChatManager.vipChat) {
+            p.sendMessage(ChatUtil.color("&cChat jest dostepny tylko dla rang premium"));
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigot.bypass") && !ChatManager.enable && !ChatManager.vipChat) {
-            p.sendMessage("&cChat jest aktualnie wylaczony!");
+        if (!GroupUtil.have(p, RankType.HELPER) && !ChatManager.enable && !ChatManager.vipChat) {
+            p.sendMessage(ChatUtil.color("&cChat jest aktualnie wylaczony!"));
             e.setCancelled(true);
             return;
         }
-        if (!p.hasPermission("spigot.bypass") && !u.isChat()) {
-            p.sendMessage("&7Na czacie bedziesz mogl pisac dopiero za &c" + DataUtil.secondsToString(u.getLastChat()));
+        if (!GroupUtil.have(p, RankType.HELPER) && !u.isChat()) {
+            p.sendMessage(ChatUtil.color("&7Na czacie bedziesz mogl pisac dopiero za &c" + DataUtil.secondsToString(u.getLastChat())));
             e.setCancelled(true);
             return;
         }
-        if (message.startsWith("!!")) {
+        if (message.startsWith("!")) {
             e.setCancelled(true);
             Guild g = GuildManager.getGuild(p);
             if (g == null) {
-                p.sendMessage("&cNie posiadasz gildii!");
+                p.sendMessage(ChatUtil.color("&cNie posiadasz gildii!"));
                 return;
             }
-            String msg = message.replaceFirst("!!", "").replace("&", "");
-            g.message("&8[&9DO SOJUSZY&8] &8[&9" + g.getTag() + "&8] &6" + p.getName() + "&8: &7" + msg);
-            for (String s : g.getAlly()) {
-                Guild o = GuildManager.getGuild(s);
-                if (o != null) {
-                    o.message("&8[&9DO SOJUSZY&8] &8[&9" + g.getTag() + "&8] &6" + p.getName() + "&8: &7" + msg);
+            User user = UserManager.getUser(p);
+            if (e.getMessage().startsWith("!")) {
+                if (e.getMessage().length() <= 1) {
+                    p.sendMessage(ChatUtil.color("wiadomosc").replace("/", "!"));
+                    e.setCancelled(true);
+                    return;
+                }
+                e.setCancelled(true);
+                g.message(ChatUtil.color("&a" + p.getName() + "&8&l: &a" + e.getMessage().replaceFirst("!", "")));
+                return;
+            } else if (e.getMessage().startsWith("!!")) {
+                if (e.getMessage().length() <= 1) {
+                    p.sendMessage(ChatUtil.color("wiadomosc").replace("/", "!!"));
+                    e.setCancelled(true);
+                    return;
+                }
+                e.setCancelled(true);
+                if (g.getAlly().isEmpty()) {
+                    p.sendMessage(ChatUtil.color("Nie macie zadnych sojuszy!"));
+                    return;
+                }
+                g.message("&9" + user.getGuild() + " " + p.getName() + "&8&l: &9" + e.getMessage().replaceFirst("!!", ""));
+                for (String gg : g.getAlly()) {
+                    Guild o = GuildManager.getGuild(gg);
+                    if (o != null) {
+                        o.message(ChatUtil.color("&9" + user.getGuild() + " " + p.getName() + "&8&l: &9" + e.getMessage().replaceFirst("!!", "")));
+                    }
                 }
             }
-        } else if (message.startsWith("!")) {
+        }
+        if (message.startsWith("@")) {
             e.setCancelled(true);
             Guild g = GuildManager.getGuild(p);
             if (g == null) {
-                p.sendMessage("&cNie posiadasz gildii!");
+                p.sendMessage(ChatUtil.color("&cNie posiadasz gildii!"));
                 return;
             }
-            String msg = message.replaceFirst("!", "").replace("&", "");
-            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7" + msg);
-        } else if (message.startsWith("@")) {
-            e.setCancelled(true);
-            Guild g = GuildManager.getGuild(p);
-            if (g == null) {
-                p.sendMessage("&cNie posiadasz gildii!");
+            if (e.getMessage().startsWith("!")) {
+                if (e.getMessage().length() <= 1) {
+                    e.setCancelled(true);
+                    return;
+                }
+                e.setCancelled(true);
+                g.message(ChatUtil.color("&2[DO GILDII] " + p.getName() + " &7Potrzebuje pomocy!"));
+                g.message(ChatUtil.color("&2[DO GILDII] " + p.getName() + " &7Moje kordy to X: " + (int) p.getLocation().getX() + " Z: " + (int) p.getLocation().getZ() + " Y: " + (int) p.getLocation().getY()));
                 return;
+            } else if (e.getMessage().startsWith("@@")) {
+                if (e.getMessage().length() <= 1) {
+                    e.setCancelled(true);
+                    return;
+                }
+                e.setCancelled(true);
+                if (g.getAlly().isEmpty()) {
+                    p.sendMessage(ChatUtil.color("Nie macie zadnych sojuszy!"));
+                    return;
+                }
+                for (String gg : g.getAlly()) {
+                    Guild o = GuildManager.getGuild(gg);
+                    if (o != null) {
+                        o.message(ChatUtil.color("&e[SOJUSZ] " + p.getName() + " &7Potrzebuje pomocy!"));
+                        o.message(ChatUtil.color("&e[SOJUSZ] " + p.getName() + " &7Moje kordy to X: " + (int) p.getLocation().getX() + " Z: " + (int) p.getLocation().getZ() + " Y: " + (int) p.getLocation().getY()));
+                    }
+                }
             }
-            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Potrzebuje pomocy!");
-            g.message("&8[&2DO GILDII&8] &a" + p.getName() + "&8: &7Moje kordy to X: " + (int) p.getLocation().getX() + " Z: " + (int) p.getLocation().getZ() + " Y: " + (int) p.getLocation().getY());
         }
         String globalFormat = core.CHAT_FORMAT_GLOBAL;
-        if (p.hasPermission("spigotplugin.admin")) {
+        if (!GroupUtil.have(p, RankType.HELPER)) {
             globalFormat = core.CHAT_FORMAT_ADMIN;
         }
         String guildFormat = core.CHAT_FORMAT_GUILD;
         u.setLastChat(System.currentTimeMillis() + TimeUtil.SECOND.getTime(statues.CHAT_SLOWMODE));
         globalFormat = globalFormat.replace("{GUILD}", (u.getGuild().isEmpty()) ? "" : guildFormat.replace("{TAG}", GuildManager.getGuild(u.getGuild()).getTag()));
-        globalFormat = globalFormat.replace("{PREFIX}", PermissionsEx.getUser(p).getPrefix());
+        //globalFormat = globalFormat.replace("{PREFIX}", GroupUtil.have(user, String.valueOf()));
         globalFormat = globalFormat.replace("{PLAYER}", "%1$s");
-        globalFormat = globalFormat.replace("{SUFFIX}", PermissionsEx.getUser(p).getSuffix());
+        //globalFormat = globalFormat.replace("{SUFFIX}", PermissionsEx.getUser(p).getSuffix());
         globalFormat = globalFormat.replace("{MESSAGE}", "%2$s");
         globalFormat = globalFormat.replace("{LVL}", Integer.toString(u.getLvl()));
-        if (p.hasPermission("spigotplugin.color")) {
+        if (!GroupUtil.have(p, RankType.HELPER)) {
             e.setMessage(ChatUtil.color(e.getMessage()));
         }
         e.setFormat(ChatUtil.color(globalFormat));

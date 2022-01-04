@@ -6,14 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.spigotplugin.SpigotPlugin;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.helper.TabHelper;
 import pl.spigotplugin.holder.LocationHolder;
 import pl.spigotplugin.managers.*;
@@ -21,11 +19,11 @@ import pl.spigotplugin.objects.guild.Guild;
 import pl.spigotplugin.objects.user.Ban;
 import pl.spigotplugin.objects.user.User;
 import pl.spigotplugin.utils.*;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PlayerQuitJoinListener implements Listener {
     private final List<String> joinmsg = Arrays.asList(
@@ -42,6 +40,8 @@ public class PlayerQuitJoinListener implements Listener {
             "&dZyczymy milej gry :)",
             "&7\u00bb --------------------------");
 
+    Executor executor = Executors.newFixedThreadPool(8);
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
@@ -49,20 +49,24 @@ public class PlayerQuitJoinListener implements Listener {
         User u = UserManager.getUser(p);
         if (u == null) {
             u = UserManager.createrUser(p);
+
             ItemUtil.giveItems(p, new ItemStack(Material.STONE_PICKAXE));
             ItemUtil.giveItems(p, new ItemStack(Material.ENDER_CHEST));
             ItemUtil.giveItems(p, new ItemStack(Material.COOKED_BEEF, 64));
             ItemUtil.giveItems(p, new ItemStack(Material.WOOD, 48));
             int x = RandomUtil.getRandInt(-statues.BORDER_WORLD -20, statues.BORDER_WORLD -20);
             int z = RandomUtil.getRandInt(-statues.BORDER_WORLD -20, statues.BORDER_WORLD -20);
-            double y = p.getWorld().getHighestBlockYAt(x, z) + 1.5f;
+            double y = p.getWorld().getHighestBlockYAt(x, z);
             Location location = new Location(p.getWorld(), x, y, z);
             p.teleport(location);
         }
-        TagUtil.createBoard(p.getPlayer());
-        TagUtil.updateBoard(p.getPlayer());
-        TabHelper.executeCreate(p);
-        TabHelper.update(p);
+        executor.execute(() -> {
+            TagUtil.createBoard(p.getPlayer());
+            TagUtil.updateBoard(p.getPlayer());
+            TabHelper.executeCreate(p);
+            TabHelper.update(p);
+        });
+
         if (p.isDead()) {
             new BukkitRunnable() {
                 public void run() {
@@ -79,24 +83,22 @@ public class PlayerQuitJoinListener implements Listener {
             return;
         }
         Guild g = GuildManager.getGuild(p);
-        PermissionUser uu = PermissionsEx.getUser(p);
         for (String string : joinmsg) {
             string = string.replace("%nick%", p.getName());
             string = string.replace("%gildia%", (!u.getGuild().isEmpty() ? u.getGuild() : "brak"));
             string = string.replace("%pozycia%", String.valueOf(TopsManager.getPlaceUser(u)));
             string = string.replace("%rankinggracza%", String.valueOf(u.getPoints()));
-            string = string.replace("%grupa%", Arrays.toString(uu.getGroupsNames()).replace("]", "").replace("[", ""));
-            p.sendMessage(string);
+            string = string.replace("%grupa%", u.getRankType().name());
+            p.sendMessage(ChatUtil.color(string));
         }
         if (g != null) {
-            p.sendMessage("&cTwoja gildia wygasa za: " + DataUtil.secondsToString(g.getProlong()));
-            g.message("&aCzlonek twojej gildii: " + p.getName() + " dolaczyl na serwer. (" + g.getOnlineMembers().size() + "/" + g.getMembers().size() + ")");
+            p.sendMessage(ChatUtil.color("&cTwoja gildia wygasa za: " + DataUtil.secondsToString(g.getProlong())));
+            g.message(ChatUtil.color("&aCzlonek twojej gildii: " + p.getName() + " dolaczyl na serwer. (" + g.getOnlineMembers().size() + "/" + g.getMembers().size() + ")"));
         }
     }
     @EventHandler
-    public void onLogin(PlayerLoginEvent e) {
-        Player p = e.getPlayer();
-        Ban ban = BanManager.getBan(p);
+    public void onLogin(AsyncPlayerPreLoginEvent e) {
+        Ban ban = BanManager.getBan(e.getName());
         if (ban != null) {
             if (ban.getTime() != 0L && ban.getTime() <= System.currentTimeMillis()) {
                 BanManager.unban(ban);
@@ -110,7 +112,7 @@ public class PlayerQuitJoinListener implements Listener {
                     "\n" +
                     "\nMozesz kupic unbana" +
                     "\n"+ statues.IP+"/sklep";
-            e.disallow(PlayerLoginEvent.Result.KICK_BANNED, ChatUtil.color(reason));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, ChatUtil.color(reason));
         }
     }
     @EventHandler

@@ -4,16 +4,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.UserManager;
 import pl.spigotplugin.objects.user.User;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class WyjebaneCommand extends PlayerCommand {
-    public WyjebaneCommand() { super("wyjebane", "wyjebane <msg/tpa> <gracz>", "", "ignore"); }
+    public WyjebaneCommand() { super("wyjebane", RankType.GRACZ, "ignore"); }
 
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            core.usage(p, getUsage());
+            core.usage(p, "wyjebane <msg/tpa> <gracz>");
             return;
         }
         User u = UserManager.getUser(p);
@@ -22,21 +24,21 @@ public class WyjebaneCommand extends PlayerCommand {
             case "msg": {
                 if (u.isIgnoreTell(arg)) {
                     u.removeIgnoreTell(arg);
-                    p.sendMessage("&7\u00bb &6Przestales ignorowac prywatne wiadomosci od gracza &c" + args[1] + "&7!");
+                    p.sendMessage(ChatUtil.color("&fPrzestales ignorowac prywatne wiadomosci od gracza &d" + args[1]));
                     return;
                 }
                 u.addIgnoreTell(arg);
-                p.sendMessage("&7\u00bb &6Od teraz ignorujesz prywatne wiadomosci od gracza &c" + args[1] + "&7!");
+                p.sendMessage(ChatUtil.color("&fOd teraz ignorujesz prywatne wiadomosci od gracza &d" + args[1]));
                 return;
             }
             case "tpa": {
                 if (u.isIgnoreTpa(arg)) {
                     u.removeIgnoreTpa(arg);
-                    p.sendMessage("&7\u00bb &6Przestales ignorowac prosby o teleportacje od gracza &c" + args[1] + "&7!");
+                    p.sendMessage(ChatUtil.color("&fPrzestales ignorowac prosby o teleportacje od gracza &d" + args[1]));
                     return;
                 }
                 u.addIgnoreTpa(arg);
-                p.sendMessage("&7\u00bb &6Od teraz ignorujesz prosby o teleportacje od gracza &c" + args[1] + "&7!");
+                p.sendMessage(ChatUtil.color("&fOd teraz ignorujesz prosby o teleportacje od gracza &d" + args[1]));
             }
             default:
                 break;

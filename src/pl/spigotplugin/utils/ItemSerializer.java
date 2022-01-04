@@ -1,6 +1,6 @@
 package pl.spigotplugin.utils;
 
-import jdk.internal.instrumentation.Logger;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;

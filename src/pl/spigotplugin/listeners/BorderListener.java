@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import pl.spigotplugin.configs.statues;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class BorderListener implements Listener {
     public static void setBorder() {
@@ -38,11 +39,11 @@ public class BorderListener implements Listener {
         Player p = e.getPlayer();
         if (p.getWorld().getName().equals("world") && e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && (e.getTo().getX() > statues.BORDER_WORLD || e.getTo().getX() < -statues.BORDER_WORLD || e.getTo().getZ() > statues.BORDER_WORLD || e.getTo().getZ() < -statues.BORDER_WORLD)) {
             e.setCancelled(true);
-            p.sendMessage("&cOsiagnales granice swiata!" + " (" + statues.BORDER_WORLD + " kratek)");
+            p.sendMessage(ChatUtil.color("&cOsiagnales granice swiata!" + " (" + statues.BORDER_WORLD + " kratek)"));
         }
         if (p.getWorld().getName().equals("gtp") && e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL) && (e.getTo().getX() > statues.BORDER_GTP - 10.0 || e.getTo().getX() < -statues.BORDER_GTP - 10.0 || e.getTo().getZ() > statues.BORDER_GTP - 10.0 || e.getTo().getZ() < -statues.BORDER_GTP - 10.0)) {
             e.setCancelled(true);
-            p.sendMessage("&cOsiagnales granice netheru!" + " (" + statues.BORDER_GTP + " kratek)");
+            p.sendMessage(ChatUtil.color("&cOsiagnales granice netheru!" + " (" + statues.BORDER_GTP + " kratek)"));
         }
     }
 }

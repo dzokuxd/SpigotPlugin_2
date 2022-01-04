@@ -5,11 +5,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.spigotplugin.api.PlayerCommand;
 import pl.spigotplugin.configs.core;
+import pl.spigotplugin.enums.RankType;
 import pl.spigotplugin.managers.CageManager;
+import pl.spigotplugin.utils.ChatUtil;
 
 public class CageCommand extends PlayerCommand {
 
-    public CageCommand() { super("cage", "cage <nick-nick> <diamond/iron>", "spigot.cage"); }
+    public CageCommand() { super("cage", RankType.ADMIN); }
 
 
     private final Location cage1 = new Location(Bukkit.getWorlds().get(0), 0.0, 70.0, 0.0);
@@ -18,17 +20,17 @@ public class CageCommand extends PlayerCommand {
     @Override
     public void onCommand(Player p, String[] args) {
         if (args.length < 2) {
-            core.usage(p, getUsage());
+            core.usage(p, "cage <nick-nick> <diamond/iron>");
             return;
         }
         Player target = Bukkit.getPlayerExact(args[0]);
         Player target2 = Bukkit.getPlayerExact(args[1]);
         if (target == null || target2 == null) {
-            p.sendMessage("&cJeden z tych graczy jest offline.");
+            p.sendMessage(ChatUtil.color("&cJeden z tych graczy jest offline."));
             return;
         }
         if (CageManager.getList().contains(target) || CageManager.getList().contains(target2)) {
-         p.sendMessage("&cJeden z tych graczy juz walczy.");
+         p.sendMessage(ChatUtil.color("&cJeden z tych graczy juz walczy."));
          return;
         }
         String lowerCase = args[2].toLowerCase();
@@ -56,7 +58,7 @@ public class CageCommand extends PlayerCommand {
                 break;
             }
             default: {
-                p.sendMessage("&cDostepne argumenty: diamond,iron");
+                p.sendMessage(ChatUtil.color("&cDostepne argumenty: diamond,iron"));
                 break;
             }
         }
